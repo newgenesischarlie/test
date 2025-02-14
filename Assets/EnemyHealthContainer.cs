@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityUI;
 
 public class EnemyHealthContainer : MonoBehaviour
 {
-    [SerializeField] private ImageConversion fillAmountImage;
-    public ImageConversion FillAmountImage => fillAmountImage;
+    [SerializeField] private Image fillAmountImage;
+    public Image FillAmountImage => fillAmountImage;
 }
