@@ -1,9 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    // Make this event static so it can be subscribed to without an instance
+    public static event Action<Enemy> OnEndReached;
+
+    // You can call EndReached() from other places in the code to trigger the event
+
     // Define the necessary variables
     public float MoveSpeed = 3f; // Move speed
     private int _currentWaypointIndex = 0; // Index to track the current waypoint
@@ -11,7 +17,6 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer _spriteRenderer; // To access the sprite renderer for flipping
     private EnemyHealth _enemyHealth; // Enemy health script
     public delegate void EndReachedHandler(Enemy enemy);
-    public event EndReachedHandler OnEndReached; // Event for when the endpoint is reached
 
     // Define a list of waypoints
     public List<Vector3> Waypoints; // List of waypoints positions
