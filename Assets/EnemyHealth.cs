@@ -61,4 +61,9 @@ public class EnemyHealth : MonoBehaviour
         // Trigger "OnEnemyHit" event when damage is dealt
         OnEnemyHit?.Invoke(_enemy);
     }
+
+    internal void ResetHealth()
+    {
+        throw new NotImplementedException();
+    }
 }
