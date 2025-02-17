@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer _spriteRenderer; // To access the sprite renderer for flipping
     private EnemyHealth _enemyHealth; // Enemy health script
     public delegate void EndReachedHandler(Enemy enemy);
-    public event EndReachedHandler OnEndreached; // Event for when the endpoint is reached
+    public event EndReachedHandler OnEndReached; // Event for when the endpoint is reached
 
     // Define a list of waypoints
     public List<Vector3> Waypoints; // List of waypoints positions
@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour
     private void EndPointReached()
     {
         // When the endpoint is reached, invoke the event and reset the enemy
-        OnEndreached?.Invoke(this);
+        OnEndReached?.Invoke(this);
         _enemyHealth.ResetHealth(); // Reset the enemy's health
         ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the object pool
     }
