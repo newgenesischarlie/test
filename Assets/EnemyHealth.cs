@@ -26,6 +26,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Update()
     {
+        // Test condition: When the "P" key is pressed, deal damage
         if (Input.GetKeyDown(KeyCode.P))
         {
             DealDamage(5f); // Deal 5 damage when 'P' is pressed
@@ -34,6 +35,9 @@ public class EnemyHealth : MonoBehaviour
         // Smoothly update the health bar's fill amount
         _healthBar.fillAmount = Mathf.Lerp(_healthBar.fillAmount,
            CurrentHealth / maxHealth, Time.deltaTime * 10f);
+
+        // Output the current health for debugging purposes
+        Debug.Log("Current Health: " + CurrentHealth);
     }
 
     private void CreateHealthBar()
@@ -62,8 +66,10 @@ public class EnemyHealth : MonoBehaviour
         OnEnemyHit?.Invoke(_enemy);
     }
 
+    // Resets the enemy health to initial value (useful for respawn or reset scenarios)
     internal void ResetHealth()
     {
-        throw new NotImplementedException();
+        CurrentHealth = initialHealth;
+        _healthBar.fillAmount = 1f; // Reset health bar fill amount
     }
 }
