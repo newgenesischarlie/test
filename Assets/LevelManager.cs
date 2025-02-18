@@ -27,10 +27,13 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             return _instance;
         }
     }
+}
 
+public class LevelManager : Singleton<LevelManager>
+{
     // Expose these fields in the Inspector
-    [SerializeField] private int instanceID;
-    [SerializeField] private string localIdentifierInFile;
+  //  [SerializeField] private int instanceID;
+   // [SerializeField] private string localIdentifierInFile;
     [SerializeField] private int lives = 10;
     [SerializeField] private int totalLives;
     [SerializeField] private int currentWave;
@@ -47,25 +50,25 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         set { currentWave = value; }
     }
 
-    public int InstanceID
-    {
-        get { return instanceID; }
-        set { instanceID = value; }
-    }
+   // public int InstanceID
+  //  {
+    //    get { return instanceID; }
+    //    set { instanceID = value; }
+   // }
 
-    public string LocalIdentifierInFile
-    {
-        get { return localIdentifierInFile; }
-        set { localIdentifierInFile = value; }
-    }
+  //  public string LocalIdentifierInFile
+  //  {
+  //      get { return localIdentifierInFile; }
+   //     set { localIdentifierInFile = value; }
+  //  }
 
     private void Start()
     {
         // Initialize with default or serialized values
         totalLives = lives;
         currentWave = 1;
-        instanceID = System.Guid.NewGuid().GetHashCode();  // Generate a unique instance ID (for example)
-        localIdentifierInFile = "level_" + instanceID; // Just an example, can be customized
+  //      instanceID = System.Guid.NewGuid().GetHashCode();  // Generate a unique instance ID (for example)
+ //       localIdentifierInFile = "level_" + instanceID; // Just an example, can be customized
     }
 
     private void ReduceLives(Enemy enemy)
@@ -113,4 +116,3 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         Spawner.OnWaveCompleted -= WaveCompleted;
     }
 }
-
