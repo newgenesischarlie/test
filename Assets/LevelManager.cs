@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
@@ -27,22 +28,52 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-[SerializeField] private int lives = 10;
-    public int TotalLives { get; set; }
-    public int CurrentWave { get; set; }
+    // Expose these fields in the Inspector
+    [SerializeField] private int instanceID;
+    [SerializeField] private string localIdentifierInFile;
+    [SerializeField] private int lives = 10;
+    [SerializeField] private int totalLives;
+    [SerializeField] private int currentWave;
+
+    public int TotalLives
+    {
+        get { return totalLives; }
+        set { totalLives = value; }
+    }
+
+    public int CurrentWave
+    {
+        get { return currentWave; }
+        set { currentWave = value; }
+    }
+
+    public int InstanceID
+    {
+        get { return instanceID; }
+        set { instanceID = value; }
+    }
+
+    public string LocalIdentifierInFile
+    {
+        get { return localIdentifierInFile; }
+        set { localIdentifierInFile = value; }
+    }
 
     private void Start()
     {
-        TotalLives = lives;
-        CurrentWave = 1;
+        // Initialize with default or serialized values
+        totalLives = lives;
+        currentWave = 1;
+        instanceID = System.Guid.NewGuid().GetHashCode();  // Generate a unique instance ID (for example)
+        localIdentifierInFile = "level_" + instanceID; // Just an example, can be customized
     }
 
     private void ReduceLives(Enemy enemy)
     {
-        TotalLives--;
-        if (TotalLives <= 0)
+        totalLives--;
+        if (totalLives <= 0)
         {
-            TotalLives = 0;
+            totalLives = 0;
             GameOver();
         }
     }
@@ -54,19 +85,16 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
         // Example: Pause the game, show a game over UI, etc.
         Time.timeScale = 0f; // Freeze the game (optional)
-        // You can also show a Game Over UI here if you have one.
-        // GameUI.Instance.ShowGameOverScreen();
     }
 
     private void WaveCompleted()
     {
         // Handle wave completion logic here (e.g., increase wave count, spawn new enemies)
-        Debug.Log("Wave " + CurrentWave + " completed!");
+        Debug.Log("Wave " + currentWave + " completed!");
 
         // Example: Increase the wave count and start the next wave
-        CurrentWave++;
+        currentWave++;
         // Optionally, you can spawn more enemies or adjust difficulty, etc.
-        // Spawner.Instance.SpawnNextWave(CurrentWave); // Example of spawning the next wave
     }
 
     private void OnEnable()
@@ -74,7 +102,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         // Subscribe to the static event from the Enemy class
         Enemy.OnEndReached += ReduceLives;
 
-        // Subscribe to the static event from the Spawner class (if it's set up that way)
+        // Subscribe to the static event from the Spawner class
         Spawner.OnWaveCompleted += WaveCompleted;
     }
 
