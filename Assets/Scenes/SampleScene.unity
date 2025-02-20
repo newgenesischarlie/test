@@ -1443,7 +1443,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1581001747}
-  - component: {fileID: 1581001746}
+  - component: {fileID: 1581001748}
   m_Layer: 0
   m_Name: CurrencyManager
   m_TagString: Untagged
@@ -1451,19 +1451,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1581001746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581001745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 853e4f3a638a146e0b1ccaa1890e8b0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinTest: 5
 --- !u!4 &1581001747
 Transform:
   m_ObjectHideFlags: 0
@@ -1479,6 +1466,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1581001748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581001745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853e4f3a638a146e0b1ccaa1890e8b0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinTest: 5
 --- !u!1 &1733016859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1877,7 +1877,7 @@ MonoBehaviour:
   turretInfoPanel: {fileID: 0}
   turretDamageText: {fileID: 0}
   turretLevelText: {fileID: 0}
-  upgradeButton: {fileID: 988995063}
+  upgradeButton: {fileID: 0}
 --- !u!1 &1883314171
 GameObject:
   m_ObjectHideFlags: 0
