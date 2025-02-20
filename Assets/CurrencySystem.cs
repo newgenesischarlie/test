@@ -7,7 +7,9 @@ public class CurrencySystem : MonoBehaviour
    [SerializeField] private int coinTest;
     private string CURRENCY_SAVE_KEY = "MYGAME_CURRENCY";
     public int TotalCoins { get; set; }
-private void Start()
+    public static object Instance { get; internal set; }
+
+    private void Start()
 {
     PlayerPrefs.DeleteKey(CURRENCY_SAVE_KEY);
     LoadCoins();
@@ -33,7 +35,7 @@ public void RemoveCOins(int amount)
 }
 private void AddCoins(Enemy enemy)
 {
-    AddCoins(enemy.DeathCoinReward);
+  //  AddCoins(enemy.DeathCoinReward);
 }
 private void OnEnable()
 {

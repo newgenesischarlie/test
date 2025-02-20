@@ -9,7 +9,9 @@ public class Turret : MonoBehaviour
     private List<Enemy> _enemies = new List<Enemy>();
 
     // Current enemy that the turret is targeting
-    private Enemy CurrentEnemyTarget;
+    private Enemy _currentEnemyTarget;
+
+    public object CurrentEnemyTarget { get; internal set; }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -45,28 +47,34 @@ public class Turret : MonoBehaviour
     {
         if (_enemies.Count <= 0)
         {
-            CurrentEnemyTarget = null;
+            _currentEnemyTarget = null;
             return;
         }
 
         // For simplicity, set the first enemy in the list as the target
-        CurrentEnemyTarget = _enemies[0];
+        // Here you could add logic to target the closest enemy if needed
+        _currentEnemyTarget = _enemies[0];
     }
 
     private void RotateTowardsTarget()
     {
-        if (CurrentEnemyTarget == null)
+        if (_currentEnemyTarget == null)
         {
             return;
         }
 
         // Get the direction to the target enemy
-        Vector3 targetPos = CurrentEnemyTarget.transform.position - transform.position;
+        Vector3 targetPos = _currentEnemyTarget.transform.position - transform.position;
 
         // Calculate the angle to rotate
-        float angle = Vector3.SignedAngle(transform.up, targetPos, transform.forward);
+        float angle = Vector3.SignedAngle(transform.up, targetPos, Vector3.forward);
+
+        // Rotate the turret smoothly, adjusting the rotation speed
+        float rotationSpeed = 5f; // You can adjust this value
+        float step = rotationSpeed * Time.deltaTime;
+        float angleToRotate = Mathf.MoveTowardsAngle(transform.eulerAngles.z, angle, step);
 
         // Rotate the turret
-        transform.Rotate(0f, 0f, angle);
+        transform.rotation = Quaternion.Euler(0f, 0f, angleToRotate);
     }
 }

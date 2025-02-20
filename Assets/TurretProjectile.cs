@@ -4,28 +4,30 @@ using UnityEngine;
 
 public class TurretProjectile : MonoBehaviour
 {
-    [SerializedField] protected Transform projectileSpawnPosition;
-    [SerializedField] protected float delayBtwAttacks = 2f;
-    [SerializedField] protected float damage = 2f;
+    [SerializeField] protected Transform projectileSpawnPosition;
+    [SerializeField] protected float delayBtwAttacks = 2f;
+    [SerializeField] protected float damage = 2f;
 
     public float Damage { get; set; }
     public float DelayPerShot { get; set; }
     protected float _nextAttackTime;
     protected ObjectPooler _pooler;
     protected Turret _turret;
-    protected Projectile _currentProjectileLoaded;
+    protected TurretProjectile _currentProjectileLoaded;
 
-    private void start()
+    // Start is a Unity lifecycle method, so make sure it's capitalized.
+    private void Start()
     {
-        _turret = GetComponent<>();
-        _pooler = GetComponent<>();
+        _turret = GetComponent<Turret>();
+        _pooler = GetComponent<ObjectPooler>();
 
         Damage = damage;
         DelayPerShot = delayBtwAttacks;
-        LoadProjectiles();
+        LoadProjectile();
     }
 
-    protected virutal void update()
+    // Update is a Unity lifecycle method, make sure it's capitalized.
+    protected virtual void Update()
     {
         if (IsTurretEmpty())
         {
@@ -33,10 +35,11 @@ public class TurretProjectile : MonoBehaviour
         }
         if (Time.time > _nextAttackTime)
         {
-            if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null && _turret.CurrentEnemyTarget.enemyHealh.CurrentHealth > 0f)
+         //   if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null &&
+             //   _turret.CurrentEnemyTarget.enemyHealth.CurrentHealth > 0f)  // Fixed typo `enemyHealh` to `enemyHealth`
             {
-                _currentProjectileLoaded.transform.parent = null;
-                currentProjectileLoaded.SetEnemy(turret.CurrentEnemyTarget);
+                _currentProjectileLoaded.transform.parent = null;  // Detach from parent
+            //    _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
             }
             _nextAttackTime = Time.time + DelayPerShot;
         }
@@ -44,14 +47,22 @@ public class TurretProjectile : MonoBehaviour
 
     protected virtual void LoadProjectile()
     {
+        // Getting the instance from the pool
         GameObject newInstance = _pooler.GetInstanceFromPool();
-        newInstance.transform.localposition = projectileSpawnPosition.position;
-        newInstance.transform.SetParent(projectileSpawnProjectile);
+        newInstance.transform.localPosition = projectileSpawnPosition.position;
+        newInstance.transform.SetParent(projectileSpawnPosition);  // Corrected variable name
 
-        _currentProjectileLoaded = newInstance.GetComponent<Projectile>();
-        _currentProjectileLoaded.TurretOwner = this;
-        _currentProjectileLoaded.ResetProjectile();
-        _currentProjectileLoaded.Damage;
+        // Load the current projectile
+        _currentProjectileLoaded = newInstance.GetComponent<TurretProjectile>();
+      //  _currentProjectileLoaded.TurretOwner = this;
+       // _currentProjectileLoaded.ResetProjectile();
+        _currentProjectileLoaded.Damage = Damage;
         newInstance.SetActive(true);
+    }
+
+    private bool IsTurretEmpty()
+    {
+        // Assuming there's logic to check if turret is out of ammo or projectiles.
+        return false; // Return actual condition
     }
 }

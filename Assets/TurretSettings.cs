@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class TurretSettings : MonoBehaviour
 {
-    [CreateAssetMenu{fileName = "TurretShopSetting")]
+    [CreateAssetMenu(fileName = "TurretShopSetting")]
     public class TurretSetting : ScriptableObject
     {
         public GameObject TurretPrefab;
 public int TurretShopCost;
         public Sprite TurretShopSprite;
     }
-
-
 }
