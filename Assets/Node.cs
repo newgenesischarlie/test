@@ -50,7 +50,7 @@ public class Node : MonoBehaviour
     {
         if (!IsEmpty())
         {
-          // CurrencySystem.Instance.AddCoins(Turret.TurretUpgrade.GetSellValue());
+            CurrencySystem.Instance.AddCoins(Turret.TurretUpgrade.GetSellValue());
             Destroy(Turret.gameObject);
             Turret = null;
             attackRangeSprite.SetActive(false);
@@ -67,8 +67,8 @@ public class Node : MonoBehaviour
             turretInfoPanel.SetActive(true); // Show the info panel
 
             // Set the text values for turret damage and level
-          //  turretDamageText.text = "Damage: " + Turret.TurretUpgrade.Damage.ToString();
-          //  turretLevelText.text = "Level: " + Turret.TurretUpgrade.Level.ToString();
+            turretDamageText.text = "Damage: " + Turret.TurretUpgrade.Damage.ToString();
+            turretLevelText.text = "Level: " + Turret.TurretUpgrade.Level.ToString();
         }
     }
 
