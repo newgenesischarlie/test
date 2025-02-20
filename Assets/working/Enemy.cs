@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
 
     // You can call EndReached() from other places in the code to trigger the event
 
+    public EnemyHealth enemyHealth;
+
     // Define the necessary variables
     public float MoveSpeed = 3f; // Move speed
     private int _currentWaypointIndex = 0; // Index to track the current waypoint

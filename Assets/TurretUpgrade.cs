@@ -33,24 +33,24 @@ public class TurretUpgrade : MonoBehaviour
     }
 
     // Method to upgrade the turret if the player has enough coins
-   // public void UpgradeTurret()
-  //  {
+       public void UpgradeTurret()
+     {
         // Check if the player has enough coins
-      //  if (CurrencySystem.Instance.TotalCoins >= UpgradeCost)
-       // {
+      // if (CurrencySystem.Instance.TotalCoins >= UpgradeCost)
+        {
             // Upgrade turret attributes
-         //   _turretProjectile.Damage += damageIncremental;
-         //   _turretProjectile.DelayPerShot -= delayReduce;
+           _turretProjectile.Damage += damageIncremental;
+            _turretProjectile.DelayPerShot -= delayReduce;
 
             // Update cost and level after upgrading
-         //   UpdateUpgrade();
-       // }
-      //  else
-       // {
+           UpdateUpgrade();
+        }
+     //  else
+        {
             // Optionally, you could add some feedback here, e.g., a sound or message to indicate insufficient coins
-        //    Debug.Log("Not enough coins to upgrade!");
-       // }
-   // }
+           Debug.Log("Not enough coins to upgrade!");
+        }
+    }
 
     // Get the sell value for the turret (how much player gets back)
     public int GetSellValue()

@@ -29,7 +29,7 @@ public class EnemyHealth : MonoBehaviour
         // Test condition: When the "P" key is pressed, deal damage
         if (Input.GetKeyDown(KeyCode.P))
         {
-            DealDamage(5f); // Deal 5 damage when 'P' is pressed
+            DealdDamage(5f); // Deal 5 damage when 'P' is pressed
         }
 
         // Smoothly update the health bar's fill amount
@@ -40,6 +40,11 @@ public class EnemyHealth : MonoBehaviour
         Debug.Log("Current Health: " + CurrentHealth);
     }
 
+    internal void DealDamage(float damage)
+    {
+        throw new NotImplementedException();
+    }
+
     private void CreateHealthBar()
     {
         // Instantiate the health bar UI element and set its parent to the specified bar position
@@ -47,7 +52,7 @@ public class EnemyHealth : MonoBehaviour
         _healthBar = healthBarObject.GetComponentInChildren<Image>(); // Get the Image component for the health bar
     }
 
-    private void DealDamage(float damageAmount)
+    private void DealdDamage(float damageAmount)
     {
         // Decrease current health by damage amount
         CurrentHealth -= damageAmount;

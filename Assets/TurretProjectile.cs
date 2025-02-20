@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class TurretProjectile : MonoBehaviour
     protected float _nextAttackTime;
     protected ObjectPooler _pooler;
     protected Turret _turret;
-    protected TurretProjectile _currentProjectileLoaded;
+    protected Projectile _currentProjectileLoaded;
 
     // Start is a Unity lifecycle method, so make sure it's capitalized.
     private void Start()
@@ -33,16 +34,25 @@ public class TurretProjectile : MonoBehaviour
         {
             LoadProjectile();
         }
+
         if (Time.time > _nextAttackTime)
         {
-         //   if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null &&
-             //   _turret.CurrentEnemyTarget.enemyHealth.CurrentHealth > 0f)  // Fixed typo `enemyHealh` to `enemyHealth`
+            if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null &&
+                _turret.CurrentEnemyTarget.enemyHealth.CurrentHealth > 0f)
             {
                 _currentProjectileLoaded.transform.parent = null;  // Detach from parent
-            //    _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
+                _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
+            }
+            else
+            {
             }
             _nextAttackTime = Time.time + DelayPerShot;
         }
+    }
+
+    internal void ResetTurretProjectile()
+    {
+        throw new NotImplementedException();
     }
 
     protected virtual void LoadProjectile()
@@ -53,9 +63,9 @@ public class TurretProjectile : MonoBehaviour
         newInstance.transform.SetParent(projectileSpawnPosition);  // Corrected variable name
 
         // Load the current projectile
-        _currentProjectileLoaded = newInstance.GetComponent<TurretProjectile>();
-      //  _currentProjectileLoaded.TurretOwner = this;
-       // _currentProjectileLoaded.ResetProjectile();
+        _currentProjectileLoaded = newInstance.GetComponent<Projectile>();
+        _currentProjectileLoaded.TurretOwner = this;
+        _currentProjectileLoaded.ResetProjectile();  // Ensure ResetProjectile() is defined in the Projectile class
         _currentProjectileLoaded.Damage = Damage;
         newInstance.SetActive(true);
     }
@@ -63,6 +73,6 @@ public class TurretProjectile : MonoBehaviour
     private bool IsTurretEmpty()
     {
         // Assuming there's logic to check if turret is out of ammo or projectiles.
-        return false; // Return actual condition
+        return false; // Replace this with the actual condition (e.g., if projectiles are available)
     }
 }

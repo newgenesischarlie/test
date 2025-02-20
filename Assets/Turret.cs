@@ -11,11 +11,22 @@ public class Turret : MonoBehaviour
     // Current enemy that the turret is targeting
     private Enemy _currentEnemyTarget;
 
-    public object CurrentEnemyTarget { get; internal set; }
+    // Modifiable attack range
+    [SerializeField] private float attackRange = 5f;  // Can be set in the Unity Inspector
+
+    // List of tags to filter which enemies the turret will target
+    [SerializeField] private List<string> enemyTags = new List<string> { "Enemy" };
+
+    // The speed at which the turret rotates
+    [SerializeField] private float rotationSpeed = 5f;
+
+    public float AttackRange => attackRange;  // To allow other scripts to access the range
+
+       public Enemy CurrentEnemyTarget { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if (IsEnemyInRange(other))
         {
             Enemy newEnemy = other.GetComponent<Enemy>();
             if (newEnemy != null && !_enemies.Contains(newEnemy))
@@ -27,7 +38,7 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if (IsEnemyInRange(other))
         {
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null && _enemies.Contains(enemy))
@@ -51,8 +62,8 @@ public class Turret : MonoBehaviour
             return;
         }
 
-        // For simplicity, set the first enemy in the list as the target
-        // Here you could add logic to target the closest enemy if needed
+        // Target the first enemy within range by default
+        // You can extend this logic to prioritize enemies by health, distance, etc.
         _currentEnemyTarget = _enemies[0];
     }
 
@@ -70,11 +81,32 @@ public class Turret : MonoBehaviour
         float angle = Vector3.SignedAngle(transform.up, targetPos, Vector3.forward);
 
         // Rotate the turret smoothly, adjusting the rotation speed
-        float rotationSpeed = 5f; // You can adjust this value
         float step = rotationSpeed * Time.deltaTime;
         float angleToRotate = Mathf.MoveTowardsAngle(transform.eulerAngles.z, angle, step);
 
         // Rotate the turret
         transform.rotation = Quaternion.Euler(0f, 0f, angleToRotate);
+    }
+
+    // Check if the collider is an enemy within the turret's range and matching the tags
+    private bool IsEnemyInRange(Collider2D collider)
+    {
+        // Check if the collider belongs to an enemy and within the turret's attack range
+        if (collider.CompareTag("Enemy"))
+        {
+            Enemy enemy = collider.GetComponent<Enemy>();
+            if (enemy != null && Vector3.Distance(transform.position, enemy.transform.position) <= attackRange)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Draw the attack range for visualization in the Scene view
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

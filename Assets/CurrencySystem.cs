@@ -24,7 +24,7 @@ public void AddCoins(int amount)
     PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
     PlayerPrefs.Save();
 }
-public void RemoveCOins(int amount)
+public void RemoveCoins(int amount)
 {
     if (TotalCoins >= amount)
     {
@@ -35,7 +35,7 @@ public void RemoveCOins(int amount)
 }
 private void AddCoins(Enemy enemy)
 {
-  //  AddCoins(enemy.DeathCoinReward);
+   // AddCoins(enemy.DeathCoinReward);
 }
 private void OnEnable()
 {
