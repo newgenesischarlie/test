@@ -11,6 +11,7 @@ public class Node : MonoBehaviour
     [SerializeField] private GameObject turretInfoPanel; // Reference to the UI panel displaying turret info
     [SerializeField] private Text turretDamageText; // Reference to a Text component for displaying turret damage
     [SerializeField] private Text turretLevelText;  // Reference to a Text component for displaying turret level
+    [SerializeField] private Button upgradeButton;  // Button to trigger turret upgrade
 
     public Turret Turret { get; set; }
     private float _rangeSize;
@@ -20,6 +21,12 @@ public class Node : MonoBehaviour
     {
         _rangeSize = attackRangeSprite.GetComponent<SpriteRenderer>().bounds.size.y;
         _rangeOriginalSize = attackRangeSprite.transform.localScale;
+
+        // Set the upgrade button listener
+        if (upgradeButton != null)
+        {
+            upgradeButton.onClick.AddListener(UpgradeTurret);
+        }
     }
 
     public void SetTurret(Turret turret)
@@ -50,7 +57,8 @@ public class Node : MonoBehaviour
     {
         if (!IsEmpty())
         {
-            CurrencySystem.Instance.AddCoins(Turret.TurretUpgrade.GetSellValue());
+            TurretUpgrade turretUpgrade = Turret.GetComponent<TurretUpgrade>();
+            CurrencySystem.Instance.AddCoins(turretUpgrade.GetSellValue());
             Destroy(Turret.gameObject);
             Turret = null;
             attackRangeSprite.SetActive(false);
@@ -59,16 +67,44 @@ public class Node : MonoBehaviour
         }
     }
 
+    // Upgrade the turret and update UI
+    public void UpgradeTurret()
+    {
+        if (!IsEmpty())
+        {
+            TurretUpgrade turretUpgrade = Turret.GetComponent<TurretUpgrade>();
+
+            if (CurrencySystem.Instance.TotalCoins >= turretUpgrade.UpgradeCost)
+            {
+                // Deduct the coins for upgrading
+                CurrencySystem.Instance.RemoveCoins(turretUpgrade.UpgradeCost);
+
+                // Call the UpgradeTurret method from TurretUpgrade script
+                turretUpgrade.UpgradeTurret();
+
+                // Update the UI to reflect the new turret stats
+                ShowTurretInfo();
+            }
+            else
+            {
+                Debug.Log("Not enough coins to upgrade the turret!");
+            }
+        }
+    }
+
     private void ShowTurretInfo()
     {
-        // Assuming the turret has a 'TurretUpgrade' class with properties like 'Damage' and 'Level'
         if (Turret != null)
         {
-            turretInfoPanel.SetActive(true); // Show the info panel
+            TurretUpgrade turretUpgrade = Turret.GetComponent<TurretUpgrade>();
 
-            // Set the text values for turret damage and level
-            turretDamageText.text = "Damage: " + Turret.TurretUpgrade.Damage.ToString();
-            turretLevelText.text = "Level: " + Turret.TurretUpgrade.Level.ToString();
+            if (turretUpgrade != null)
+            {
+                turretInfoPanel.SetActive(true); // Show the info panel
+
+                // Set the text values for turret damage and level from TurretUpgrade
+                turretLevelText.text = "Level: " + turretUpgrade.Level.ToString();
+            }
         }
     }
 
