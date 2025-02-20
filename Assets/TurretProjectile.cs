@@ -16,7 +16,6 @@ public class TurretProjectile : MonoBehaviour
     protected Turret _turret;
     protected Projectile _currentProjectileLoaded;
 
-    // Start is a Unity lifecycle method, so make sure it's capitalized.
     private void Start()
     {
         _turret = GetComponent<Turret>();
@@ -27,52 +26,55 @@ public class TurretProjectile : MonoBehaviour
         LoadProjectile();
     }
 
-    // Update is a Unity lifecycle method, make sure it's capitalized.
     protected virtual void Update()
     {
+        // Reload projectile if needed
         if (IsTurretEmpty())
         {
             LoadProjectile();
         }
 
+        // Check if it's time to shoot
         if (Time.time > _nextAttackTime)
         {
+            // Ensure there's a valid enemy target and the projectile is ready
             if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null &&
-                _turret.CurrentEnemyTarget.enemyHealth.CurrentHealth > 0f)
+                _turret.CurrentEnemyTarget.GetEnemyHealth().CurrentHealth > 0f)  // Fixed to use GetEnemyHealth()
             {
-                _currentProjectileLoaded.transform.parent = null;  // Detach from parent
+                // Detach the projectile and set its enemy target
+                _currentProjectileLoaded.transform.parent = null;
                 _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
+
+                // Update the attack time to prevent multiple shots in quick succession
+                _nextAttackTime = Time.time + DelayPerShot;
             }
-            else
-            {
-            }
-            _nextAttackTime = Time.time + DelayPerShot;
         }
     }
 
     internal void ResetTurretProjectile()
     {
-        throw new NotImplementedException();
+        // Reset the projectile logic (if needed)
+        _currentProjectileLoaded.ResetProjectile();
     }
 
     protected virtual void LoadProjectile()
     {
-        // Getting the instance from the pool
+        // Get a new projectile instance from the pool
         GameObject newInstance = _pooler.GetInstanceFromPool();
         newInstance.transform.localPosition = projectileSpawnPosition.position;
-        newInstance.transform.SetParent(projectileSpawnPosition);  // Corrected variable name
+        newInstance.transform.SetParent(projectileSpawnPosition);
 
-        // Load the current projectile
+        // Set up the projectile and assign damage
         _currentProjectileLoaded = newInstance.GetComponent<Projectile>();
         _currentProjectileLoaded.TurretOwner = this;
-        _currentProjectileLoaded.ResetProjectile();  // Ensure ResetProjectile() is defined in the Projectile class
+        _currentProjectileLoaded.ResetProjectile();
         _currentProjectileLoaded.Damage = Damage;
         newInstance.SetActive(true);
     }
 
     private bool IsTurretEmpty()
     {
-        // Assuming there's logic to check if turret is out of ammo or projectiles.
-        return false; // Replace this with the actual condition (e.g., if projectiles are available)
+        // Return true if the turret is empty and needs to reload (this is just an example, adjust as needed)
+        return false;  // Replace with actual condition for turret reloading
     }
 }
