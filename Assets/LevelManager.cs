@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
@@ -114,5 +114,12 @@ public class LevelManager : Singleton<LevelManager>
         // Unsubscribe to avoid memory leaks
         Enemy.OnEndReached -= ReduceLives;
         Spawner.OnWaveCompleted -= WaveCompleted;
+    }
+
+    public string sceneName;
+
+    public void changeScene()
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }
