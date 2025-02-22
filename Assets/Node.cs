@@ -8,11 +8,6 @@ public class Node : MonoBehaviour
     public static Action OnTurretSold;
 
     [SerializeField] private GameObject attackRangeSprite;
-    [SerializeField] private GameObject turretInfoPanel; // Reference to the UI panel displaying turret info
-    [SerializeField] private Text turretDamageText; // Reference to a Text component for displaying turret damage
-    [SerializeField] private Text turretLevelText;  // Reference to a Text component for displaying turret level
-    [SerializeField] private Button upgradeButton;  // Button to trigger turret upgrade
-
     public Turret Turret { get; set; }
     private float _rangeSize;
     private Vector3 _rangeOriginalSize;
@@ -21,12 +16,6 @@ public class Node : MonoBehaviour
     {
         _rangeSize = attackRangeSprite.GetComponent<SpriteRenderer>().bounds.size.y;
         _rangeOriginalSize = attackRangeSprite.transform.localScale;
-
-        // Set the upgrade button listener
-        if (upgradeButton != null)
-        {
-            upgradeButton.onClick.AddListener(UpgradeTurret);
-        }
     }
 
     public void SetTurret(Turret turret)
@@ -44,14 +33,6 @@ public class Node : MonoBehaviour
         attackRangeSprite.SetActive(false);
     }
 
-    public void SelectTurret()
-    {
-        OnNodeSelected?.Invoke(this);
-        if (!IsEmpty())
-        {
-            ShowTurretInfo();
-        }
-    }
 
     public void SellTurret()
     {
@@ -63,7 +44,6 @@ public class Node : MonoBehaviour
             Turret = null;
             attackRangeSprite.SetActive(false);
             OnTurretSold?.Invoke();
-            CloseTurretInfo();
         }
     }
 
@@ -81,9 +61,6 @@ public class Node : MonoBehaviour
 
                 // Call the UpgradeTurret method from TurretUpgrade script
                 turretUpgrade.UpgradeTurret();
-
-                // Update the UI to reflect the new turret stats
-                ShowTurretInfo();
             }
             else
             {
@@ -92,24 +69,5 @@ public class Node : MonoBehaviour
         }
     }
 
-    private void ShowTurretInfo()
-    {
-        if (Turret != null)
-        {
-            TurretUpgrade turretUpgrade = Turret.GetComponent<TurretUpgrade>();
 
-            if (turretUpgrade != null)
-            {
-                turretInfoPanel.SetActive(true); // Show the info panel
-
-                // Set the text values for turret damage and level from TurretUpgrade
-                turretLevelText.text = "Level: " + turretUpgrade.Level.ToString();
-            }
-        }
-    }
-
-    private void CloseTurretInfo()
-    {
-        turretInfoPanel.SetActive(false); // Hide the info panel when the turret is sold
-    }
 }
