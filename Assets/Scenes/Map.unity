@@ -247,8 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8254caa967f714dcfb25b82071e336c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelScene: {fileID: 102900000, guid: 3b39905c809f1411889853285fe52052, type: 3}
-  playerCollider: {fileID: 136608688}
+  levelSceneName: Level 1
   levelImageCollider: {fileID: 30565361}
 --- !u!1 &56608260
 GameObject:
@@ -371,9 +370,9 @@ GameObject:
   m_Component:
   - component: {fileID: 136608687}
   - component: {fileID: 136608686}
-  - component: {fileID: 136608688}
   - component: {fileID: 136608689}
   - component: {fileID: 136608690}
+  - component: {fileID: 136608691}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -441,29 +440,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136608685}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 440, y: 255.32, z: 9}
-  m_LocalScale: {x: 250, y: 250, z: 230.05974}
+  m_LocalPosition: {x: 449, y: 191, z: 9}
+  m_LocalScale: {x: 446.675, y: 446.675, z: 411.04773}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!58 &136608688
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136608685}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.1461858, y: 0.05558872}
-  serializedVersion: 2
-  m_Radius: 0.36891845
 --- !u!50 &136608689
 Rigidbody2D:
   serializedVersion: 4
@@ -483,7 +466,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 2
 --- !u!114 &136608690
 MonoBehaviour:
@@ -498,6 +481,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 30
+--- !u!61 &136608691
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136608685}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &834037163
 GameObject:
   m_ObjectHideFlags: 0
