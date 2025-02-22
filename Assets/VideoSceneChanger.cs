@@ -6,7 +6,7 @@ using System.Collections;
 public class VideoSceneChanger : MonoBehaviour
 {
     public VideoPlayer videoPlayer; // Reference to the VideoPlayer
-    public UnityEngine.SceneManagement.SceneAsset nextScene; // Reference to the next scene
+    public string nextSceneName; // Reference to the next scene name as a string
 
     void Start()
     {
@@ -30,11 +30,8 @@ public class VideoSceneChanger : MonoBehaviour
     // Coroutine to load the scene asynchronously
     IEnumerator LoadSceneAsync()
     {
-        // Get the scene's name
-        string sceneName = nextScene.name;
-
-        // Start the asynchronous loading of the scene
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        // Start the asynchronous loading of the scene by name
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextSceneName);
 
         // Prevent the scene from activating immediately (optional)
         asyncLoad.allowSceneActivation = false;
