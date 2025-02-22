@@ -27,5 +27,8 @@ public class PlayerController : MonoBehaviour
 
         // Apply the movement to the player's Rigidbody2D
         rb.velocity = moveDirection * moveSpeed;
+
+        Debug.Log("Player position: " + transform.position);
+
     }
 }
