@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class Dialogue : MonoBehaviour
 {
@@ -10,10 +11,15 @@ public class Dialogue : MonoBehaviour
     public string[] characterNames; // Array for character names corresponding to each line.
     public AudioClip[] soundEffects; // Sound effects for each line.
     public float textSpeed; // Speed at which text is typed.
+    public Transform[] characterSprites; // Array of character sprites (transforms)
+    public float moveAmount = 0.1f; // The amount the sprite will move up and down
 
     private int index;
     private bool isTyping; // Flag to check if typing is in progress
     private AudioSource audioSource;
+
+    // Dictionary to map character names to their corresponding sprite transforms
+    private Dictionary<string, Transform> characterSpriteMap;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +44,16 @@ public class Dialogue : MonoBehaviour
         {
             Debug.LogError("Dialogue lines or character names are not assigned properly!");
             return;
+        }
+
+        // Populate the characterSpriteMap (mapping names to their sprites)
+        characterSpriteMap = new Dictionary<string, Transform>();
+        for (int i = 0; i < characterNames.Length; i++)
+        {
+            if (i < characterSprites.Length)
+            {
+                characterSpriteMap.Add(characterNames[i], characterSprites[i]);
+            }
         }
 
         textComponent.text = string.Empty;
@@ -87,15 +103,40 @@ public class Dialogue : MonoBehaviour
             audioSource.PlayOneShot(soundEffects[index]);
         }
 
+        // Get the character's sprite based on the current speaking character
+        string currentCharacter = characterNames[index];
+        Transform currentCharacterSprite = characterSpriteMap[currentCharacter];
+
         // Display the dialogue with typing effect
         foreach (char c in lines[index].ToCharArray())
         {
-            textComponent.text = characterNames[index] + ": " + textComponent.text.Substring(characterNames[index].Length + 2); // Update the name part only.
+            // Move the character's sprite up and down for each letter typed
+            StartCoroutine(MoveCharacterSprite(currentCharacterSprite));
+
+            // Update text with the next character
+            textComponent.text = currentCharacter + ": " + textComponent.text.Substring(currentCharacter.Length + 2); // Update the name part only.
             textComponent.text += c;
+
+            // Wait before typing the next character
             yield return new WaitForSeconds(textSpeed);
         }
 
         isTyping = false; // Mark typing as complete
+    }
+
+    IEnumerator MoveCharacterSprite(Transform characterSprite)
+    {
+        // Move the character's sprite up by the moveAmount and then back down
+        Vector3 originalPosition = characterSprite.position;
+        Vector3 upPosition = originalPosition + Vector3.up * moveAmount;
+        Vector3 downPosition = originalPosition;
+
+        // Move up
+        characterSprite.position = upPosition;
+        yield return new WaitForSeconds(0.05f); // Small delay to simulate the bounce
+
+        // Move down
+        characterSprite.position = downPosition;
     }
 
     void NextLine()
