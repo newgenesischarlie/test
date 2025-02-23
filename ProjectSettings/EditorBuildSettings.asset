@@ -6,24 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/DialogueSystem/Scenes/Opening.unity
+    path: Assets/Scenes/Opening.unity
     guid: 20cc3bc80d52a4e8992b69238c31d9a1
   - enabled: 1
-    path: Assets/DialogueSystem/Scenes/Menu.unity
+    path: Assets/Scenes/Menu.unity
     guid: b07dda36081ef412d81451324e82a80c
   - enabled: 1
-    path: Assets/DialogueSystem/Scenes/Level 0.unity
+    path: Assets/Scenes/Level 0.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/DialogueSystem/Scenes/Map.unity
+    path: Assets/Scenes/Map.unity
     guid: c1d5060412a3d455198f43a2a52611e7
   - enabled: 1
-    path: Assets/DialogueSystem/Scenes/Level 1.unity
+    path: Assets/Scenes/Level 1.unity
     guid: 3b39905c809f1411889853285fe52052
   - enabled: 1
-    path: Assets/DialogueSystem/Scenes/Cutscene 1.unity
+    path: Assets/Scenes/Cutscene 1.unity
     guid: 5a766f9945b3b496abc0f55618acad4c
   - enabled: 1
-    path: Assets/DialogueSystem/Scenes/Credits.unity
+    path: Assets/Scenes/Credits.unity
     guid: f3180e663a3874c088c143722f0bd0b4
   m_configObjects: {}
