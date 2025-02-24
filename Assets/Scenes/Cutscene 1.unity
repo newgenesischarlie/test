@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 540109037}
   - component: {fileID: 540109036}
   m_Layer: 0
-  m_Name: pixilart-1740052911556
+  m_Name: Dodo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540109035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.18, y: 0.72, z: 0}
+  m_LocalPosition: {x: 3.44, y: 0.14, z: 0}
   m_LocalScale: {x: 4.0699353, y: 4.0699353, z: 4.0699353}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -318,7 +318,7 @@ RectTransform:
   m_GameObject: {fileID: 788143506}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6538743, y: 2.180998, z: 4.83977}
+  m_LocalScale: {x: 1.9876864, y: 2.621203, z: 5.8166113}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1960667945}
@@ -326,7 +326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 495.03497, y: 149}
+  m_AnchoredPosition: {x: 491, y: 168}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &788143508
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: fffffffff
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -376,13 +376,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -392,7 +392,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 1386920444}
   - component: {fileID: 1386920443}
   m_Layer: 0
-  m_Name: pixil-frame-0(1)
+  m_Name: Sheriff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,7 +604,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386920442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.01, y: 1.83, z: 0}
+  m_LocalPosition: {x: -3.69, y: 1.51, z: 0}
   m_LocalScale: {x: 5.8509545, y: 6.169511, z: 3.3603}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -759,8 +759,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1960667943}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -441.39, y: -278.36, z: 0}
-  m_LocalScale: {x: 0.94668627, y: 0.71788245, z: 0.32350713}
+  m_LocalPosition: {x: -399.96, y: -252.04, z: 0}
+  m_LocalScale: {x: 0.78769976, y: 0.5973213, z: 0.26917735}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 788143507}
@@ -798,18 +798,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textComponent: {fileID: 788143508}
   lines:
-  - rhonavirus
-  - ' dcedc dcd'
-  characterNames:
-  - dodo
-  - sherrif
+  - "Sheriff: What a very peculiar creature.\u200B"
+  - "Dodo: Squawk (I'm a dodo)\u200B."
+  - 'Sheriff: What!'
+  - "Sheriff: How can I understand you?\u200B"
+  - 'Dodo: We Dodos are very intelligent creatures I assure you.'
+  - "Sheriff: Well can you help me find a way of the island as I seem to be stranded
+    here.\u200B"
+  - "Dodo: I will help if you prove yourself.\u200B"
+  - 'Dodo: And you can do that by protecting us Dodos for 5 days.'
+  - "Dodo: You see us Dodos face threats to make us extinct every day.\u200B"
+  - "Dodo: Do you accept this challenge?\u200B"
+  - "Sheriff: I mean I don't have anything to loose so why not I mean I am a Sheriff
+    after all.\u200B"
   soundEffects:
-  - {fileID: 8300000, guid: d8b0e9b42981c4bd68bc8160edfbeede, type: 3}
   - {fileID: 8300000, guid: e38b994288e6e4267b04ef4ab8762bbb, type: 3}
-  textSpeed: 0.5
+  - {fileID: 8300000, guid: 2b13846e759e447adb757e05b7a6d6cc, type: 3}
+  - {fileID: 8300000, guid: e38b994288e6e4267b04ef4ab8762bbb, type: 3}
+  - {fileID: 8300000, guid: e38b994288e6e4267b04ef4ab8762bbb, type: 3}
+  - {fileID: 8300000, guid: 2b13846e759e447adb757e05b7a6d6cc, type: 3}
+  - {fileID: 8300000, guid: e38b994288e6e4267b04ef4ab8762bbb, type: 3}
+  - {fileID: 8300000, guid: 2b13846e759e447adb757e05b7a6d6cc, type: 3}
+  - {fileID: 8300000, guid: 2b13846e759e447adb757e05b7a6d6cc, type: 3}
+  - {fileID: 8300000, guid: 2b13846e759e447adb757e05b7a6d6cc, type: 3}
+  - {fileID: 8300000, guid: 2b13846e759e447adb757e05b7a6d6cc, type: 3}
+  - {fileID: 8300000, guid: e38b994288e6e4267b04ef4ab8762bbb, type: 3}
+  textSpeed: 0.1
+  characterMoveSpeed: 0.2
   characterSprites:
   - {fileID: 1386920444}
   - {fileID: 540109037}
+  - {fileID: 1386920444}
+  - {fileID: 1386920444}
+  - {fileID: 540109037}
+  - {fileID: 1386920444}
+  - {fileID: 540109037}
+  - {fileID: 540109037}
+  - {fileID: 540109037}
+  - {fileID: 540109037}
+  - {fileID: 1386920444}
   moveAmount: 0.1
 --- !u!82 &1960667949
 AudioSource:
@@ -831,7 +858,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 9.95316
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

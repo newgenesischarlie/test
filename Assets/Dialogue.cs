@@ -1,83 +1,59 @@
-using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
+using System.Collections;
 
 public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI textComponent;
-    public string[] lines; // The lines of dialogue.
-    public string[] characterNames; // Array for character names corresponding to each line.
-    public AudioClip[] soundEffects; // Sound effects for each line.
-    public float textSpeed; // Speed at which text is typed.
-    public Transform[] characterSprites; // Array of character sprites (transforms)
-    public float moveAmount = 0.1f; // The amount the sprite will move up and down
+    public string[] lines;
+    public AudioClip[] soundEffects;
+    public float textSpeed; // Speed for text typing
+    public float characterMoveSpeed = 0.05f; // Speed for character sprite movement (up and down)
+    public Transform[] characterSprites; // Array of character sprites that will move per line
+    public float moveAmount = 0.1f; // Amount to move the sprite (up/down)
 
     private int index;
-    private bool isTyping; // Flag to check if typing is in progress
+    private bool isTyping;
     private AudioSource audioSource;
 
-    // Dictionary to map character names to their corresponding sprite transforms
-    private Dictionary<string, Transform> characterSpriteMap;
-
-    // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>(); // Assuming the AudioSource component is on the same GameObject.
+        audioSource = GetComponent<AudioSource>();
 
-        // Debugging: Check if AudioSource exists
         if (audioSource == null)
         {
             Debug.LogWarning("AudioSource component is missing from this GameObject.");
         }
 
-        // Debugging: Ensure TextMeshPro component is attached
         if (textComponent == null)
         {
             Debug.LogError("TextMeshProUGUI component is not assigned!");
             return;
         }
 
-        // Debugging: Make sure lines and characterNames are populated
-        if (lines.Length == 0 || characterNames.Length == 0)
+        if (lines.Length == 0)
         {
-            Debug.LogError("Dialogue lines or character names are not assigned properly!");
+            Debug.LogError("Dialogue lines are not assigned properly!");
             return;
-        }
-
-        // Populate the characterSpriteMap (mapping names to their sprites)
-        characterSpriteMap = new Dictionary<string, Transform>();
-        for (int i = 0; i < characterNames.Length; i++)
-        {
-            if (i < characterSprites.Length)
-            {
-                characterSpriteMap.Add(characterNames[i], characterSprites[i]);
-            }
         }
 
         textComponent.text = string.Empty;
         StartDialogue();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Only allow click to skip if typing is not in progress
         if (Input.GetMouseButtonDown(0) && !isTyping)
         {
-            // If the text is fully typed out, move to the next line
-            if (textComponent.text == characterNames[index] + ": " + lines[index])
+            if (textComponent.text != lines[index])
             {
-                Debug.Log("Line fully typed. Proceeding to next line.");
-                NextLine();
+                StopAllCoroutines();
+                textComponent.text = lines[index];
             }
             else
             {
-                Debug.Log("Skipping typing of current line.");
-                // Finish typing immediately
-                StopAllCoroutines();
-                textComponent.text = characterNames[index] + ": " + lines[index];
+                NextLine();
             }
         }
     }
@@ -85,58 +61,65 @@ public class Dialogue : MonoBehaviour
     void StartDialogue()
     {
         index = 0;
-
-        // Debugging: Ensure dialogue and character name arrays are correct
-        Debug.Log("Starting dialogue. First line: " + lines[index]);
-        textComponent.text = characterNames[index] + ": "; // Set the character name at the start.
+        textComponent.text = string.Empty; // Clear any previous text
         StartCoroutine(TypeLine());
     }
 
     IEnumerator TypeLine()
     {
-        isTyping = true; // Mark typing as in progress
+        isTyping = true;
 
-        // Play sound effect if available for the line and audioSource is not null
+        // Play and loop the sound effect for the line, if available
         if (audioSource != null && soundEffects.Length > index && soundEffects[index] != null)
         {
-            Debug.Log("Playing sound for line: " + index);
-            audioSource.PlayOneShot(soundEffects[index]);
+            audioSource.clip = soundEffects[index];
+            audioSource.loop = true; // Loop the sound effect
+            audioSource.Play();
         }
 
-        // Get the character's sprite based on the current speaking character
-        string currentCharacter = characterNames[index];
-        Transform currentCharacterSprite = characterSpriteMap[currentCharacter];
+        // Move the appropriate character sprite based on the line's index
+        if (index < characterSprites.Length)
+        {
+            StartCoroutine(ContinuousMoveCharacterSprite(characterSprites[index])); // Start continuous movement for the sprite
+        }
 
-        // Display the dialogue with typing effect
+        // Display the line letter by letter
         foreach (char c in lines[index].ToCharArray())
         {
-            // Move the character's sprite up and down for each letter typed
-            StartCoroutine(MoveCharacterSprite(currentCharacterSprite));
-
-            // Update text with the next character
-            textComponent.text = currentCharacter + ": " + textComponent.text.Substring(currentCharacter.Length + 2); // Update the name part only.
-            textComponent.text += c;
-
-            // Wait before typing the next character
+            textComponent.text += c; // Append the character to the text
             yield return new WaitForSeconds(textSpeed);
         }
 
-        isTyping = false; // Mark typing as complete
+        // Stop the sound loop immediately after the line is fully typed
+        if (audioSource != null)
+        {
+            audioSource.loop = false; // Stop the looping sound effect
+            audioSource.Stop(); // Immediately stop the sound
+        }
+
+        isTyping = false;
     }
 
-    IEnumerator MoveCharacterSprite(Transform characterSprite)
+    IEnumerator ContinuousMoveCharacterSprite(Transform characterSprite)
     {
-        // Move the character's sprite up by the moveAmount and then back down
+        // Continuously move the character's sprite up and down for each letter typed
         Vector3 originalPosition = characterSprite.position;
         Vector3 upPosition = originalPosition + Vector3.up * moveAmount;
         Vector3 downPosition = originalPosition;
 
-        // Move up
-        characterSprite.position = upPosition;
-        yield return new WaitForSeconds(0.05f); // Small delay to simulate the bounce
+        while (isTyping)
+        {
+            // Move the sprite up
+            characterSprite.position = upPosition;
+            yield return new WaitForSeconds(characterMoveSpeed); // Delay based on characterMoveSpeed
 
-        // Move down
-        characterSprite.position = downPosition;
+            // Move the sprite back down
+            characterSprite.position = downPosition;
+            yield return new WaitForSeconds(characterMoveSpeed); // Delay based on characterMoveSpeed
+        }
+
+        // Ensure the sprite ends back at the original position after typing is complete
+        characterSprite.position = originalPosition;
     }
 
     void NextLine()
@@ -144,22 +127,17 @@ public class Dialogue : MonoBehaviour
         if (index < lines.Length - 1)
         {
             index++;
-            textComponent.text = characterNames[index] + ": "; // Set the new character name
-            Debug.Log("Proceeding to next line: " + lines[index]);
-            StartCoroutine(TypeLine()); // Start typing the next line
+            textComponent.text = string.Empty; // Clear the previous line
+            StartCoroutine(TypeLine());
         }
         else
         {
-            // Load next scene after all dialogues are finished
-            Debug.Log("All dialogue lines finished. Loading next scene.");
             LoadNextScene();
         }
     }
 
     void LoadNextScene()
     {
-        // Assuming the next scene is the next build scene in the order.
-        // You can replace this with a specific scene name or index.
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
