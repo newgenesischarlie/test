@@ -3,18 +3,24 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Dialogue : MonoBehaviour
+public class Dialogue2 : MonoBehaviour
 {
     public TextMeshProUGUI textComponent;
     public string[] lines;
     public AudioClip[] soundEffects;
-    public float textSpeed; // Speed for text typing
-    public float characterMoveSpeed = 0.05f; // Speed for character sprite movement (up and down)
-    public Transform[] characterSprites; // Array of character sprites that will move per line
-    public float moveAmount = 0.1f; // Amount to move the sprite (up/down)
+    public float textSpeed;
+    public float characterMoveSpeed = 0.05f;
+    public Transform[] characterSprites;
+    public float moveAmount = 0.1f;
+
+    public Transform appearanceSprite; // The sprite that will appear after a specific line
+    public Transform characterToMove; // The character that will move towards the sprite
+    public float moveSpeed = 2f; // Speed at which the character moves towards the sprite
+    public int spriteAppearsAfterLine = 3; // Line after which the sprite will appear
 
     private int index;
     private bool isTyping;
+    private bool spriteAppeared;
     private AudioSource audioSource;
 
     void Start()
@@ -38,8 +44,8 @@ public class Dialogue : MonoBehaviour
             return;
         }
 
-        textComponent.text = string.Empty; // Ensure the text is empty at the start
-        PreloadAudio(); // Preload the audio clip for the first line
+        textComponent.text = string.Empty;
+        PreloadAudio();
         StartDialogue();
     }
 
@@ -47,7 +53,7 @@ public class Dialogue : MonoBehaviour
     {
         if (audioSource != null && soundEffects.Length > 0 && soundEffects[0] != null)
         {
-            audioSource.clip = soundEffects[0]; // Preload the first sound effect
+            audioSource.clip = soundEffects[0];
         }
     }
 
@@ -70,7 +76,7 @@ public class Dialogue : MonoBehaviour
     void StartDialogue()
     {
         index = 0;
-        textComponent.text = string.Empty; // Clear any previous text
+        textComponent.text = string.Empty;
         StartCoroutine(TypeLine());
     }
 
@@ -78,35 +84,80 @@ public class Dialogue : MonoBehaviour
     {
         isTyping = true;
 
-        // Play and loop the sound effect for the line, if available
         if (audioSource != null && soundEffects.Length > index && soundEffects[index] != null)
         {
             audioSource.clip = soundEffects[index];
-            audioSource.loop = true; // Loop the sound effect
+            audioSource.loop = true;
             audioSource.Play();
         }
 
-        // Move the appropriate character sprite based on the line's index
         if (index < characterSprites.Length)
         {
             StartCoroutine(ContinuousMoveCharacterSprite(characterSprites[index])); // Start continuous movement for the sprite
         }
 
-        // Display the line letter by letter
         foreach (char c in lines[index].ToCharArray())
         {
-            textComponent.text += c; // Append the character to the text
+            textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
 
-        // Stop the sound loop immediately after the line is fully typed
         if (audioSource != null)
         {
-            audioSource.loop = false; // Stop the looping sound effect
-            audioSource.Stop(); // Immediately stop the sound
+            audioSource.loop = false;
+            audioSource.Stop();
+        }
+
+        // Check if the sprite should appear after this line
+        if (index == spriteAppearsAfterLine)
+        {
+            ShowAppearanceSprite();
         }
 
         isTyping = false;
+    }
+
+    void ShowAppearanceSprite()
+    {
+        if (appearanceSprite != null)
+        {
+            appearanceSprite.gameObject.SetActive(true); // Show the sprite
+        }
+    }
+
+    void NextLine()
+    {
+        if (index < lines.Length - 1)
+        {
+            index++;
+            textComponent.text = string.Empty;
+            StartCoroutine(TypeLine());
+        }
+        else
+        {
+            StartCharacterMovement(); // Start moving the character when all lines are finished
+        }
+    }
+
+    void StartCharacterMovement()
+    {
+        if (appearanceSprite != null && characterToMove != null)
+        {
+            StartCoroutine(MoveCharacterTowardsSprite(characterToMove, appearanceSprite));
+        }
+    }
+
+    IEnumerator MoveCharacterTowardsSprite(Transform character, Transform target)
+    {
+        while (Vector3.Distance(character.position, target.position) > 0.1f) // When not yet close enough
+        {
+            character.position = Vector3.MoveTowards(character.position, target.position, moveSpeed * Time.deltaTime);
+            yield return null; // Wait for the next frame
+        }
+
+        // Hide both the character and the sprite after collision
+        character.gameObject.SetActive(false);
+        target.gameObject.SetActive(false);
     }
 
     IEnumerator ContinuousMoveCharacterSprite(Transform characterSprite)
@@ -129,20 +180,6 @@ public class Dialogue : MonoBehaviour
 
         // Ensure the sprite ends back at the original position after typing is complete
         characterSprite.position = originalPosition;
-    }
-
-    void NextLine()
-    {
-        if (index < lines.Length - 1)
-        {
-            index++;
-            textComponent.text = string.Empty; // Clear the previous line
-            StartCoroutine(TypeLine());
-        }
-        else
-        {
-            LoadNextScene();
-        }
     }
 
     void LoadNextScene()
