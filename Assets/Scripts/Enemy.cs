@@ -109,4 +109,12 @@ public class Enemy : MonoBehaviour
         // Notify GameManager if the enemy was destroyed or defeated
         GameManager.Instance.EnemyDestroyed(this); // This should notify the GameManager if needed
     }
+    public void EnemyDestroyed(Enemy enemy);
+    {
+        // Implement the method logic here
+        // For example:
+        Debug.Log("Enemy destroyed: " + enemy.name);
+        // You can access enemy properties here, for example:
+        // enemy.GetEnemyHealth().ResetHealth();
+   }
 }
