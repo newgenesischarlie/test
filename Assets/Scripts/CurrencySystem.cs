@@ -1,70 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class CurrencySystem : MonoBehaviour
 {
-    [SerializeField] private int coinTest;  // Default coins if PlayerPrefs is not set
-    private string CURRENCY_SAVE_KEY = "MYGAME_CURRENCY";
-    public int TotalCoins { get; private set; }
-    public static CurrencySystem Instance { get; private set; }  // Singleton reference
+    public static CurrencySystem Instance { get; private set; }
 
     private void Awake()
     {
-        // Ensure that only one instance of CurrencySystem exists
         if (Instance == null)
         {
             Instance = this;
         }
         else
         {
-            Destroy(gameObject);  // Destroy duplicate instance
+            Destroy(gameObject); // Destroy duplicate instance
         }
 
-        DontDestroyOnLoad(gameObject);  // Keep this object across scenes
+        DontDestroyOnLoad(gameObject); // Persist across scenes
     }
 
-    private void Start()
+    // AddCoins now accepts an Enemy parameter
+    public void AddCoins(Enemy enemy)
     {
-        PlayerPrefs.DeleteKey(CURRENCY_SAVE_KEY);  // Debug step; you can remove this later.
-        LoadCoins();  // Load coin data from PlayerPrefs
-    }
+        int coinsToAdd = CalculateCoinsFromEnemy(enemy);  // You can define how to calculate coins here
+        TotalCoins += coinsToAdd;
 
-    private void LoadCoins()
-    {
-        TotalCoins = PlayerPrefs.GetInt(CURRENCY_SAVE_KEY, coinTest);
-    }
+        // Update the UI and save the new coin total
+        if (coinCountText != null)
+        {
+            coinCountText.text = "Coins: " + TotalCoins;
+        }
 
-    public void AddCoins(int amount)
-    {
-        TotalCoins += amount;
         PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
         PlayerPrefs.Save();
-    }
 
-    public void RemoveCoins(int amount)
-    {
-        if (TotalCoins >= amount)
+        // Instantiate coin images if necessary
+        for (int i = 0; i < coinsToAdd; i++)
         {
-            TotalCoins -= amount;
-            PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
-            PlayerPrefs.Save();
+            Image newCoin = Instantiate(coinImagePrefab, coinPanel);
+            newCoin.gameObject.SetActive(true); // Make sure coin is visible
         }
     }
 
-    private void AddCoins(Enemy enemy)
+    private int CalculateCoinsFromEnemy(Enemy enemy)
     {
-        // Add coins when an enemy is killed
-        // AddCoins(enemy.DeathCoinReward);
-    }
-
-    private void OnEnable()
-    {
-        EnemyHealth.OnEnemyKilled += AddCoins;
-    }
-
-    private void OnDisable()
-    {
-        EnemyHealth.OnEnemyKilled -= AddCoins;
+        // Example: You can base coins on enemy health, type, or other logic
+        return 10;  // For example, always give 10 coins for each enemy
     }
 }

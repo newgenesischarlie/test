@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class Enemy : MonoBehaviour
 {
     public static event Action<Enemy> OnEndReached;
@@ -7,7 +11,6 @@ public class Enemy : MonoBehaviour
     private Vector3 _lastPointPosition;
     private SpriteRenderer _spriteRenderer;
     private EnemyHealth _enemyHealth; // Reference to the EnemyHealth script
-    public delegate void EndReachedHandler(Enemy enemy);
 
     public List<Vector3> Waypoints;
 
@@ -85,6 +88,7 @@ public class Enemy : MonoBehaviour
         OnEndReached?.Invoke(this); // Notify GameManager that the enemy has reached the end
         GameManager.Instance.EnemyReachedEnd(this); // Calls a method in GameManager to handle game logic
         DestroyEnemy(); // Destroy the enemy after reaching the end
+        CurrencySystem.Instance.AddCoins(this);
     }
 
     private void DestroyEnemy()
@@ -104,12 +108,14 @@ public class Enemy : MonoBehaviour
         // Notify GameManager if the enemy was destroyed or defeated
         GameManager.Instance.EnemyDestroyed(this); // This should notify the GameManager if needed
     }
-    public void EnemyDestroyed(Enemy enemy);
+
+    // Fixed method declaration syntax error
+    public void EnemyDestroyed(Enemy enemy)
     {
         // Implement the method logic here
         // For example:
         Debug.Log("Enemy destroyed: " + enemy.name);
         // You can access enemy properties here, for example:
-        // enemy.GetEnemyHealth().ResetHealth();
-   }
+        enemy.GetEnemyHealth().ResetHealth();
+    }
 }
