@@ -87,14 +87,26 @@ public class Enemy : MonoBehaviour
 
     private void EndPointReached()
     {
-        OnEndReached?.Invoke(this);
+        OnEndReached?.Invoke(this); // Notify GameManager that the enemy has reached the end
+        GameManager.Instance.EnemyReachedEnd(this); // Calls a method in GameManager to handle game logic
+        DestroyEnemy(); // Destroy the enemy after reaching the end
+    }
+
+    private void DestroyEnemy()
+    {
         _enemyHealth.ResetHealth(); // Reset health when endpoint is reached
-        ObjectPooler.ReturnToPool(gameObject);
+        ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the object pool or destroy it
     }
 
     // New method to return the EnemyHealth component
     public EnemyHealth GetEnemyHealth()
     {
         return _enemyHealth;
+    }
+
+    private void OnDestroy()
+    {
+        // Notify GameManager if the enemy was destroyed or defeated
+        GameManager.Instance.EnemyDestroyed(this); // This should notify the GameManager if needed
     }
 }
