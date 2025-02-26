@@ -8,26 +8,43 @@ public class Enemy : MonoBehaviour
     // Make this event static so it can be subscribed to without an instance
     public static event Action<Enemy> OnEndReached;
 
-    // You can call EndReached() from other places in the code to trigger the event
-
+    // EnemyHealth script reference
     public EnemyHealth enemyHealth;
 
-    // Define the necessary variables
-    public float MoveSpeed = 3f; // Move speed
-    private int _currentWaypointIndex = 0; // Index to track the current waypoint
-    private Vector3 _lastPointPosition; // Last position of the enemy
-    private SpriteRenderer _spriteRenderer; // To access the sprite renderer for flipping
-    private EnemyHealth _enemyHealth; // Enemy health script
-    public delegate void EndReachedHandler(Enemy enemy);
+    // Movement speed
+    public float MoveSpeed = 3f;
 
-    // Define a list of waypoints
-    public List<Vector3> Waypoints; // List of waypoints positions
+    // Waypoint system
+    private int _currentWaypointIndex = 0;
+    private Vector3 _lastPointPosition;
+
+    // Sprite handling
+    private SpriteRenderer _spriteRenderer;
+    private EnemyHealth _enemyHealth;
+
+    // List of waypoints
+    public List<Vector3> Waypoints;
+
+    // Reference to the different sprites for different enemy waves
+    public List<Sprite> EnemySprites; // List of sprites to be used for different waves
+
+    // Variable to track the current wave
+    public int CurrentWaveIndex = 0;
 
     private void Start()
     {
-        // Initialize the sprite renderer and enemy health
+        // Initialize components
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _enemyHealth = GetComponent<EnemyHealth>(); // Initialize the EnemyHealth script
+        _enemyHealth = GetComponent<EnemyHealth>();
+
+        // Set the sprite based on the wave index
+        if (EnemySprites.Count > 0 && CurrentWaveIndex < EnemySprites.Count)
+        {
+            _spriteRenderer.sprite = EnemySprites[CurrentWaveIndex];
+        }
+
+        // Initialize health and waypoints
+        _enemyHealth.ResetHealth();
     }
 
     private void Update()
@@ -48,7 +65,7 @@ public class Enemy : MonoBehaviour
 
     private void Rotate()
     {
-        // Rotate the sprite based on the direction
+        // Flip sprite based on movement direction
         if (transform.position.x < CurrentPointPosition.x)
         {
             _spriteRenderer.flipX = false;
@@ -63,7 +80,6 @@ public class Enemy : MonoBehaviour
     {
         get
         {
-            // Return the position of the current waypoint, if there are waypoints
             if (Waypoints.Count > 0)
             {
                 return Waypoints[_currentWaypointIndex];
@@ -74,20 +90,12 @@ public class Enemy : MonoBehaviour
 
     private bool CurrentPointPositionReached()
     {
-        // Check if the enemy has reached the current waypoint
         float distanceToNextPointPosition = (transform.position - CurrentPointPosition).magnitude;
-        if (distanceToNextPointPosition < 0.1f)
-        {
-            _lastPointPosition = transform.position;
-            return true;
-        }
-
-        return false;
+        return distanceToNextPointPosition < 0.1f;
     }
 
     private void UpdateCurrentPointIndex()
     {
-        // Update the waypoint index when the current waypoint is reached
         int lastWaypointIndex = Waypoints.Count - 1;
         if (_currentWaypointIndex < lastWaypointIndex)
         {
@@ -101,17 +109,47 @@ public class Enemy : MonoBehaviour
 
     private void EndPointReached()
     {
-        // When the endpoint is reached, invoke the event and reset the enemy
+        // When the enemy reaches the end point or is defeated, remove from the list
+        WaveManager.Instance.RemoveEnemyFromList(this);
         OnEndReached?.Invoke(this);
-        _enemyHealth.ResetHealth(); // Reset the enemy's health
-        ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the object pool
-        _enemyHealth.ResetHealth(); // Reset health when endpoint is reached
+        _enemyHealth.ResetHealth();
         ObjectPooler.ReturnToPool(gameObject);
     }
 
-    // New method to return the EnemyHealth component
+    // Public method to get the EnemyHealth component
     public EnemyHealth GetEnemyHealth()
     {
         return _enemyHealth;
+    }
+
+    // New method to manage spawning waves
+    public static void StartNextWave(List<Enemy> enemies)
+    {
+        // Ensure the wave spawns only after all enemies from the current wave are gone
+        if (enemies.Count == 0)
+        {
+            // Spawn the next wave of enemies here
+            // Example: SpawnWave(NextWaveEnemiesList);
+        }
+    }
+
+    // You can call this method from your Object Pooler or another manager when all enemies in a wave are dead
+    public void CheckIfWaveComplete(List<Enemy> allEnemies)
+    {
+        bool waveComplete = true;
+
+        foreach (var enemy in allEnemies)
+        {
+            if (enemy.gameObject.activeSelf)  // If any enemy is still active, wave is not complete
+            {
+                waveComplete = false;
+                break;
+            }
+        }
+
+        if (waveComplete)
+        {
+            StartNextWave(allEnemies);  // Start the next wave after the current wave is finished
+        }
     }
 }

@@ -81,14 +81,14 @@ public class Node : MonoBehaviour
     }
 
     // Show turret information on a UI panel
-    private void ShowTurretInfo()
+    public void ShowTurretInfo()  // Make this method public
     {
         turretInfoPanel.SetActive(true);  // Show the turret info panel
 
         // Update the text fields with turret information
         turretNameText.text = Turret.name;  // Assuming Turret has a name
         turretCostText.text = "Cost: " + Turret.GetComponent<TurretUpgrade>().UpgradeCost.ToString();  // Example for cost
-       // turretDescriptionText.text = Turret.GetComponent<TurretUpgrade>().GetDescription();  // Assuming a method to get the description
+        //ßturretDescriptionText.text = Turret.GetComponent<TurretUpgrade>().GetDescription();  // Assuming a method to get the description
     }
 
     // Close the turret info panel when you are done
@@ -96,4 +96,10 @@ public class Node : MonoBehaviour
     {
         turretInfoPanel.SetActive(false);
     }
+
+    public void OnButtonClick_ShowTurretInfo()
+    {
+        ShowTurretInfo();
+    }
+
 }
