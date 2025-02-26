@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Turret Shop Setting")]
+[CreateAssetMenu(fileName = "TurretIDKOMG")]
 public class TurretSetting : ScriptableObject  // Removed the inner class and made it public.
 {
     public GameObject TurretPrefab;       // The turret's prefab.

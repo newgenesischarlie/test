@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;  // If you're using TextMeshPro for text elements
 
 public class Node : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class Node : MonoBehaviour
     public static Action OnTurretSold;
 
     [SerializeField] private GameObject attackRangeSprite;
+    [SerializeField] private GameObject turretInfoPanel;  // Reference to the info panel
+    [SerializeField] private TextMeshProUGUI turretNameText;  // Reference to the TextMeshProUGUI for turret name
+    [SerializeField] private TextMeshProUGUI turretCostText;  // Reference to the TextMeshProUGUI for turret cost
+    [SerializeField] private TextMeshProUGUI turretDescriptionText;  // Reference to the description of the turret
+
     public Turret Turret { get; set; }
     private float _rangeSize;
     private Vector3 _rangeOriginalSize;
@@ -16,6 +22,7 @@ public class Node : MonoBehaviour
     {
         _rangeSize = attackRangeSprite.GetComponent<SpriteRenderer>().bounds.size.y;
         _rangeOriginalSize = attackRangeSprite.transform.localScale;
+        turretInfoPanel.SetActive(false);  // Hide the turret info panel initially
     }
 
     public void SetTurret(Turret turret)
@@ -33,6 +40,14 @@ public class Node : MonoBehaviour
         attackRangeSprite.SetActive(false);
     }
 
+    public void SelectTurret()
+    {
+        OnNodeSelected?.Invoke(this);
+        if (!IsEmpty())
+        {
+            ShowTurretInfo();  // Call the method to show turret info
+        }
+    }
 
     public void SellTurret()
     {
@@ -47,7 +62,6 @@ public class Node : MonoBehaviour
         }
     }
 
-    // Upgrade the turret and update UI
     public void UpgradeTurret()
     {
         if (!IsEmpty())
@@ -56,10 +70,7 @@ public class Node : MonoBehaviour
 
             if (CurrencySystem.Instance.TotalCoins >= turretUpgrade.UpgradeCost)
             {
-                // Deduct the coins for upgrading
                 CurrencySystem.Instance.RemoveCoins(turretUpgrade.UpgradeCost);
-
-                // Call the UpgradeTurret method from TurretUpgrade script
                 turretUpgrade.UpgradeTurret();
             }
             else
@@ -69,5 +80,20 @@ public class Node : MonoBehaviour
         }
     }
 
+    // Show turret information on a UI panel
+    private void ShowTurretInfo()
+    {
+        turretInfoPanel.SetActive(true);  // Show the turret info panel
 
+        // Update the text fields with turret information
+        turretNameText.text = Turret.name;  // Assuming Turret has a name
+        turretCostText.text = "Cost: " + Turret.GetComponent<TurretUpgrade>().UpgradeCost.ToString();  // Example for cost
+       // turretDescriptionText.text = Turret.GetComponent<TurretUpgrade>().GetDescription();  // Assuming a method to get the description
+    }
+
+    // Close the turret info panel when you are done
+    public void CloseTurretInfo()
+    {
+        turretInfoPanel.SetActive(false);
+    }
 }
