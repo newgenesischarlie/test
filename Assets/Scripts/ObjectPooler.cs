@@ -10,9 +10,6 @@ public class ObjectPooler : MonoBehaviour
     private List<GameObject> _pool;
     private GameObject _poolContainer;
 
-    // To keep track of active enemies
-    private int _activeEnemies = 0;
-
     private GameObject CreateInstance()
     {
         GameObject newInstance = Instantiate(prefab);
@@ -23,7 +20,7 @@ public class ObjectPooler : MonoBehaviour
 
     private void CreatePooler()
     {
-        _poolContainer = new GameObject($"_pool_{prefab.name}");
+        _poolContainer = new GameObject($"_pool_{prefab.name}");  // Fixed name generation
         for (int i = 0; i < poolSize; i++)
         {
             _pool.Add(CreateInstance());
@@ -36,48 +33,28 @@ public class ObjectPooler : MonoBehaviour
         CreatePooler();
     }
 
-    public GameObject GetInstanceFromPool()
+    public GameObject GetInstanceFromPool()  // Fixed duplicate method definition
     {
         for (int i = 0; i < _pool.Count; i++)
         {
             if (!_pool[i].activeInHierarchy)
             {
-                _pool[i].SetActive(true);
-                _activeEnemies++; // Increment active enemies when an enemy is spawned
+                _pool[i].SetActive(true);  // Ensure the instance is activated before returning
                 return _pool[i];
             }
         }
-        return null;
+        return null; // Return null if no inactive object is found
     }
 
     public static void ReturnToPool(GameObject instance)
     {
         instance.SetActive(false);
-        if (instance.GetComponent<Enemy>() != null)
-        {
-            GameManager.Instance.EnemyDestroyed(); // Notify the GameManager when an enemy is returned
-        }
     }
 
     public static IEnumerator ReturnToPoolWithDelay(GameObject instance, float delay)
     {
         yield return new WaitForSeconds(delay);
         instance.SetActive(false);
-        if (instance.GetComponent<Enemy>() != null)
-        {
-            GameManager.Instance.EnemyDestroyed(); // Notify GameManager
-        }
     }
 
-    // New method to get the count of active enemies
-    public int GetActiveEnemyCount()
-    {
-        return _activeEnemies;
-    }
-
-    // Method to decrease the count when an enemy is destroyed
-    public void DecrementActiveEnemyCount()
-    {
-        _activeEnemies--;
-    }
 }

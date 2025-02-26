@@ -1,21 +1,21 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject victoryPanel;   // Reference to the Victory UI panel
-    public GameObject gameOverPanel;  // Reference to the Game Over UI panel
+    public GameObject victoryPanel;  // Reference to the Victory UI panel
+    public GameObject gameOverPanel; // Reference to the Game Over UI panel
 
-    private int totalEnemies;         // Total number of enemies spawned
-    private bool gameOver = false;    // To track if the game is over
+    private int totalEnemies;       // Total number of enemies spawned
+    private int remainingEnemies;   // Remaining number of enemies
+    private bool gameOver = false;  // To track if the game is over
 
     public static GameManager Instance; // Singleton reference
-    private ObjectPooler objectPooler;  // Reference to the ObjectPooler
 
     private void Awake()
     {
         Instance = this; // Set the singleton reference
-        objectPooler = FindObjectOfType<ObjectPooler>(); // Find the ObjectPooler in the scene
     }
 
     void Start()
@@ -24,38 +24,30 @@ public class GameManager : MonoBehaviour
         victoryPanel.SetActive(false);
         gameOverPanel.SetActive(false);
 
+        // Assume you have a way to track total enemies; for now, let's say it's set manually.
         // Set the total number of enemies (this can be dynamically assigned in your game)
         totalEnemies = 10;  // Example number of enemies
-    }
-
-    void OnEnable()
-    {
-        // Subscribe to the EnemyReachedEnd event
-        Enemy.OnEndReached += EnemyReachedEnd;
-    }
-
-    void OnDisable()
-    {
-        // Unsubscribe from the event
-        Enemy.OnEndReached -= EnemyReachedEnd;
-    }
-
-    // This method is called when an enemy reaches the end point
-    public void EnemyReachedEnd(Enemy enemy)
-    {
-        if (!gameOver)
-        {
-            ShowGameOver(); // Trigger game-over screen if an enemy reaches the end
-        }
+        remainingEnemies = totalEnemies;
     }
 
     // Call this method when an enemy is destroyed
-    public void EnemyDestroyed()
+    public void EnemyDefeated()
     {
-        // Check if there are no active enemies left
-        if (objectPooler.GetActiveEnemyCount() <= 0 && !gameOver)
+        remainingEnemies--;
+
+        // If there are no enemies left, player wins
+        if (remainingEnemies <= 0 && !gameOver)
         {
-            ShowVictory(); // Show victory if no enemies are left
+            ShowVictory();
+        }
+    }
+
+    // Call this method when an enemy reaches the final waypoint
+    public void EnemyReachedEnd()
+    {
+        if (!gameOver)
+        {
+            ShowGameOver();
         }
     }
 
@@ -72,4 +64,31 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         gameOver = true;  // Prevent further game-over or victory triggers
     }
+
+// Static method to handle an enemy reaching the end (e.g., decrement lives)
+public static void EnemyReachedEnd(Enemy enemy)
+{
+    // Handle logic for when an enemy reaches the end (e.g., decrement lives)
+    if (Instance != null)
+    {
+        Debug.Log("Enemy reached the end!");
+        Instance.GameOver();  // Optionally, call game over here if needed
+    }
+}
+
+    private void GameOver()
+    {
+        throw new NotImplementedException();
+    }
+
+    // Static method for when an enemy is destroyed
+    public static void EnemyDestroyed(Enemy enemy)
+{
+    // Handle logic when an enemy is destroyed
+    if (Instance != null)
+    {
+        Debug.Log("Enemy destroyed!");
+        Instance.EnemyDefeated();  // Call to decrease remaining enemies
+    }
+}
 }

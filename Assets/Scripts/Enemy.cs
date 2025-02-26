@@ -1,21 +1,31 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    // Make this event static so it can be subscribed to without an instance
     public static event Action<Enemy> OnEndReached;
 
-    public float MoveSpeed = 3f;
-    private int _currentWaypointIndex = 0;
-    private Vector3 _lastPointPosition;
-    private SpriteRenderer _spriteRenderer;
-    private EnemyHealth _enemyHealth; // Reference to the EnemyHealth script
+    // You can call EndReached() from other places in the code to trigger the event
 
-    public List<Vector3> Waypoints;
+    public EnemyHealth enemyHealth;
+
+    // Define the necessary variables
+    public float MoveSpeed = 3f; // Move speed
+    private int _currentWaypointIndex = 0; // Index to track the current waypoint
+    private Vector3 _lastPointPosition; // Last position of the enemy
+    private SpriteRenderer _spriteRenderer; // To access the sprite renderer for flipping
+    private EnemyHealth _enemyHealth; // Enemy health script
+    public delegate void EndReachedHandler(Enemy enemy);
+
+    // Define a list of waypoints
+    public List<Vector3> Waypoints; // List of waypoints positions
 
     private void Start()
     {
+        // Initialize the sprite renderer and enemy health
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _enemyHealth = GetComponent<EnemyHealth>(); // Initialize the EnemyHealth script
     }
@@ -32,11 +42,13 @@ public class Enemy : MonoBehaviour
 
     private void Move()
     {
+        // Move the enemy towards the current waypoint
         transform.position = Vector3.MoveTowards(transform.position, CurrentPointPosition, MoveSpeed * Time.deltaTime);
     }
 
     private void Rotate()
     {
+        // Rotate the sprite based on the direction
         if (transform.position.x < CurrentPointPosition.x)
         {
             _spriteRenderer.flipX = false;
@@ -51,27 +63,31 @@ public class Enemy : MonoBehaviour
     {
         get
         {
+            // Return the position of the current waypoint, if there are waypoints
             if (Waypoints.Count > 0)
             {
                 return Waypoints[_currentWaypointIndex];
             }
-            return transform.position;
+            return transform.position; // Default to current position if no waypoints
         }
     }
 
     private bool CurrentPointPositionReached()
     {
+        // Check if the enemy has reached the current waypoint
         float distanceToNextPointPosition = (transform.position - CurrentPointPosition).magnitude;
         if (distanceToNextPointPosition < 0.1f)
         {
             _lastPointPosition = transform.position;
             return true;
         }
+
         return false;
     }
 
     private void UpdateCurrentPointIndex()
     {
+        // Update the waypoint index when the current waypoint is reached
         int lastWaypointIndex = Waypoints.Count - 1;
         if (_currentWaypointIndex < lastWaypointIndex)
         {
@@ -85,37 +101,17 @@ public class Enemy : MonoBehaviour
 
     private void EndPointReached()
     {
-        OnEndReached?.Invoke(this); // Notify GameManager that the enemy has reached the end
-        GameManager.Instance.EnemyReachedEnd(this); // Calls a method in GameManager to handle game logic
-        DestroyEnemy(); // Destroy the enemy after reaching the end
-        CurrencySystem.Instance.AddCoins(this);
-    }
-
-    private void DestroyEnemy()
-    {
+        // When the endpoint is reached, invoke the event and reset the enemy
+        OnEndReached?.Invoke(this);
+        _enemyHealth.ResetHealth(); // Reset the enemy's health
+        ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the object pool
         _enemyHealth.ResetHealth(); // Reset health when endpoint is reached
-        ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the object pool or destroy it
+        ObjectPooler.ReturnToPool(gameObject);
     }
 
     // New method to return the EnemyHealth component
     public EnemyHealth GetEnemyHealth()
     {
         return _enemyHealth;
-    }
-
-    private void OnDestroy()
-    {
-        // Notify GameManager if the enemy was destroyed or defeated
-        GameManager.Instance.EnemyDestroyed(this); // This should notify the GameManager if needed
-    }
-
-    // Fixed method declaration syntax error
-    public void EnemyDestroyed(Enemy enemy)
-    {
-        // Implement the method logic here
-        // For example:
-        Debug.Log("Enemy destroyed: " + enemy.name);
-        // You can access enemy properties here, for example:
-        enemy.GetEnemyHealth().ResetHealth();
     }
 }
