@@ -13,6 +13,8 @@ public class ObjectPooler : MonoBehaviour
     // List to keep track of active enemies (for the WaveManager)
     private List<GameObject> _activeEnemies = new List<GameObject>();
 
+    public static object Instance { get; internal set; }
+
     private GameObject CreateInstance()
     {
         GameObject newInstance = Instantiate(prefab);

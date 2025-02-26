@@ -1,11 +1,6 @@
-using System.Collections.Generic;
-using Unity;
-using UnityEngine;
-
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
-    private Vector3 spawnPosition;
 
     private void Awake()
     {

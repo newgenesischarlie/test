@@ -47,6 +47,11 @@ public class Enemy : MonoBehaviour
         _enemyHealth.ResetHealth();
     }
 
+    internal void Initialize(Enemy enemy)
+    {
+        throw new NotImplementedException();
+    }
+
     private void Update()
     {
         Move();
