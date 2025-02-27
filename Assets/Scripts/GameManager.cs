@@ -1,94 +1,72 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject victoryPanel;  // Reference to the Victory UI panel
-    public GameObject gameOverPanel; // Reference to the Game Over UI panel
-
-    private int totalEnemies;       // Total number of enemies spawned
-    private int remainingEnemies;   // Remaining number of enemies
-    private bool gameOver = false;  // To track if the game is over
-
-    public static GameManager Instance; // Singleton reference
-
-    private void Awake()
-    {
-        Instance = this; // Set the singleton reference
-    }
+    public GameObject winScreen;
+    public GameObject loseScreen;
+    public Vector3 finalWaypointPosition; // Position of the final waypoint
+    private int remainingEnemies;
+    private ObjectPooler objectPooler;
 
     void Start()
     {
-        // Initially, set both panels to inactive
-        victoryPanel.SetActive(false);
-        gameOverPanel.SetActive(false);
+        objectPooler = ObjectPooler.Instance; // Get reference to the ObjectPooler
+        remainingEnemies = objectPooler.GetTotalEnemiesInScene();
 
-        // Assume you have a way to track total enemies; for now, let's say it's set manually.
-        // Set the total number of enemies (this can be dynamically assigned in your game)
-        totalEnemies = 10;  // Example number of enemies
-        remainingEnemies = totalEnemies;
+        winScreen.SetActive(false);
+        loseScreen.SetActive(false);
     }
 
-    // Call this method when an enemy is destroyed
-    public void EnemyDefeated()
+    void Update()
+    {
+        CheckGameStatus();
+    }
+
+    void CheckGameStatus()
+    {
+        // Check if all enemies are destroyed
+        if (remainingEnemies <= 0)
+        {
+            WinGame();
+            return;
+        }
+
+        // Check if any enemy has reached the final waypoint
+        foreach (var enemy in objectPooler.GetAllActiveEnemies())
+        {
+            if (enemy != null && Vector3.Distance(enemy.transform.position, finalWaypointPosition) < 1f)
+            {
+                LoseGame();
+                break;
+            }
+        }
+    }
+
+    public void OnEnemyDestroyed()
     {
         remainingEnemies--;
-
-        // If there are no enemies left, player wins
-        if (remainingEnemies <= 0 && !gameOver)
-        {
-            ShowVictory();
-        }
     }
 
-    // Call this method when an enemy reaches the final waypoint
-    public void EnemyReachedEnd()
+    void WinGame()
     {
-        if (!gameOver)
-        {
-            ShowGameOver();
-        }
+        winScreen.SetActive(true);
+        Time.timeScale = 0; // Stop the game time
     }
 
-    // Show Victory UI
-    private void ShowVictory()
+    void LoseGame()
     {
-        victoryPanel.SetActive(true);
-        gameOver = true;  // Prevent further game-over or victory triggers
+        loseScreen.SetActive(true);
+        Time.timeScale = 0; // Stop the game time
     }
 
-    // Show Game Over UI
-    private void ShowGameOver()
+    public void RestartGame()
     {
-        gameOverPanel.SetActive(true);
-        gameOver = true;  // Prevent further game-over or victory triggers
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        Time.timeScale = 1; // Resume game time
     }
 
-// Static method to handle an enemy reaching the end (e.g., decrement lives)
-public static void EnemyReachedEnd(Enemy enemy)
-{
-    // Handle logic for when an enemy reaches the end (e.g., decrement lives)
-    if (Instance != null)
+    public void QuitGame()
     {
-        Debug.Log("Enemy reached the end!");
-        Instance.GameOver();  // Optionally, call game over here if needed
+        Application.Quit();
     }
-}
-
-    private void GameOver()
-    {
-        throw new NotImplementedException();
-    }
-
-    // Static method for when an enemy is destroyed
-    public static void EnemyDestroyed(Enemy enemy)
-{
-    // Handle logic when an enemy is destroyed
-    if (Instance != null)
-    {
-        Debug.Log("Enemy destroyed!");
-        Instance.EnemyDefeated();  // Call to decrease remaining enemies
-    }
-}
 }

@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity;
 using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
@@ -10,10 +10,13 @@ public class ObjectPooler : MonoBehaviour
     private List<GameObject> _pool;
     private GameObject _poolContainer;
 
-    // List to keep track of active enemies (for the WaveManager)
+    // List to keep track of active enemies
     private List<GameObject> _activeEnemies = new List<GameObject>();
 
-    public static object Instance { get; internal set; }
+    private GameManager gameManager;
+
+    // Singleton instance
+    public static ObjectPooler Instance { get; private set; }
 
     private GameObject CreateInstance()
     {
@@ -34,53 +37,67 @@ public class ObjectPooler : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // Ensure only one instance exists
+        }
+
         _pool = new List<GameObject>();
         CreatePooler();
+
+        // Get a reference to the GameManager
+        gameManager = FindObjectOfType<GameManager>();
     }
 
-    // Correct method to get an inactive instance from the pool
     public GameObject GetInstanceFromPool()
     {
         for (int i = 0; i < _pool.Count; i++)
         {
             if (!_pool[i].activeInHierarchy)
             {
-                _pool[i].SetActive(true);  // Ensure the instance is activated before returning
-                _activeEnemies.Add(_pool[i]); // Add it to the active enemies list
+                _pool[i].SetActive(true);  // Activate the object
+                _activeEnemies.Add(_pool[i]); // Add to active enemies list
                 return _pool[i];
             }
         }
-        return null; // Return null if no inactive object is found
+        return null;
     }
 
-    // Method to return an object to the pool and remove it from the active list
     public static void ReturnToPool(GameObject instance)
     {
         instance.SetActive(false);
         if (instance.GetComponent<Enemy>() != null)
         {
-            WaveManager.Instance.RemoveEnemyFromList(instance.GetComponent<Enemy>());  // Remove from the wave manager's list of active enemies
+            instance.GetComponent<Enemy>().NotifyEnemyDestroyed();
         }
     }
 
-    // Coroutine to return the object to the pool with a delay
+    // Coroutine to return to pool with a delay
     public static IEnumerator ReturnToPoolWithDelay(GameObject instance, float delay)
     {
         yield return new WaitForSeconds(delay);
         instance.SetActive(false);
         if (instance.GetComponent<Enemy>() != null)
         {
-            WaveManager.Instance.RemoveEnemyFromList(instance.GetComponent<Enemy>());
+            instance.GetComponent<Enemy>().NotifyEnemyDestroyed();
         }
     }
 
-    // Helper method to retrieve active enemies
-    public List<GameObject> GetActiveEnemies()
+    // Get all active enemies
+    public List<GameObject> GetAllActiveEnemies()
     {
-        return _activeEnemies; // Return the list of currently active enemies
+        return _activeEnemies; // Return the list of active enemies
     }
 
-    // Optional: Reset the pool and active enemies list (useful for wave resets or scene changes)
+    public int GetTotalEnemiesInScene()
+    {
+        return _activeEnemies.Count; // Total count of active enemies
+    }
+
     public void ResetPool()
     {
         _activeEnemies.Clear();

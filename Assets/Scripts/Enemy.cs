@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     // Make this event static so it can be subscribed to without an instance
     public static event Action<Enemy> OnEndReached;
 
+    public GameManager gameManager;
+
     // EnemyHealth script reference
     public EnemyHealth enemyHealth;
 
@@ -45,6 +47,12 @@ public class Enemy : MonoBehaviour
 
         // Initialize health and waypoints
         _enemyHealth.ResetHealth();
+
+        // Find the GameManager reference, if not set manually
+        if (gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameManager>();
+        }
     }
 
     internal void Initialize(Enemy enemy)
@@ -156,5 +164,47 @@ public class Enemy : MonoBehaviour
         {
             StartNextWave(allEnemies);  // Start the next wave after the current wave is finished
         }
+    }
+
+    void OnDestroy()
+    {
+        // Notify GameManager when the enemy is destroyed
+        if (gameManager != null)
+        {
+            gameManager.OnEnemyDestroyed();
+        }
+    }
+
+    void OnBecameInvisible()
+    {
+        // If the enemy goes off-screen or out of bounds (before reaching the waypoint)
+        if (gameManager != null)
+        {
+            gameManager.OnEnemyDestroyed();
+        }
+        // If the enemy goes off-screen or out of bounds (before reaching the waypoint), notify GameManager
+        NotifyEnemyDestroyed();
+    }
+
+    // Method to notify when the enemy is destroyed or deactivated (pooled)
+    public void NotifyEnemyDestroyed()
+    {
+        if (gameManager != null)
+        {
+            gameManager.OnEnemyDestroyed(); // Call the GameManager's OnEnemyDestroyed method
+        }
+    }
+
+    void OnDisable()
+    {
+        // Notify GameManager when the enemy is deactivated (pooled)
+        NotifyEnemyDestroyed();
+        // Notify the GameManager when the enemy is deactivated (pooling behavior)
+        if (gameManager != null)
+        {
+            gameManager.OnEnemyDestroyed();
+
+        }
+
     }
 }
