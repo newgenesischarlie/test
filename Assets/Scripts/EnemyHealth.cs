@@ -16,12 +16,36 @@ public class EnemyHealth : MonoBehaviour
 
     private Image _healthBar; // UI Image component for health bar
     private Enemy _enemy; // Enemy script reference
+    private ObjectPooler _objectPooler; // Reference to the ObjectPooler
 
     private void Start()
     {
+        // Ensure ObjectPooler is assigned
+        _objectPooler = FindObjectOfType<ObjectPooler>();
+
+        // Check if necessary components are assigned
+        if (healthBarPrefab == null)
+        {
+            Debug.LogError("Health Bar Prefab is not assigned in the Inspector.");
+            return; // Stop execution if prefab is missing
+        }
+
+        if (barPosition == null)
+        {
+            Debug.LogError("Bar Position is not assigned in the Inspector.");
+            return; // Stop execution if bar position is missing
+        }
+
+        _enemy = GetComponent<Enemy>(); // Get the Enemy component
+
+        if (_enemy == null)
+        {
+            Debug.LogError("Enemy component is missing on this GameObject.");
+            return; // Stop execution if no Enemy component is found
+        }
+
         CreateHealthBar(); // Create health bar in UI
         CurrentHealth = initialHealth; // Set current health to initial value
-        _enemy = GetComponent<Enemy>(); // Get the Enemy component
     }
 
     private void Update()
@@ -29,12 +53,15 @@ public class EnemyHealth : MonoBehaviour
         // Test condition: When the "P" key is pressed, deal damage
         if (Input.GetKeyDown(KeyCode.P))
         {
-            DealdDamage(5f); // Deal 5 damage when 'P' is pressed
+            DealDamage(5f); // Deal 5 damage when 'P' is pressed
         }
 
         // Smoothly update the health bar's fill amount
-        _healthBar.fillAmount = Mathf.Lerp(_healthBar.fillAmount,
-           CurrentHealth / maxHealth, Time.deltaTime * 10f);
+        if (_healthBar != null)
+        {
+            _healthBar.fillAmount = Mathf.Lerp(_healthBar.fillAmount,
+                CurrentHealth / maxHealth, Time.deltaTime * 10f);
+        }
 
         // Output the current health for debugging purposes
         Debug.Log("Current Health: " + CurrentHealth);
@@ -42,20 +69,11 @@ public class EnemyHealth : MonoBehaviour
 
     internal void DealDamage(float damage)
     {
-        throw new NotImplementedException();
-    }
+        // Ensure that we don't deal damage if the health bar or enemy is not initialized
+        if (_enemy == null || _healthBar == null) return;
 
-    private void CreateHealthBar()
-    {
-        // Instantiate the health bar UI element and set its parent to the specified bar position
-        GameObject healthBarObject = Instantiate(healthBarPrefab, barPosition.position, Quaternion.identity);
-        _healthBar = healthBarObject.GetComponentInChildren<Image>(); // Get the Image component for the health bar
-    }
-
-    private void DealdDamage(float damageAmount)
-    {
         // Decrease current health by damage amount
-        CurrentHealth -= damageAmount;
+        CurrentHealth -= damage;
 
         // Clamp the health value to make sure it doesn't go below 0
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, maxHealth);
@@ -64,17 +82,48 @@ public class EnemyHealth : MonoBehaviour
         if (CurrentHealth <= 0f)
         {
             OnEnemyKilled?.Invoke(_enemy);
-            Destroy(gameObject); // Destroy enemy object when killed
+            KillEnemy(); // Kill the enemy by deactivating it
         }
 
         // Trigger "OnEnemyHit" event when damage is dealt
         OnEnemyHit?.Invoke(_enemy);
     }
 
+    private void CreateHealthBar()
+    {
+        // Instantiate the health bar UI element and set its parent to the specified bar position
+        GameObject healthBarObject = Instantiate(healthBarPrefab, barPosition.position, Quaternion.identity);
+        _healthBar = healthBarObject.GetComponentInChildren<Image>(); // Get the Image component for the health bar
+
+        if (_healthBar == null)
+        {
+            Debug.LogError("Health bar prefab does not contain an Image component.");
+        }
+    }
+
+    private void KillEnemy()
+    {
+        // Notify ObjectPooler to remove from the active pool
+        if (_objectPooler != null)
+        {
+            _objectPooler.RemoveFromActiveEnemies(_enemy.gameObject); // Method to remove it from pooler
+        }
+
+        // Deactivate the enemy rather than destroying it
+        gameObject.SetActive(false); // Deactivate enemy GameObject
+
+        // Optionally, you can reset the enemy health when reactivated
+        ResetHealth();
+    }
+
     // Resets the enemy health to initial value (useful for respawn or reset scenarios)
     internal void ResetHealth()
     {
         CurrentHealth = initialHealth;
-        _healthBar.fillAmount = 1f; // Reset health bar fill amount
+        if (_healthBar != null)
+        {
+            _healthBar.fillAmount = 1f; // Reset health bar fill amount
+        }
     }
 }
+

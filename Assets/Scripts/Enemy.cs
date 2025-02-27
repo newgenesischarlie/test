@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     // Make this event static so it can be subscribed to without an instance
     public static event Action<Enemy> OnEndReached;
 
+    // Reference to the GameManager
     public GameManager gameManager;
 
     // EnemyHealth script reference
@@ -39,6 +40,13 @@ public class Enemy : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _enemyHealth = GetComponent<EnemyHealth>();
 
+        // Check if the enemyHealth component exists
+        if (_enemyHealth == null)
+        {
+            Debug.LogError("EnemyHealth component is missing on this enemy!");
+            return;
+        }
+
         // Set the sprite based on the wave index
         if (EnemySprites.Count > 0 && CurrentWaveIndex < EnemySprites.Count)
         {
@@ -48,10 +56,15 @@ public class Enemy : MonoBehaviour
         // Initialize health and waypoints
         _enemyHealth.ResetHealth();
 
-        // Find the GameManager reference, if not set manually
+        // Check if the gameManager is assigned and find it if not
         if (gameManager == null)
         {
             gameManager = FindObjectOfType<GameManager>();
+        }
+
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager reference is missing! Make sure it is assigned.");
         }
     }
 
@@ -62,6 +75,12 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (gameManager == null || _enemyHealth == null)
+        {
+            // If gameManager or enemyHealth is null, we should stop updating and return.
+            return;
+        }
+
         Move();
         Rotate();
         if (CurrentPointPositionReached())
@@ -119,15 +138,46 @@ public class Enemy : MonoBehaviour
             EndPointReached();
         }
     }
-
-    private void EndPointReached()
+    public void EndPointReached()
     {
-        // When the enemy reaches the end point or is defeated, remove from the list
-        WaveManager.Instance.RemoveEnemyFromList(this);
-        OnEndReached?.Invoke(this);
-        _enemyHealth.ResetHealth();
-        ObjectPooler.ReturnToPool(gameObject);
+        // Check if the GameManager is assigned
+        if (gameManager != null)
+        {
+            Debug.Log("GameManager found. Proceeding with EndPointReached.");
+
+            // Check if the OnEndReached event is subscribed to
+            if (OnEndReached != null)
+            {
+                Debug.Log("Invoking OnEndReached event.");
+                OnEndReached.Invoke(this); // This will call HandleEndReached in GameManager
+            }
+            else
+            {
+                Debug.LogWarning("OnEndReached event is not subscribed to.");
+            }
+
+            // Reset health after reaching the endpoint
+            _enemyHealth.ResetHealth();
+
+            // Return the enemy to the pool (if ObjectPooler is available)
+            ObjectPooler.ReturnToPool(gameObject);
+        }
+        else
+        {
+            Debug.LogError("GameManager is null when reaching endpoint!");
+        }
+
+        if (OnEndReached != null)
+        {
+            OnEndReached.Invoke(this);  // 'this' refers to the current instance of the Enemy
+        }
+        else
+        {
+            Debug.LogWarning("OnEndReached event is not subscribed to.");
+        }
+
     }
+
 
     // Public method to get the EnemyHealth component
     public EnemyHealth GetEnemyHealth()
@@ -166,45 +216,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    // Example in the enemy script when the enemy is killed
+    public void KillEnemy()
     {
-        // Notify GameManager when the enemy is destroyed
+        // Notify the GameManager that this enemy is killed
         if (gameManager != null)
         {
-            gameManager.OnEnemyDestroyed();
-        }
-    }
-
-    void OnBecameInvisible()
-    {
-        // If the enemy goes off-screen or out of bounds (before reaching the waypoint)
-        if (gameManager != null)
-        {
-            gameManager.OnEnemyDestroyed();
-        }
-        // If the enemy goes off-screen or out of bounds (before reaching the waypoint), notify GameManager
-        NotifyEnemyDestroyed();
-    }
-
-    // Method to notify when the enemy is destroyed or deactivated (pooled)
-    public void NotifyEnemyDestroyed()
-    {
-        if (gameManager != null)
-        {
-            gameManager.OnEnemyDestroyed(); // Call the GameManager's OnEnemyDestroyed method
-        }
-    }
-
-    void OnDisable()
-    {
-        // Notify GameManager when the enemy is deactivated (pooled)
-        NotifyEnemyDestroyed();
-        // Notify the GameManager when the enemy is deactivated (pooling behavior)
-        if (gameManager != null)
-        {
-            gameManager.OnEnemyDestroyed();
-
+            gameManager.OnEnemyKilled(gameObject);
         }
 
+        // Optionally, you can handle other death-related logic (animations, effects, etc.)
+        gameObject.SetActive(false); // Deactivate the enemy
     }
 }
+
+

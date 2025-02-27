@@ -18,7 +18,7 @@ public class Spawner : MonoBehaviour
     private ObjectPooler _pooler;
 
     // Define the WaveCompleted event
-    public static event Action OnWaveCompleted;
+  //  public static event Action OnWaveCompleted;
 
     private void Start()
     {
@@ -39,7 +39,7 @@ public class Spawner : MonoBehaviour
             else
             {
                 // Trigger the event when all enemies are spawned
-                WaveCompleted();
+          //      WaveCompleted();
             }
         }
     }
@@ -50,13 +50,13 @@ public class Spawner : MonoBehaviour
         newInstance.SetActive(true);
     }
 
-    private void WaveCompleted()
-    {
-        // Notify listeners (e.g., LevelManager) that the wave is complete
-        Debug.Log("Wave " + (enemyCount / _enemiesSpawned) + " completed!");
-        OnWaveCompleted?.Invoke(); // Trigger the WaveCompleted event
+  //  private void WaveCompleted()
+  //  {
+   //     // Notify listeners (e.g., LevelManager) that the wave is complete
+  //      Debug.Log("Wave " + (enemyCount / _enemiesSpawned) + " completed!");
+   //     OnWaveCompleted?.Invoke(); // Trigger the WaveCompleted event
 
         // Reset the spawn count for the next wave
-        _enemiesSpawned = 0;
-    }
+  //      _enemiesSpawned = 0;
+  //  }
 }

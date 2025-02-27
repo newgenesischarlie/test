@@ -90,15 +90,15 @@ public class LevelManager : Singleton<LevelManager>
         Time.timeScale = 0f; // Freeze the game (optional)
     }
 
-    private void WaveCompleted()
-    {
+  //  private void WaveCompleted()
+  //  {
         // Handle wave completion logic here (e.g., increase wave count, spawn new enemies)
-        Debug.Log("Wave " + currentWave + " completed!");
+  //      Debug.Log("Wave " + currentWave + " completed!");
 
         // Example: Increase the wave count and start the next wave
-        currentWave++;
+    //    currentWave++;
         // Optionally, you can spawn more enemies or adjust difficulty, etc.
-    }
+   // }
 
     private void OnEnable()
     {
@@ -106,14 +106,14 @@ public class LevelManager : Singleton<LevelManager>
         Enemy.OnEndReached += ReduceLives;
 
         // Subscribe to the static event from the Spawner class
-        Spawner.OnWaveCompleted += WaveCompleted;
+      //  Spawner.OnWaveCompleted += WaveCompleted;
     }
 
     private void OnDisable()
     {
         // Unsubscribe to avoid memory leaks
         Enemy.OnEndReached -= ReduceLives;
-        Spawner.OnWaveCompleted -= WaveCompleted;
+      //  Spawner.OnWaveCompleted -= WaveCompleted;
     }
 
     public string sceneName;
