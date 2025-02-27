@@ -2602,7 +2602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winScreen: {fileID: 736642117}
   loseScreen: {fileID: 642786738}
-  finalWaypointPosition: {x: 7.001664, y: 0.3507665, z: 4795641}
+  finalWaypointPosition: {x: 7.001664, y: 0.3507665, z: 0.3507665}
 --- !u!1 &1174767008
 GameObject:
   m_ObjectHideFlags: 0
@@ -3469,7 +3469,6 @@ GameObject:
   - component: {fileID: 1511321339}
   - component: {fileID: 1511321341}
   - component: {fileID: 1511321342}
-  - component: {fileID: 1511321343}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -3537,18 +3536,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 2006923997}
   poolSize: 10
---- !u!114 &1511321343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511321338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7a4233a2590541bdb9cf05fac8a19a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1523867782
 GameObject:
   m_ObjectHideFlags: 0
@@ -4784,13 +4771,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bbbff70ddf543faa51157e224dcf3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1094752498}
+  gameManager: {fileID: 0}
   enemyHealth: {fileID: 2006924005}
   MoveSpeed: 3
   Waypoints:
   - {x: 7, y: 3, z: 0}
   - {x: 1, y: 3, z: 0}
-  - {x: 7.001664, y: 0.3507665, z: 4795641}
+  - {x: 7.001664, y: 0.3507665, z: 0.3507665}
   EnemySprites:
   - {fileID: 21300000, guid: fb8e726f5e092436bb05265e734ffe98, type: 3}
   CurrentWaveIndex: 0
