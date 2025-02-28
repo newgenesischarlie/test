@@ -2603,6 +2603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   gameOverCanvas: {fileID: 0}
   winScreen: {fileID: 736642117}
   loseScreen: {fileID: 642786738}
@@ -2610,6 +2611,11 @@ MonoBehaviour:
   fadeSpeed: 0.5
   uiCamera: {fileID: 0}
   gameplayObjects: []
+=======
+  gameOverScreen: {fileID: 642786738}
+  winScreen: {fileID: 736642117}
+  gameplayUI: {fileID: 0}
+>>>>>>> parent of d0bcb54 (fixedgameover)
 =======
   gameOverScreen: {fileID: 642786738}
   winScreen: {fileID: 736642117}
@@ -4619,6 +4625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   moveSpeed: 3
   enemySprites:
   - {fileID: 21300000, guid: fb8e726f5e092436bb05265e734ffe98, type: 3}
@@ -4628,6 +4635,8 @@ MonoBehaviour:
   - {x: 2, y: 2, z: 0}
   - {x: 20, y: 3, z: 0}
 =======
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
   gameManager: {fileID: 1094752498}
@@ -4641,6 +4650,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: fb8e726f5e092436bb05265e734ffe98, type: 3}
   CurrentWaveIndex: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of d0bcb54 (fixedgameover)
+=======
 >>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
