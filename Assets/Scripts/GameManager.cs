@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+<<<<<<< HEAD
         InitializeGame();
         objectPooler = ObjectPooler.Instance;
         SubscribeToEvents();
@@ -63,6 +64,35 @@ public class GameManager : MonoBehaviour
         if (winScreen != null) winScreen.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(false);
         if (gameplayContainer != null) gameplayContainer.SetActive(true);
+=======
+        // Ensure the object pooler is assigned
+        if (objectPooler == null)
+        {
+            objectPooler = ObjectPooler.Instance;
+
+        }
+
+        if (objectPooler == null)
+        {
+            Debug.LogError("ObjectPooler is not assigned or found in the scene.");
+        }
+
+        // Start game simulation if required
+        if (!isGameStarted)
+        {
+            StartGame();
+        }
+
+        // Hide the win and lose screens at the start
+        if (winScreen != null)
+        {
+            winScreen.SetActive(false);
+        }
+        if (loseScreen != null)
+        {
+            loseScreen.SetActive(false);
+        }
+>>>>>>> parent of d0bcb54 (fixedgameover)
     }
 
     private void InitializeUI()
@@ -126,12 +156,41 @@ public class GameManager : MonoBehaviour
 
     public void HandleEndReached(Enemy enemy)
     {
+<<<<<<< HEAD
         if (IsGameOver) return;
         ShowGameOver(false);
+=======
+        // Check if enemy is null
+        if (enemy == null)
+        {
+            Debug.LogError("Enemy is null in HandleEndReached! Please check the event subscription and enemy state.");
+            return;
+        }
+
+        Debug.Log("Enemy reached the end: " + enemy.gameObject.name);
+
+        // Proceed with the logic (for example, calling LoseGame or WinGame)
+        // Example condition: Lose if an enemy reaches the end
+        LoseGame();
     }
 
-    public void HandleEnemyDefeated(Enemy enemy)
+    void WinGame()
     {
+        // Game won logic here
+        Debug.Log("You Win!");
+        isGameOver = true;
+
+        // Show the win screen (game over screen)
+        if (winScreen != null)
+        {
+            winScreen.SetActive(true); // Activate the win screen UI
+        }
+>>>>>>> parent of d0bcb54 (fixedgameover)
+    }
+
+    void LoseGame()
+    {
+<<<<<<< HEAD
         if (IsGameOver) return;
         ShowGameOver(true);
     }
@@ -223,5 +282,23 @@ public class GameManager : MonoBehaviour
         }
 
         IsGameOver = false;
+=======
+        // Game over logic here
+        Debug.Log("Game Over!");
+        isGameOver = true;
+
+        // Show the lose screen (game over screen)
+        if (loseScreen != null)
+        {
+            loseScreen.SetActive(true); // Activate the lose screen UI
+        }
+    }
+
+    void StartGame()
+    {
+        // Game start logic here
+        isGameStarted = true;
+        Debug.Log("Game Started!");
+>>>>>>> parent of d0bcb54 (fixedgameover)
     }
 }

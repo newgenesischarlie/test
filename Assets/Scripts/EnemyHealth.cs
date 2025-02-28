@@ -11,11 +11,15 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
 
+<<<<<<< HEAD
     public event System.Action OnDeath;
 
     private ObjectPooler objectPooler;
 
     private void Start()
+=======
+    public void TakeDamage(int dmg)
+>>>>>>> parent of d0bcb54 (fixedgameover)
     {
         objectPooler = ObjectPooler.Instance;
         ResetHealth();
@@ -39,15 +43,34 @@ public class EnemyHealth : MonoBehaviour
         
         if (currentHealth <= 0)
         {
+<<<<<<< HEAD
             Die();
+=======
+            // Invoke the Spawner's onDestroy event if it's not null
+            if (Spawner.onDestroy != null)
+            {
+                Spawner.onDestroy.Invoke();
+            }
+
+            // Set the destroyed flag to true
+            isDestroyed = true;
+
+            // Trigger the "OnEnemyKilled" event (can be subscribed to by other systems)
+            OnEnemyKilled?.Invoke(GetComponent<Enemy>());
+
+            // Optionally, trigger the "OnEnemyHit" event when damage is taken (even if the enemy dies)
+            OnEnemyHit?.Invoke(GetComponent<Enemy>());
+
+            // Destroy the enemy GameObject
+            Destroy(gameObject);
+>>>>>>> parent of d0bcb54 (fixedgameover)
         }
         else
         {
             OnEnemyHit?.Invoke(GetComponent<Enemy>());
         }
     }
-
-    [SerializeField] private GameObject healthBarPrefab; // Health bar prefab
+[SerializeField] private GameObject healthBarPrefab; // Health bar prefab
     [SerializeField] private Transform barPosition; // Position where the health bar should appear
     [SerializeField] private float initialHealth = 10f; // Starting health
     [SerializeField] private float maxHealthBar = 10f; // Max health
@@ -125,6 +148,7 @@ public class EnemyHealth : MonoBehaviour
         ResetHealth();
     }
 
+<<<<<<< HEAD
     private void Die()
     {
         if (gameObject != null)
@@ -146,5 +170,15 @@ public class EnemyHealth : MonoBehaviour
     public int GetCurrentHealth()
     {
         return currentHealth;
+=======
+    // Resets the enemy health to initial value (useful for respawn or reset scenarios)
+    internal void ResetHealth()
+    {
+        CurrentHealth = initialHealth;
+        if (_healthBar != null)
+        {
+            _healthBar.fillAmount = 1f; // Reset health bar fill amount
+        }
+>>>>>>> parent of d0bcb54 (fixedgameover)
     }
 }
