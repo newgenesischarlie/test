@@ -12,14 +12,20 @@ public class TurretProjectile : MonoBehaviour
     public float Damage { get; set; }
     public float DelayPerShot { get; set; }
     protected float _nextAttackTime;
-    protected ObjectPooler _pooler;
+    protected ObjectPooler objectPooler;
     protected Turret _turret;
     protected Projectile _currentProjectileLoaded;
 
     private void Start()
     {
         _turret = GetComponent<Turret>();
-        _pooler = GetComponent<ObjectPooler>();
+        objectPooler = ObjectPooler.Instance;
+        if (objectPooler == null)
+        {
+            Debug.LogError("ObjectPooler not found in scene!");
+            enabled = false;
+            return;
+        }
 
         Damage = damage;
         DelayPerShot = delayBtwAttacks;
@@ -59,17 +65,25 @@ public class TurretProjectile : MonoBehaviour
 
     protected virtual void LoadProjectile()
     {
-        // Get a new projectile instance from the pool
-        GameObject newInstance = _pooler.GetInstanceFromPool();
-        newInstance.transform.localPosition = projectileSpawnPosition.position;
-        newInstance.transform.SetParent(projectileSpawnPosition);
+        if (objectPooler == null) return;
 
-        // Set up the projectile and assign damage
-        _currentProjectileLoaded = newInstance.GetComponent<Projectile>();
-        _currentProjectileLoaded.TurretOwner = this;
-        _currentProjectileLoaded.ResetProjectile();
-        _currentProjectileLoaded.Damage = Damage;
-        newInstance.SetActive(true);
+        GameObject projectile = objectPooler.GetInstanceFromPool("Projectile", transform.position, Quaternion.identity);
+        if (projectile == null)
+        {
+            Debug.LogWarning("Failed to load projectile from pool");
+        }
+        else
+        {
+            projectile.transform.localPosition = projectileSpawnPosition.position;
+            projectile.transform.SetParent(projectileSpawnPosition);
+
+            // Set up the projectile and assign damage
+            _currentProjectileLoaded = projectile.GetComponent<Projectile>();
+            _currentProjectileLoaded.TurretOwner = this;
+            _currentProjectileLoaded.ResetProjectile();
+            _currentProjectileLoaded.Damage = Damage;
+            projectile.SetActive(true);
+        }
     }
 
     private bool IsTurretEmpty()

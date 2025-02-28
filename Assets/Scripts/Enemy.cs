@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class Enemy : MonoBehaviour, IPooledObject
+public class Enemy : MonoBehaviour
 {
     #region Events
     public static event Action<Enemy> OnEndReached;
@@ -19,55 +19,22 @@ public class Enemy : MonoBehaviour, IPooledObject
     private GameManager gameManager;
     private EnemyHealth enemyHealth;
     private SpriteRenderer spriteRenderer;
+    private ObjectPooler objectPooler;
     #endregion
 
     #region State
     private int currentWaypointIndex;
-    private bool isInitialized;
     public int CurrentWaveIndex { get; set; }
     #endregion
 
     private void Start()
     {
-        isInitialized = InitializeComponents();
-        if (isInitialized)
-        {
-            SetupEnemy();
-            SubscribeToEvents();
-        }
+        objectPooler = ObjectPooler.Instance;
+        InitializeComponents();
+        SetupEnemy();
     }
 
-    private void OnEnable()
-    {
-        if (gameManager != null)
-        {
-            OnEndReached += gameManager.HandleEndReached;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (gameManager != null)
-        {
-            OnEndReached -= gameManager.HandleEndReached;
-            UnsubscribeFromEvents();
-        }
-    }
-
-    private void Update()
-    {
-        if (!isInitialized || waypoints.Count == 0) return;
-
-        Move();
-        Rotate();
-        
-        if (Vector3.Distance(transform.position, CurrentWaypoint) < 0.1f)
-        {
-            UpdateWaypoint();
-        }
-    }
-
-    private bool InitializeComponents()
+    private void InitializeComponents()
     {
         try
         {
@@ -91,62 +58,54 @@ public class Enemy : MonoBehaviour, IPooledObject
             {
                 throw new InvalidOperationException("No waypoints assigned to enemy");
             }
-
-            return true;
         }
         catch (Exception e)
         {
             Debug.LogError($"[Enemy] Initialization failed on {gameObject.name}: {e.Message}");
-            return false;
         }
     }
 
-    private void SetupEnemy()
+    public void SetupEnemy()
     {
         try
         {
-            if (enemySprites.Count > CurrentWaveIndex)
+            if (spriteRenderer == null)
+            {
+                spriteRenderer = GetComponent<SpriteRenderer>();
+            }
+
+            if (enemySprites != null && enemySprites.Count > CurrentWaveIndex && spriteRenderer != null)
             {
                 spriteRenderer.sprite = enemySprites[CurrentWaveIndex];
             }
             else
             {
-                Debug.LogWarning($"[Enemy] No sprite available for wave {CurrentWaveIndex}");
+                Debug.LogWarning($"[Enemy] Missing required components or sprites for wave {CurrentWaveIndex}");
             }
             
-            enemyHealth.ResetHealth();
+            if (enemyHealth != null)
+            {
+                enemyHealth.ResetHealth();
+            }
+            
             currentWaypointIndex = 0;
         }
-        catch (Exception e)
+        catch (System.Exception e)
         {
-            Debug.LogError($"[Enemy] Setup failed on {gameObject.name}: {e.Message}");
-            isInitialized = false;
+            Debug.LogError($"[Enemy] Setup failed: {e.Message}");
         }
     }
 
-    private void SubscribeToEvents()
+    private void Update()
     {
-        if (enemyHealth != null)
-        {
-            // Monitor the enemy's health for changes
-            enemyHealth.OnDeath += HandleEnemyDefeated;
-        }
-    }
+        if (waypoints.Count == 0) return;
 
-    private void UnsubscribeFromEvents()
-    {
-        if (enemyHealth != null)
+        Move();
+        Rotate();
+        
+        if (Vector3.Distance(transform.position, CurrentWaypoint) < 0.1f)
         {
-            enemyHealth.OnDeath -= HandleEnemyDefeated;
-        }
-    }
-
-    private void HandleEnemyDefeated()
-    {
-        if (!gameManager.IsGameOver)
-        {
-            OnEnemyDefeated?.Invoke(this);
-            ObjectPooler.ReturnToPool(gameObject);
+            UpdateWaypoint();
         }
     }
 
@@ -196,19 +155,11 @@ public class Enemy : MonoBehaviour, IPooledObject
             {
                 OnEndReached?.Invoke(this);
             }
-            ObjectPooler.ReturnToPool(gameObject);
         }
         catch (Exception e)
         {
             Debug.LogError($"[Enemy] Error during endpoint handling: {e.Message}");
         }
-    }
-
-    public void OnObjectSpawn()
-    {
-        // Reset enemy state when spawned
-        currentWaypointIndex = 0;
-        // Any other initialization code...
     }
 
     public void ResetEnemy()
@@ -224,5 +175,11 @@ public class Enemy : MonoBehaviour, IPooledObject
         {
             spriteRenderer.sprite = enemySprites[CurrentWaveIndex];
         }
+    }
+
+    public void Die()
+    {
+        OnEnemyDefeated?.Invoke(this);
+        ObjectPooler.ReturnToPool(gameObject);
     }
 }

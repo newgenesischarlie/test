@@ -12,6 +12,13 @@ public class EnemyHealth : MonoBehaviour
 
     public event System.Action OnDeath;
 
+    private ObjectPooler objectPooler;
+
+    private void Start()
+    {
+        objectPooler = ObjectPooler.Instance;
+    }
+
     public void TakeDamage(int dmg)
     {
         // Reduce health by damage
@@ -57,37 +64,6 @@ public class EnemyHealth : MonoBehaviour
 
     private Image _healthBar; // UI Image component for health bar
     private Enemy _enemy; // Enemy script reference
-    private ObjectPooler _objectPooler; // Reference to the ObjectPooler
-
-    private void Start()
-    {
-        // Ensure ObjectPooler is assigned
-        _objectPooler = FindObjectOfType<ObjectPooler>();
-
-        // Check if necessary components are assigned
-        if (healthBarPrefab == null)
-        {
-            Debug.LogError("Health Bar Prefab is not assigned in the Inspector.");
-            return; // Stop execution if prefab is missing
-        }
-
-        if (barPosition == null)
-        {
-            Debug.LogError("Bar Position is not assigned in the Inspector.");
-            return; // Stop execution if bar position is missing
-        }
-
-        _enemy = GetComponent<Enemy>(); // Get the Enemy component
-
-        if (_enemy == null)
-        {
-            Debug.LogError("Enemy component is missing on this GameObject.");
-            return; // Stop execution if no Enemy component is found
-        }
-
-        CreateHealthBar(); // Create health bar in UI
-        CurrentHealth = initialHealth; // Set current health to initial value
-    }
 
     private void Update()
     {
@@ -145,9 +121,9 @@ public class EnemyHealth : MonoBehaviour
     private void KillEnemy()
     {
         // Notify ObjectPooler to remove from the active pool
-        if (_objectPooler != null)
+        if (objectPooler != null)
         {
-            _objectPooler.RemoveFromActiveEnemies(_enemy.gameObject); // Method to remove it from pooler
+            objectPooler.RemoveFromActiveEnemies(gameObject); // Method to remove it from pooler
         }
 
         // Deactivate the enemy rather than destroying it
@@ -168,8 +144,13 @@ public class EnemyHealth : MonoBehaviour
     }
 
     // Call this when health reaches 0
-    private void Die()
+    public void Die()
     {
+        if (objectPooler != null)
+        {
+            objectPooler.RemoveFromActiveEnemies(gameObject);
+        }
+
         OnDeath?.Invoke();
     }
 }

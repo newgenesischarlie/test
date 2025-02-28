@@ -1251,7 +1251,7 @@ GameObject:
   - component: {fileID: 514271312}
   m_Layer: 0
   m_Name: Plot
-  m_TagString: Untagged
+  m_TagString: LevelMap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1721,7 +1721,7 @@ GameObject:
   - component: {fileID: 642786740}
   m_Layer: 5
   m_Name: GameOver
-  m_TagString: MainCamera
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2601,11 +2601,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab17c740b6dc4ca495c428deeee5adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGameOver: 0
   winScreen: {fileID: 736642117}
   loseScreen: {fileID: 642786738}
-  allEnemies: []
+  gameOverCanvas: {fileID: 0}
+  uiCamera: {fileID: 0}
+  gameplayContainer: {fileID: 0}
   objectPooler: {fileID: 1511321342}
+  gameplayObjects: []
 --- !u!1 &1174767008
 GameObject:
   m_ObjectHideFlags: 0
@@ -3470,9 +3472,10 @@ GameObject:
   - component: {fileID: 1511321339}
   - component: {fileID: 1511321341}
   - component: {fileID: 1511321342}
+  - component: {fileID: 1511321343}
   m_Layer: 0
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3520,9 +3523,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127f8d8c81f96d24f91a71ed2dbd590d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 10
-  testGO: {fileID: 2006923997}
-  delayBtwSpawns: 1
+  spawnDelay: 2
+  spawnPoint: {fileID: 2006923999}
+  canSpawn: 1
+  maxEnemies: 10
+  showSpawnGizmo: 1
+  gizmoColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &1511321342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3535,9 +3541,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b5b177a3fdae74b9fc99b6b78da74b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2006923997}
-  poolSize: 10
-  _activeEnemies: []
+  pools: []
+--- !u!114 &1511321343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511321338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47335c5f52afe4b018ec954f4cb29bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - waveName: e
+    enemyCount: 5
+    spawnDelay: 2
+    timeBetweenWaves: 0
+  spawnPoint: {fileID: 2006923999}
+  showSpawnGizmo: 1
+  gizmoColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1523867782
 GameObject:
   m_ObjectHideFlags: 0
@@ -4148,7 +4172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1733016860
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4326,9 +4350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b5b177a3fdae74b9fc99b6b78da74b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1733016859}
-  poolSize: 10
-  _activeEnemies: []
+  pools: []
 --- !u!114 &1760017669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4581,11 +4603,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  enemySprites: []
+  enemySprites:
+  - {fileID: 21300000, guid: fb8e726f5e092436bb05265e734ffe98, type: 3}
+  - {fileID: 21300000, guid: 92a780fa4a8ac4c58b5197ed66ea87c9, type: 3}
   waypoints:
   - {x: 1, y: 1, z: 0}
   - {x: 2, y: 2, z: 0}
-  - {x: 3, y: 3, z: 0}
+  - {x: 20, y: 3, z: 0}
 --- !u!114 &2006924005
 MonoBehaviour:
   m_ObjectHideFlags: 0

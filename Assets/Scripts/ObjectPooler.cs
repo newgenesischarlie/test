@@ -12,35 +12,56 @@ public class ObjectPooler : MonoBehaviour
     }
 
     public static ObjectPooler Instance;
-    public List<Pool> pools;
+    public List<Pool> pools = new List<Pool>();
     private Dictionary<string, List<GameObject>> poolDictionary;
     private bool isSpawningEnabled = true;
 
-    void Awake()
+    private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        poolDictionary = new Dictionary<string, List<GameObject>>();
+        InitializePools();
     }
 
-    void Start()
+    private void InitializePools()
     {
-        poolDictionary = new Dictionary<string, List<GameObject>>();
-
         foreach (Pool pool in pools)
         {
+            if (pool.prefab == null)
+            {
+                Debug.LogError($"Prefab for pool {pool.tag} is not assigned!");
+                continue;
+            }
+
             List<GameObject> objectPool = new List<GameObject>();
+            GameObject poolParent = new GameObject($"Pool-{pool.tag}");
+            poolParent.transform.parent = transform;
 
             for (int i = 0; i < pool.size; i++)
             {
-                GameObject obj = Instantiate(pool.prefab);
+                GameObject obj = Instantiate(pool.prefab, poolParent.transform);
                 obj.SetActive(false);
                 objectPool.Add(obj);
             }
 
             poolDictionary.Add(pool.tag, objectPool);
+            Debug.Log($"Created pool: {pool.tag} with {pool.size} objects");
         }
+
+        isSpawningEnabled = true;
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject GetInstanceFromPool(string tag, Vector3 position, Quaternion rotation)
     {
         if (!isSpawningEnabled)
         {
@@ -49,60 +70,67 @@ public class ObjectPooler : MonoBehaviour
 
         if (!poolDictionary.ContainsKey(tag))
         {
-            Debug.LogWarning($"Pool with tag {tag} doesn't exist.");
+            Debug.LogError($"Pool with tag {tag} doesn't exist. Make sure to set up the pool in the Inspector!");
             return null;
         }
 
-        // Get an inactive object from the pool
-        GameObject objectToSpawn = null;
         foreach (GameObject obj in poolDictionary[tag])
         {
             if (!obj.activeInHierarchy)
             {
-                objectToSpawn = obj;
-                break;
+                obj.transform.position = position;
+                obj.transform.rotation = rotation;
+                obj.SetActive(true);
+                return obj;
             }
         }
 
-        // If no inactive object was found
-        if (objectToSpawn == null)
-        {
-            Debug.LogWarning($"No inactive objects available in pool {tag}");
-            return null;
-        }
-
-        // Set up the object
-        objectToSpawn.SetActive(true);
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
-
-        // Reset enemy component if it exists
-        Enemy enemy = objectToSpawn.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            enemy.ResetEnemy();
-        }
-
-        return objectToSpawn;
+        return null;
     }
 
     public void StopSpawning()
     {
         isSpawningEnabled = false;
-        // Deactivate all currently active objects
-        List<GameObject> activeEnemies = GetAllActiveEnemies();
-        foreach (GameObject enemy in activeEnemies)
-        {
-            if (enemy != null && enemy.activeInHierarchy)
-            {
-                ReturnToPool(enemy);
-            }
-        }
+        DeactivateAllObjects();
     }
 
     public void ResumeSpawning()
     {
         isSpawningEnabled = true;
+    }
+
+    private void DeactivateAllObjects()
+    {
+        if (poolDictionary == null) return;
+
+        foreach (var pool in poolDictionary.Values)
+        {
+            foreach (GameObject obj in pool)
+            {
+                if (obj != null && obj.activeInHierarchy)
+                {
+                    obj.SetActive(false);
+                }
+            }
+        }
+    }
+
+    public List<GameObject> GetAllActiveEnemies()
+    {
+        List<GameObject> activeEnemies = new List<GameObject>();
+        
+        if (poolDictionary != null && poolDictionary.ContainsKey("Enemy"))
+        {
+            foreach (GameObject enemy in poolDictionary["Enemy"])
+            {
+                if (enemy != null && enemy.activeInHierarchy)
+                {
+                    activeEnemies.Add(enemy);
+                }
+            }
+        }
+        
+        return activeEnemies;
     }
 
     public static void ReturnToPool(GameObject obj)
@@ -113,21 +141,11 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public List<GameObject> GetAllActiveEnemies()
+    public void RemoveFromActiveEnemies(GameObject enemy)
     {
-        List<GameObject> activeEnemies = new List<GameObject>();
-        
-        if (poolDictionary.ContainsKey("Enemy"))
+        if (enemy != null)
         {
-            foreach (GameObject enemy in poolDictionary["Enemy"])
-            {
-                if (enemy.activeInHierarchy)
-                {
-                    activeEnemies.Add(enemy);
-                }
-            }
+            ReturnToPool(enemy);
         }
-        
-        return activeEnemies;
     }
 }

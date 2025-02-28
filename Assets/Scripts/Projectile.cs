@@ -15,6 +15,13 @@ public class Projectile : MonoBehaviour
 
     protected Enemy _enemyTarget;
 
+    private ObjectPooler objectPooler;
+
+    private void Start()
+    {
+        objectPooler = ObjectPooler.Instance;
+    }
+
     protected virtual void Update()
     {
         if (_enemyTarget != null)
@@ -61,5 +68,12 @@ public class Projectile : MonoBehaviour
     public void SetEnemy(Enemy enemy)
     {
         _enemyTarget = enemy;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // ... your collision logic ...
+
+        ObjectPooler.ReturnToPool(gameObject);
     }
 }
