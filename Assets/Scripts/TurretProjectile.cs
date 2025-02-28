@@ -38,8 +38,8 @@ public class TurretProjectile : MonoBehaviour
         if (Time.time > _nextAttackTime)
         {
             // Ensure there's a valid enemy target and the projectile is ready
-            if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null &&
-                _turret.CurrentEnemyTarget.GetEnemyHealth().CurrentHealth > 0f)  // Fixed to use GetEnemyHealth()
+        //    if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null &&
+          //      _turret.CurrentEnemyTarget.GetEnemyHealth().CurrentHealth > 0f)  // Fixed to use GetEnemyHealth()
             {
                 // Detach the projectile and set its enemy target
                 _currentProjectileLoaded.transform.parent = null;

@@ -70,7 +70,11 @@ public class EnemyHealth : MonoBehaviour
     internal void DealDamage(float damage)
     {
         // Ensure that we don't deal damage if the health bar or enemy is not initialized
-        if (_enemy == null || _healthBar == null) return;
+        if (_enemy == null || _healthBar == null)
+        {
+            Debug.LogError("Enemy or health bar is null in DealDamage!");
+            return;
+        }
 
         // Decrease current health by damage amount
         CurrentHealth -= damage;
@@ -81,7 +85,8 @@ public class EnemyHealth : MonoBehaviour
         // If health reaches 0, invoke the "OnEnemyKilled" event
         if (CurrentHealth <= 0f)
         {
-            OnEnemyKilled?.Invoke(_enemy);
+            Debug.Log("Enemy killed: " + gameObject.name);
+            OnEnemyKilled?.Invoke(_enemy); // Invoke the OnEnemyKilled event
             KillEnemy(); // Kill the enemy by deactivating it
         }
 
@@ -106,6 +111,7 @@ public class EnemyHealth : MonoBehaviour
         // Notify ObjectPooler to remove from the active pool
         if (_objectPooler != null)
         {
+            Debug.Log("Returning enemy to pool: " + gameObject.name);
             _objectPooler.RemoveFromActiveEnemies(_enemy.gameObject); // Method to remove it from pooler
         }
 
@@ -125,5 +131,37 @@ public class EnemyHealth : MonoBehaviour
             _healthBar.fillAmount = 1f; // Reset health bar fill amount
         }
     }
-}
 
+    // Called when the enemy is deactivated, unsubscribe from events
+    private void OnDisable()
+    {
+        OnEnemyKilled -= HandleEnemyKilled;
+        OnEnemyHit -= HandleEnemyHit;
+    }
+
+    // Called when the enemy is reactivated, subscribe to events
+    private void OnEnable()
+    {
+        // Subscribe to events when the enemy is reactivated
+        OnEnemyKilled += HandleEnemyKilled;
+        OnEnemyHit += HandleEnemyHit;
+    }
+
+    private void HandleEnemyKilled(Enemy enemy)
+    {
+        if (enemy == _enemy)
+        {
+            Debug.Log("Handling enemy kill: " + enemy.gameObject.name);
+            // You can handle any additional logic here, like resetting states
+        }
+    }
+
+    private void HandleEnemyHit(Enemy enemy)
+    {
+        if (enemy == _enemy)
+        {
+            Debug.Log("Enemy hit: " + enemy.gameObject.name);
+            // Handle enemy hit logic here
+        }
+    }
+}

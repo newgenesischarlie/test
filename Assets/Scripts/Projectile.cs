@@ -41,9 +41,9 @@ public class Projectile : MonoBehaviour
         if (distanceToTarget < minDistanceToDealDamage)
         {
             OnEnemyHit?.Invoke(_enemyTarget, Damage);
-            if (_enemyTarget != null && _enemyTarget.GetEnemyHealth() != null)
+      //      if (_enemyTarget != null && _enemyTarget.GetEnemyHealth() != null)
             {
-                _enemyTarget.GetEnemyHealth().DealDamage(Damage); // Use the GetEnemyHealth() method
+           //     _enemyTarget.GetEnemyHealth().DealDamage(Damage); // Use the GetEnemyHealth() method
             }
 
             TurretOwner.ResetTurretProjectile();

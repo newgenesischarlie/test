@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -118,7 +117,12 @@ public class GameManager : MonoBehaviour
             if (enemyScript != null)
             {
                 // Subscribe to the static event using the class name
-                Enemy.OnEndReached += HandleEndReached; // Corrected
+                Debug.Log("Subscribing to OnEndReached event for " + enemy.name);
+                Enemy.OnEndReached += HandleEndReached;
+            }
+            else
+            {
+                Debug.LogWarning("Enemy script not found on " + enemy.name);
             }
         }
     }
@@ -128,24 +132,32 @@ public class GameManager : MonoBehaviour
         // Check if enemy is null
         if (enemy == null)
         {
-            Debug.LogError("Enemy is null in HandleEndReached!");
+            Debug.LogError("Enemy is null in HandleEndReached! Please check the event subscription and enemy state.");
             return;
         }
 
-        // Proceed with the logic if enemy is valid
+        // If the enemy is valid, log the enemy's name for more clarity
         Debug.Log("Enemy reached the end: " + enemy.gameObject.name);
-        LoseGame();  // Assuming you want to call LoseGame when an enemy reaches the end
+
+        // Proceed with the logic (for example, calling LoseGame)
+        LoseGame();
     }
 
     void OnDestroy()
     {
+        // Unsubscribe from the event when the object is destroyed
         foreach (GameObject enemy in objectPooler.GetAllActiveEnemies())
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript != null)
             {
                 // Unsubscribe from the static event using the class name
+                Debug.Log("Unsubscribing from OnEndReached event for " + enemy.name);
                 Enemy.OnEndReached -= HandleEndReached;
+            }
+            else
+            {
+                Debug.LogWarning("Enemy script not found on " + enemy.name);
             }
         }
     }

@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class Enemy : MonoBehaviour
     public List<Vector3> Waypoints;
 
     // Reference to the different sprites for different enemy waves
-    public List<Sprite> EnemySprites; // List of sprites to be used for different waves
+    public List<Sprite> EnemySprites;
 
     // Variable to track the current wave
     public int CurrentWaveIndex = 0;
@@ -77,19 +76,25 @@ public class Enemy : MonoBehaviour
 
     private void SubscribeToEndEvent()
     {
-        // Subscribe to the static event
-        if (OnEndReached != null)
+        // Ensure the gameManager is assigned
+        if (gameManager != null)
         {
-            OnEndReached += gameManager.HandleEndReached;  // Ensure gameManager is listening to this event
+            Debug.Log("Subscribing to OnEndReached event in GameManager for " + gameObject.name);
+            OnEndReached += gameManager.HandleEndReached;
+        }
+        else
+        {
+            Debug.LogError("GameManager is not assigned in Enemy script!");
         }
     }
 
     private void UnsubscribeFromEndEvent()
     {
         // Unsubscribe when the enemy is destroyed
-        if (OnEndReached != null)
+        if (gameManager != null)
         {
-            OnEndReached -= gameManager.HandleEndReached;  // Ensure gameManager is no longer listening
+            Debug.Log("Unsubscribing from OnEndReached event for " + gameObject.name);
+            OnEndReached -= gameManager.HandleEndReached;
         }
     }
 
@@ -97,12 +102,12 @@ public class Enemy : MonoBehaviour
     {
         if (gameManager == null || enemyHealth == null)
         {
-            // If gameManager or enemyHealth is null, we should stop updating and return.
-            return;
+            return; // If gameManager or enemyHealth is null, return
         }
 
         Move();
         Rotate();
+
         if (CurrentPointPositionReached())
         {
             UpdateCurrentPointIndex();
@@ -142,8 +147,7 @@ public class Enemy : MonoBehaviour
 
     private bool CurrentPointPositionReached()
     {
-        float distanceToNextPointPosition = (transform.position - CurrentPointPosition).magnitude;
-        return distanceToNextPointPosition < 0.1f;
+        return (transform.position - CurrentPointPosition).magnitude < 0.1f;
     }
 
     private void UpdateCurrentPointIndex()
@@ -161,18 +165,16 @@ public class Enemy : MonoBehaviour
 
     public void EndPointReached()
     {
-        // Check if the GameManager is assigned
+        // Ensure event is triggered before returning to pool
         if (gameManager != null)
         {
-            Debug.Log("GameManager found. Proceeding with EndPointReached.");
-
-            // Correctly invoke the static event using the class name (Enemy)
-            Enemy.OnEndReached?.Invoke(this); // Invoke the static event correctly
+            Debug.Log("Invoking OnEndReached for " + gameObject.name);
+            OnEndReached?.Invoke(this); // Trigger the event
 
             // Reset health after reaching the endpoint
             enemyHealth.ResetHealth();
 
-            // Optionally, return the enemy to the pool (if ObjectPooler is available)
+            // Optionally, return the enemy to the pool
             ObjectPooler.ReturnToPool(gameObject);
         }
         else
@@ -180,24 +182,5 @@ public class Enemy : MonoBehaviour
             Debug.LogError("GameManager is null when reaching endpoint!");
         }
     }
-
-
-    // Public method to get the EnemyHealth component
-    public EnemyHealth GetEnemyHealth()
-    {
-        return enemyHealth;
-    }
-
-    // Example in the enemy script when the enemy is killed
-    public void KillEnemy()
-    {
-        // Notify the GameManager that this enemy is killed
-        if (gameManager != null)
-        {
-            gameManager.OnEnemyKilled(gameObject);
-        }
-
-        // Optionally, handle other death-related logic (animations, effects, etc.)
-        gameObject.SetActive(false); // Deactivate the enemy
-    }
 }
+
