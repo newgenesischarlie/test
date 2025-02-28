@@ -19,11 +19,9 @@ public class Enemy : MonoBehaviour
 
     // Waypoint system
     private int _currentWaypointIndex = 0;
-    private Vector3 _lastPointPosition;
 
     // Sprite handling
     private SpriteRenderer _spriteRenderer;
-    private EnemyHealth _enemyHealth;
 
     // List of waypoints
     public List<Vector3> Waypoints;
@@ -38,10 +36,10 @@ public class Enemy : MonoBehaviour
     {
         // Initialize components
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _enemyHealth = GetComponent<EnemyHealth>();
+        enemyHealth = GetComponent<EnemyHealth>();
 
         // Check if the enemyHealth component exists
-        if (_enemyHealth == null)
+        if (enemyHealth == null)
         {
             Debug.LogError("EnemyHealth component is missing on this enemy!");
             return;
@@ -54,7 +52,7 @@ public class Enemy : MonoBehaviour
         }
 
         // Initialize health and waypoints
-        _enemyHealth.ResetHealth();
+        enemyHealth.ResetHealth();
 
         // Check if the gameManager is assigned and find it if not
         if (gameManager == null)
@@ -66,16 +64,38 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("GameManager reference is missing! Make sure it is assigned.");
         }
+
+        // Subscribe to the OnEndReached event
+        SubscribeToEndEvent();
     }
 
-    internal void Initialize(Enemy enemy)
+    private void OnDestroy()
     {
-        throw new NotImplementedException();
+        // Unsubscribe from the event when the enemy is destroyed
+        UnsubscribeFromEndEvent();
+    }
+
+    private void SubscribeToEndEvent()
+    {
+        // Subscribe to the static event
+        if (OnEndReached != null)
+        {
+            OnEndReached += gameManager.HandleEndReached;  // Ensure gameManager is listening to this event
+        }
+    }
+
+    private void UnsubscribeFromEndEvent()
+    {
+        // Unsubscribe when the enemy is destroyed
+        if (OnEndReached != null)
+        {
+            OnEndReached -= gameManager.HandleEndReached;  // Ensure gameManager is no longer listening
+        }
     }
 
     private void Update()
     {
-        if (gameManager == null || _enemyHealth == null)
+        if (gameManager == null || enemyHealth == null)
         {
             // If gameManager or enemyHealth is null, we should stop updating and return.
             return;
@@ -138,6 +158,7 @@ public class Enemy : MonoBehaviour
             EndPointReached();
         }
     }
+
     public void EndPointReached()
     {
         // Check if the GameManager is assigned
@@ -145,21 +166,13 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("GameManager found. Proceeding with EndPointReached.");
 
-            // Check if the OnEndReached event is subscribed to
-            if (Enemy.OnEndReached != null)
-            {
-                Debug.Log("Invoking OnEndReached event.");
-                Enemy.OnEndReached.Invoke(this); // This invokes the static event correctly
-            }
-            else
-            {
-                Debug.LogWarning("OnEndReached event is not subscribed to.");
-            }
+            // Correctly invoke the static event using the class name (Enemy)
+            Enemy.OnEndReached?.Invoke(this); // Invoke the static event correctly
 
             // Reset health after reaching the endpoint
-            _enemyHealth.ResetHealth();
+            enemyHealth.ResetHealth();
 
-            // Return the enemy to the pool (if ObjectPooler is available)
+            // Optionally, return the enemy to the pool (if ObjectPooler is available)
             ObjectPooler.ReturnToPool(gameObject);
         }
         else
@@ -169,42 +182,10 @@ public class Enemy : MonoBehaviour
     }
 
 
-
     // Public method to get the EnemyHealth component
     public EnemyHealth GetEnemyHealth()
     {
-        return _enemyHealth;
-    }
-
-    // New method to manage spawning waves
-    public static void StartNextWave(List<Enemy> enemies)
-    {
-        // Ensure the wave spawns only after all enemies from the current wave are gone
-        if (enemies.Count == 0)
-        {
-            // Spawn the next wave of enemies here
-            // Example: SpawnWave(NextWaveEnemiesList);
-        }
-    }
-
-    // You can call this method from your Object Pooler or another manager when all enemies in a wave are dead
-    public void CheckIfWaveComplete(List<Enemy> allEnemies)
-    {
-        bool waveComplete = true;
-
-        foreach (var enemy in allEnemies)
-        {
-            if (enemy.gameObject.activeSelf)  // If any enemy is still active, wave is not complete
-            {
-                waveComplete = false;
-                break;
-            }
-        }
-
-        if (waveComplete)
-        {
-            StartNextWave(allEnemies);  // Start the next wave after the current wave is finished
-        }
+        return enemyHealth;
     }
 
     // Example in the enemy script when the enemy is killed
@@ -216,9 +197,7 @@ public class Enemy : MonoBehaviour
             gameManager.OnEnemyKilled(gameObject);
         }
 
-        // Optionally, you can handle other death-related logic (animations, effects, etc.)
+        // Optionally, handle other death-related logic (animations, effects, etc.)
         gameObject.SetActive(false); // Deactivate the enemy
     }
 }
-
-

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -100,7 +101,6 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
     }
 
-    // Call this method when an enemy is killed
     public void OnEnemyKilled(GameObject enemy)
     {
         if (allEnemies.Contains(enemy))
@@ -111,15 +111,19 @@ public class GameManager : MonoBehaviour
 
     void SubscribeToEnemyEndEvent()
     {
-        // Subscribe to the OnEndReached event for a specific enemy
-        Enemy enemyScript = enemy.GetComponent<Enemy>();
-        if (enemyScript != null)
+        // Get all active enemies from the object pooler
+        foreach (GameObject enemy in objectPooler.GetAllActiveEnemies())
         {
-            enemyScript.OnEndReached += HandleEndReached; // Corrected to subscribe for individual enemies
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                // Subscribe to the static event using the class name
+                Enemy.OnEndReached += HandleEndReached; // Corrected
+            }
         }
     }
 
-    void HandleEndReached(Enemy enemy)
+    public void HandleEndReached(Enemy enemy)
     {
         // Check if enemy is null
         if (enemy == null)
@@ -133,39 +137,16 @@ public class GameManager : MonoBehaviour
         LoseGame();  // Assuming you want to call LoseGame when an enemy reaches the end
     }
 
-
-
     void OnDestroy()
     {
-        // Unsubscribe from all enemies in the pool
         foreach (GameObject enemy in objectPooler.GetAllActiveEnemies())
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript != null)
             {
-                // Unsubscribe from the OnEndReached event
-                enemyScript.OnEndReached -= HandleEndReached;
+                // Unsubscribe from the static event using the class name
+                Enemy.OnEndReached -= HandleEndReached;
             }
         }
-    }
-
-    // Method to simulate game over and trigger the lose screen for testing
-    void TriggerGameOver()
-    {
-        Debug.Log("Game Over triggered!");
-        loseScreen.SetActive(true); // Show the lose screen
-        Time.timeScale = 0f; // Stop the game time (freeze the game)
-        isGameOver = true;
-    }
-    public void SpawnEnemy(GameObject enemyPrefab)
-    {
-        // Instantiate the enemy from the pool or prefab
-        GameObject newEnemy = Instantiate(enemyPrefab);
-
-        // Subscribe to the OnEndReached event after instantiating the enemy
-        SubscribeToEnemyEndEvent(newEnemy); // Ensure the event handler is added here
-
-        // Optionally, add the enemy to the list if needed
-        allEnemies.Add(newEnemy);
     }
 }
