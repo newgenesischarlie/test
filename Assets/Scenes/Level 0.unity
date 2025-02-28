@@ -2601,12 +2601,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab17c740b6dc4ca495c428deeee5adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverCanvas: {fileID: 0}
   winScreen: {fileID: 736642117}
   loseScreen: {fileID: 642786738}
-  gameOverCanvas: {fileID: 0}
-  uiCamera: {fileID: 0}
   gameplayContainer: {fileID: 0}
-  objectPooler: {fileID: 1511321342}
+  fadeSpeed: 0.5
+  uiCamera: {fileID: 0}
   gameplayObjects: []
 --- !u!1 &1174767008
 GameObject:
@@ -3541,7 +3541,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b5b177a3fdae74b9fc99b6b78da74b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pools: []
+  pools:
+  - tag: 
+    prefab: {fileID: 2006923997}
+    size: 2
 --- !u!114 &1511321343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4517,7 +4520,7 @@ GameObject:
   - component: {fileID: 2006924005}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

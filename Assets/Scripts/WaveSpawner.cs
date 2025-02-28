@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -29,7 +31,14 @@ public class WaveSpawner : MonoBehaviour
         objectPooler = ObjectPooler.Instance;
         if (objectPooler == null)
         {
-            Debug.LogError("ObjectPooler not found in scene!");
+            Debug.LogError("ObjectPooler not found!");
+            enabled = false;
+            return;
+        }
+
+        if (spawnPoint == null)
+        {
+            Debug.LogError("Spawn point not set!");
             enabled = false;
             return;
         }
@@ -67,7 +76,11 @@ public class WaveSpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (spawnPoint == null) return;
+        if (spawnPoint == null) 
+        {
+            Debug.LogError("Spawn point not set!");
+            return;
+        }
 
         GameObject enemy = objectPooler.GetInstanceFromPool("Enemy", spawnPoint.position, Quaternion.identity);
         if (enemy != null)
@@ -75,7 +88,6 @@ public class WaveSpawner : MonoBehaviour
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
             {
-                enemyComponent.CurrentWaveIndex = currentWave;
                 enemyComponent.ResetEnemy();
             }
         }

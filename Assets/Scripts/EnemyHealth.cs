@@ -7,8 +7,9 @@ public class EnemyHealth : MonoBehaviour
     public static Action<Enemy> OnEnemyKilled;
     public static Action<Enemy> OnEnemyHit;
 
-    private bool isDestroyed = false;
-    private int hitPoints = 100; // Set initial health points as needed
+    [Header("Health Settings")]
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
 
     public event System.Action OnDeath;
 
@@ -17,40 +18,31 @@ public class EnemyHealth : MonoBehaviour
     private void Start()
     {
         objectPooler = ObjectPooler.Instance;
+        ResetHealth();
     }
 
-    public void TakeDamage(int dmg)
+    private void OnEnable()
     {
-        // Reduce health by damage
-        hitPoints -= dmg;
+        ResetHealth();
+    }
 
-        // Check if health reaches 0 or below and if not already destroyed
-        if (hitPoints <= 0 && !isDestroyed)
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (currentHealth <= 0) return;
+
+        currentHealth -= damage;
+        
+        if (currentHealth <= 0)
         {
-            // Invoke the Spawner's onDestroy event if it's not null
-            if (Spawner.onDestroy != null)
-            {
-                Spawner.onDestroy.Invoke();
-            }
-
-            // Set the destroyed flag to true
-            isDestroyed = true;
-
-            // Trigger the "OnEnemyKilled" event (can be subscribed to by other systems)
-            OnEnemyKilled?.Invoke(GetComponent<Enemy>());
-
-            // Optionally, trigger the "OnEnemyHit" event when damage is taken (even if the enemy dies)
-            OnEnemyHit?.Invoke(GetComponent<Enemy>());
-
-            // Destroy the enemy GameObject
-            Destroy(gameObject);
-
-            // Call the Die method when health reaches 0
             Die();
         }
         else
         {
-            // If the enemy is still alive, invoke the "OnEnemyHit" event
             OnEnemyHit?.Invoke(GetComponent<Enemy>());
         }
     }
@@ -58,7 +50,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private GameObject healthBarPrefab; // Health bar prefab
     [SerializeField] private Transform barPosition; // Position where the health bar should appear
     [SerializeField] private float initialHealth = 10f; // Starting health
-    [SerializeField] private float maxHealth = 10f; // Max health
+    [SerializeField] private float maxHealthBar = 10f; // Max health
 
     public float CurrentHealth { get; set; }
 
@@ -77,7 +69,7 @@ public class EnemyHealth : MonoBehaviour
         if (_healthBar != null)
         {
             _healthBar.fillAmount = Mathf.Lerp(_healthBar.fillAmount,
-                CurrentHealth / maxHealth, Time.deltaTime * 10f);
+                CurrentHealth / maxHealthBar, Time.deltaTime * 10f);
         }
 
         // Output the current health for debugging purposes
@@ -93,7 +85,7 @@ public class EnemyHealth : MonoBehaviour
         CurrentHealth -= damage;
 
         // Clamp the health value to make sure it doesn't go below 0
-        CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, maxHealth);
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, maxHealthBar);
 
         // If health reaches 0, invoke the "OnEnemyKilled" event
         if (CurrentHealth <= 0f)
@@ -133,24 +125,26 @@ public class EnemyHealth : MonoBehaviour
         ResetHealth();
     }
 
-    // Resets the enemy health to initial value (useful for respawn or reset scenarios)
-    internal void ResetHealth()
+    private void Die()
     {
-        CurrentHealth = initialHealth;
-        if (_healthBar != null)
+        if (gameObject != null)
         {
-            _healthBar.fillAmount = 1f; // Reset health bar fill amount
-        }
-    }
-
-    // Call this when health reaches 0
-    public void Die()
-    {
-        if (objectPooler != null)
-        {
-            objectPooler.RemoveFromActiveEnemies(gameObject);
+            // Use the static ReturnToPool method directly
+            gameObject.SetActive(false);
+            // Or if you prefer using the ObjectPooler static method:
+            // ObjectPooler.ReturnToPool(gameObject);
         }
 
         OnDeath?.Invoke();
+    }
+
+    public bool IsAlive()
+    {
+        return currentHealth > 0;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }

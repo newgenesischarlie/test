@@ -24,11 +24,13 @@ public class GameManager : MonoBehaviour
 
     #region Private Fields
     private List<GameObject> allEnemies = new List<GameObject>();
+    private ObjectPooler objectPooler;
     #endregion
 
     private void Start()
     {
         InitializeGame();
+        objectPooler = ObjectPooler.Instance;
         SubscribeToEvents();
         InitializeUI();
     }
@@ -52,17 +54,15 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        // Set up UI
+        IsGameOver = false;
+        
         if (gameOverCanvas != null)
         {
-            gameOverCanvas.sortingOrder = 999; // Ensure it's on top
             gameOverCanvas.gameObject.SetActive(false);
         }
-        
         if (winScreen != null) winScreen.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(false);
-        
-        IsGameOver = false;
+        if (gameplayContainer != null) gameplayContainer.SetActive(true);
     }
 
     private void InitializeUI()
@@ -105,70 +105,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
-        if (IsGameOver) return; // If the game is over, do nothing
-
-        // Add active enemies to the list
-        AddActiveEnemiesToList();
-
-        // Debugging: Press 'E' to simulate the game over scenario manually
-        if (Input.GetKeyDown(KeyCode.E))
+        // Only check for active enemies if the game is running
+        if (!IsGameOver && objectPooler != null)
         {
-            Debug.Log("Simulating game over manually via 'E' key");
-
-            if (allEnemies.Count > 0)
-            {
-                foreach (var enemy in allEnemies)
-                {
-                    if (enemy != null && enemy.activeInHierarchy)
-                    {
-                        HandleEndReached(enemy.GetComponent<Enemy>());
-                        break; // Only trigger the event for the first active enemy
-                    }
-                }
-            }
-            else
-            {
-                Debug.LogWarning("No enemies available for simulation.");
-            }
+            UpdateActiveEnemies();
         }
     }
 
-    void AddActiveEnemiesToList()
+    private void UpdateActiveEnemies()
     {
-        allEnemies.Clear(); // Clear the list first
-
-        // Assuming ObjectPooler has a method to return all active enemies
-        List<GameObject> activeEnemies = ObjectPooler.Instance.GetAllActiveEnemies();
-
-        if (activeEnemies.Count == 0)
-        {
-            Debug.LogWarning("No active enemies found in the pool.");
-        }
-
-        foreach (GameObject enemy in activeEnemies)
-        {
-            if (!allEnemies.Contains(enemy))
-            {
-                allEnemies.Add(enemy);
-                Debug.Log("Added enemy to allEnemies: " + enemy.name); // Debug log to ensure enemies are being added
-            }
-        }
+        // Only log if debugging is needed
+        //List<GameObject> activeEnemies = objectPooler.GetAllActiveEnemies();
+        //if (activeEnemies.Count == 0)
+        //{
+        //    Debug.LogWarning("No active enemies found in the pool.");
+        //}
     }
 
     public void HandleEndReached(Enemy enemy)
     {
         if (IsGameOver) return;
-        
-        ShowGameOver(false); // Show lose screen
+        ShowGameOver(false);
     }
 
     public void HandleEnemyDefeated(Enemy enemy)
     {
         if (IsGameOver) return;
-        
-        ShowGameOver(true); // Show win screen
+        ShowGameOver(true);
     }
 
     private void ShowGameOver(bool isWin)
@@ -181,25 +146,42 @@ public class GameManager : MonoBehaviour
             gameplayContainer.SetActive(false);
         }
 
-        // Enable canvas and appropriate screen
+        // Show appropriate screen
         if (gameOverCanvas != null)
         {
             gameOverCanvas.gameObject.SetActive(true);
-            
             if (isWin && winScreen != null)
             {
                 winScreen.SetActive(true);
-                StartCoroutine(FadeInUI(winScreen.GetComponent<CanvasGroup>()));
             }
             else if (!isWin && loseScreen != null)
             {
                 loseScreen.SetActive(true);
-                StartCoroutine(FadeInUI(loseScreen.GetComponent<CanvasGroup>()));
             }
         }
 
-        // Stop spawning
-        ObjectPooler.Instance.StopSpawning();
+        // Deactivate all enemies
+        DeactivateAllEnemies();
+    }
+
+    private void DeactivateAllEnemies()
+    {
+        // Find all active enemies and deactivate them
+        Enemy[] activeEnemies = FindObjectsOfType<Enemy>();
+        foreach (Enemy enemy in activeEnemies)
+        {
+            if (enemy != null && enemy.gameObject.activeInHierarchy)
+            {
+                ObjectPooler.ReturnToPool(enemy.gameObject);
+            }
+        }
+
+        // Disable spawners
+        WaveSpawner[] spawners = FindObjectsOfType<WaveSpawner>();
+        foreach (WaveSpawner spawner in spawners)
+        {
+            spawner.enabled = false;
+        }
     }
 
     private IEnumerator FadeInUI(CanvasGroup canvasGroup)
@@ -217,22 +199,29 @@ public class GameManager : MonoBehaviour
         canvasGroup.alpha = 1f;
     }
 
-    // Optional: Method to restart the game
     public void RestartGame()
     {
-        // Hide end screens
+        // Reset UI
+        if (gameOverCanvas != null)
+        {
+            gameOverCanvas.gameObject.SetActive(false);
+        }
         if (winScreen != null) winScreen.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(false);
 
-        // Show gameplay elements
-        ShowGameplayElements(true);
+        // Enable gameplay elements
+        if (gameplayContainer != null)
+        {
+            gameplayContainer.SetActive(true);
+        }
 
-        // Reset game state
+        // Re-enable spawners
+        WaveSpawner[] spawners = FindObjectsOfType<WaveSpawner>();
+        foreach (WaveSpawner spawner in spawners)
+        {
+            spawner.enabled = true;
+        }
+
         IsGameOver = false;
-        
-        // Resume object pooling
-        ObjectPooler.Instance.ResumeSpawning();
-
-        // Additional restart logic here
     }
 }

@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Serialized Fields
+    [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private List<Sprite> enemySprites = new List<Sprite>();
     [SerializeField] private List<Vector3> waypoints = new List<Vector3>();
@@ -25,6 +26,7 @@ public class Enemy : MonoBehaviour
     #region State
     private int currentWaypointIndex;
     public int CurrentWaveIndex { get; set; }
+    private bool isInitialized;
     #endregion
 
     private void Start()
@@ -96,84 +98,55 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        ResetEnemy();
+    }
+
     private void Update()
     {
-        if (waypoints.Count == 0) return;
-
-        Move();
-        Rotate();
-        
-        if (Vector3.Distance(transform.position, CurrentWaypoint) < 0.1f)
-        {
-            UpdateWaypoint();
-        }
+        if (waypoints == null || waypoints.Count == 0) return;
+        MoveToNextWaypoint();
     }
 
-    private Vector3 CurrentWaypoint
+    private void MoveToNextWaypoint()
     {
-        get
-        {
-            if (currentWaypointIndex >= waypoints.Count)
-            {
-                Debug.LogError($"[Enemy] Waypoint index out of range: {currentWaypointIndex}");
-                return transform.position;
-            }
-            return waypoints[currentWaypointIndex];
-        }
-    }
+        if (currentWaypointIndex >= waypoints.Count) return;
 
-    private void Move()
-    {
-        if (gameManager.IsGameOver) return;
-        
+        Vector3 targetPosition = waypoints[currentWaypointIndex];
         transform.position = Vector3.MoveTowards(
-            transform.position, 
-            CurrentWaypoint, 
+            transform.position,
+            targetPosition,
             moveSpeed * Time.deltaTime
         );
-    }
 
-    private void Rotate()
-    {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.flipX = transform.position.x > CurrentWaypoint.x;
-        }
-    }
-
-    private void UpdateWaypoint()
-    {
-        if (currentWaypointIndex < waypoints.Count - 1)
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             currentWaypointIndex++;
-            return;
-        }
-        
-        try
-        {
-            if (!gameManager.IsGameOver)
+            
+            if (currentWaypointIndex >= waypoints.Count)
             {
-                OnEndReached?.Invoke(this);
+                ReachedEndPoint();
             }
         }
-        catch (Exception e)
+    }
+
+    private void ReachedEndPoint()
+    {
+        OnEndReached?.Invoke(this);
+        if (gameManager != null)
         {
-            Debug.LogError($"[Enemy] Error during endpoint handling: {e.Message}");
+            gameManager.HandleEndReached(this);
         }
+        gameObject.SetActive(false);
     }
 
     public void ResetEnemy()
     {
         currentWaypointIndex = 0;
-        if (enemyHealth != null)
+        if (waypoints != null && waypoints.Count > 0)
         {
-            enemyHealth.ResetHealth();
-        }
-        
-        // Set initial sprite if needed
-        if (spriteRenderer != null && enemySprites != null && enemySprites.Count > CurrentWaveIndex)
-        {
-            spriteRenderer.sprite = enemySprites[CurrentWaveIndex];
+            transform.position = waypoints[0];
         }
     }
 
@@ -181,5 +154,26 @@ public class Enemy : MonoBehaviour
     {
         OnEnemyDefeated?.Invoke(this);
         ObjectPooler.ReturnToPool(gameObject);
+    }
+
+    // Method to set waypoints from outside
+    public void SetWaypoints(List<Vector3> newWaypoints)
+    {
+        waypoints = new List<Vector3>(newWaypoints);
+        ResetEnemy();
+    }
+
+    // Optional: Visual debug of waypoints
+    private void OnDrawGizmos()
+    {
+        if (waypoints == null || waypoints.Count == 0) return;
+
+        Gizmos.color = Color.yellow;
+        for (int i = 0; i < waypoints.Count - 1; i++)
+        {
+            Gizmos.DrawLine(waypoints[i], waypoints[i + 1]);
+            Gizmos.DrawWireSphere(waypoints[i], 0.2f);
+        }
+        Gizmos.DrawWireSphere(waypoints[waypoints.Count - 1], 0.2f);
     }
 }

@@ -6,75 +6,70 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public string tag;
+        public string tag = "Enemy";
         public GameObject prefab;
-        public int size;
+        public int size = 10;
     }
 
     public static ObjectPooler Instance;
-    public List<Pool> pools = new List<Pool>();
+    
+    [Header("Pool Configuration")]
+    [SerializeField] private GameObject enemyPrefab; // Direct reference to enemy prefab
+    [SerializeField] private int poolSize = 10;      // Default pool size
+
     private Dictionary<string, List<GameObject>> poolDictionary;
-    private bool isSpawningEnabled = true;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            InitializePool();
         }
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void InitializePool()
+    {
+        if (enemyPrefab == null)
+        {
+            Debug.LogError("Enemy Prefab not assigned to ObjectPooler!");
             return;
         }
 
         poolDictionary = new Dictionary<string, List<GameObject>>();
-        InitializePools();
-    }
+        
+        // Create enemy pool
+        List<GameObject> enemyPool = new List<GameObject>();
+        GameObject poolParent = new GameObject("Pool-Enemy");
+        poolParent.transform.parent = transform;
 
-    private void InitializePools()
-    {
-        foreach (Pool pool in pools)
+        for (int i = 0; i < poolSize; i++)
         {
-            if (pool.prefab == null)
-            {
-                Debug.LogError($"Prefab for pool {pool.tag} is not assigned!");
-                continue;
-            }
-
-            List<GameObject> objectPool = new List<GameObject>();
-            GameObject poolParent = new GameObject($"Pool-{pool.tag}");
-            poolParent.transform.parent = transform;
-
-            for (int i = 0; i < pool.size; i++)
-            {
-                GameObject obj = Instantiate(pool.prefab, poolParent.transform);
-                obj.SetActive(false);
-                objectPool.Add(obj);
-            }
-
-            poolDictionary.Add(pool.tag, objectPool);
-            Debug.Log($"Created pool: {pool.tag} with {pool.size} objects");
+            GameObject obj = Instantiate(enemyPrefab, poolParent.transform);
+            obj.SetActive(false);
+            enemyPool.Add(obj);
         }
 
-        isSpawningEnabled = true;
+        poolDictionary.Add("Enemy", enemyPool);
+        Debug.Log($"Created Enemy pool with {poolSize} objects");
     }
 
     public GameObject GetInstanceFromPool(string tag, Vector3 position, Quaternion rotation)
     {
-        if (!isSpawningEnabled)
-        {
-            return null;
-        }
-
         if (!poolDictionary.ContainsKey(tag))
         {
-            Debug.LogError($"Pool with tag {tag} doesn't exist. Make sure to set up the pool in the Inspector!");
+            Debug.LogError($"Pool with tag {tag} doesn't exist!");
             return null;
         }
 
-        foreach (GameObject obj in poolDictionary[tag])
+        List<GameObject> pool = poolDictionary[tag];
+        
+        // Find inactive object in pool
+        foreach (GameObject obj in pool)
         {
             if (!obj.activeInHierarchy)
             {
@@ -85,41 +80,17 @@ public class ObjectPooler : MonoBehaviour
             }
         }
 
-        return null;
-    }
-
-    public void StopSpawning()
-    {
-        isSpawningEnabled = false;
-        DeactivateAllObjects();
-    }
-
-    public void ResumeSpawning()
-    {
-        isSpawningEnabled = true;
-    }
-
-    private void DeactivateAllObjects()
-    {
-        if (poolDictionary == null) return;
-
-        foreach (var pool in poolDictionary.Values)
-        {
-            foreach (GameObject obj in pool)
-            {
-                if (obj != null && obj.activeInHierarchy)
-                {
-                    obj.SetActive(false);
-                }
-            }
-        }
+        // If no inactive object found, create new one
+        GameObject newObj = Instantiate(enemyPrefab, position, rotation);
+        pool.Add(newObj);
+        return newObj;
     }
 
     public List<GameObject> GetAllActiveEnemies()
     {
         List<GameObject> activeEnemies = new List<GameObject>();
         
-        if (poolDictionary != null && poolDictionary.ContainsKey("Enemy"))
+        if (poolDictionary.ContainsKey("Enemy"))
         {
             foreach (GameObject enemy in poolDictionary["Enemy"])
             {
@@ -138,14 +109,6 @@ public class ObjectPooler : MonoBehaviour
         if (obj != null)
         {
             obj.SetActive(false);
-        }
-    }
-
-    public void RemoveFromActiveEnemies(GameObject enemy)
-    {
-        if (enemy != null)
-        {
-            ReturnToPool(enemy);
         }
     }
 }
