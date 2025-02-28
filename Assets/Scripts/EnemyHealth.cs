@@ -7,7 +7,42 @@ public class EnemyHealth : MonoBehaviour
     public static Action<Enemy> OnEnemyKilled;
     public static Action<Enemy> OnEnemyHit;
 
-    [SerializeField] private GameObject healthBarPrefab; // Health bar prefab
+    private bool isDestroyed = false;
+    private int hitPoints = 100; // Set initial health points as needed
+
+    public void TakeDamage(int dmg)
+    {
+        // Reduce health by damage
+        hitPoints -= dmg;
+
+        // Check if health reaches 0 or below and if not already destroyed
+        if (hitPoints <= 0 && !isDestroyed)
+        {
+            // Invoke the Spawner's onDestroy event if it's not null
+            if (Spawner.onDestroy != null)
+            {
+                Spawner.onDestroy.Invoke();
+            }
+
+            // Set the destroyed flag to true
+            isDestroyed = true;
+
+            // Trigger the "OnEnemyKilled" event (can be subscribed to by other systems)
+            OnEnemyKilled?.Invoke(GetComponent<Enemy>());
+
+            // Optionally, trigger the "OnEnemyHit" event when damage is taken (even if the enemy dies)
+            OnEnemyHit?.Invoke(GetComponent<Enemy>());
+
+            // Destroy the enemy GameObject
+            Destroy(gameObject);
+        }
+        else
+        {
+            // If the enemy is still alive, invoke the "OnEnemyHit" event
+            OnEnemyHit?.Invoke(GetComponent<Enemy>());
+        }
+    }
+[SerializeField] private GameObject healthBarPrefab; // Health bar prefab
     [SerializeField] private Transform barPosition; // Position where the health bar should appear
     [SerializeField] private float initialHealth = 10f; // Starting health
     [SerializeField] private float maxHealth = 10f; // Max health
@@ -70,11 +105,7 @@ public class EnemyHealth : MonoBehaviour
     internal void DealDamage(float damage)
     {
         // Ensure that we don't deal damage if the health bar or enemy is not initialized
-        if (_enemy == null || _healthBar == null)
-        {
-            Debug.LogError("Enemy or health bar is null in DealDamage!");
-            return;
-        }
+        if (_enemy == null || _healthBar == null) return;
 
         // Decrease current health by damage amount
         CurrentHealth -= damage;
@@ -85,8 +116,7 @@ public class EnemyHealth : MonoBehaviour
         // If health reaches 0, invoke the "OnEnemyKilled" event
         if (CurrentHealth <= 0f)
         {
-            Debug.Log("Enemy killed: " + gameObject.name);
-            OnEnemyKilled?.Invoke(_enemy); // Invoke the OnEnemyKilled event
+            OnEnemyKilled?.Invoke(_enemy);
             KillEnemy(); // Kill the enemy by deactivating it
         }
 
@@ -111,7 +141,6 @@ public class EnemyHealth : MonoBehaviour
         // Notify ObjectPooler to remove from the active pool
         if (_objectPooler != null)
         {
-            Debug.Log("Returning enemy to pool: " + gameObject.name);
             _objectPooler.RemoveFromActiveEnemies(_enemy.gameObject); // Method to remove it from pooler
         }
 
@@ -129,39 +158,6 @@ public class EnemyHealth : MonoBehaviour
         if (_healthBar != null)
         {
             _healthBar.fillAmount = 1f; // Reset health bar fill amount
-        }
-    }
-
-    // Called when the enemy is deactivated, unsubscribe from events
-    private void OnDisable()
-    {
-        OnEnemyKilled -= HandleEnemyKilled;
-        OnEnemyHit -= HandleEnemyHit;
-    }
-
-    // Called when the enemy is reactivated, subscribe to events
-    private void OnEnable()
-    {
-        // Subscribe to events when the enemy is reactivated
-        OnEnemyKilled += HandleEnemyKilled;
-        OnEnemyHit += HandleEnemyHit;
-    }
-
-    private void HandleEnemyKilled(Enemy enemy)
-    {
-        if (enemy == _enemy)
-        {
-            Debug.Log("Handling enemy kill: " + enemy.gameObject.name);
-            // You can handle any additional logic here, like resetting states
-        }
-    }
-
-    private void HandleEnemyHit(Enemy enemy)
-    {
-        if (enemy == _enemy)
-        {
-            Debug.Log("Enemy hit: " + enemy.gameObject.name);
-            // Handle enemy hit logic here
         }
     }
 }

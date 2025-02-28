@@ -1,6 +1,7 @@
-using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class Enemy : MonoBehaviour
     public List<Vector3> Waypoints;
 
     // Reference to the different sprites for different enemy waves
-    public List<Sprite> EnemySprites;
+    public List<Sprite> EnemySprites; // List of sprites to be used for different waves
 
     // Variable to track the current wave
     public int CurrentWaveIndex = 0;
@@ -76,25 +77,19 @@ public class Enemy : MonoBehaviour
 
     private void SubscribeToEndEvent()
     {
-        // Ensure the gameManager is assigned
-        if (gameManager != null)
+        // Subscribe to the static event
+        if (OnEndReached != null)
         {
-            Debug.Log("Subscribing to OnEndReached event in GameManager for " + gameObject.name);
-            OnEndReached += gameManager.HandleEndReached;
-        }
-        else
-        {
-            Debug.LogError("GameManager is not assigned in Enemy script!");
+            OnEndReached += gameManager.HandleEndReached;  // Ensure gameManager is listening to this event
         }
     }
 
     private void UnsubscribeFromEndEvent()
     {
         // Unsubscribe when the enemy is destroyed
-        if (gameManager != null)
+        if (OnEndReached != null)
         {
-            Debug.Log("Unsubscribing from OnEndReached event for " + gameObject.name);
-            OnEndReached -= gameManager.HandleEndReached;
+            OnEndReached -= gameManager.HandleEndReached;  // Ensure gameManager is no longer listening
         }
     }
 
@@ -102,12 +97,12 @@ public class Enemy : MonoBehaviour
     {
         if (gameManager == null || enemyHealth == null)
         {
-            return; // If gameManager or enemyHealth is null, return
+            // If gameManager or enemyHealth is null, we should stop updating and return.
+            return;
         }
 
         Move();
         Rotate();
-
         if (CurrentPointPositionReached())
         {
             UpdateCurrentPointIndex();
@@ -147,7 +142,8 @@ public class Enemy : MonoBehaviour
 
     private bool CurrentPointPositionReached()
     {
-        return (transform.position - CurrentPointPosition).magnitude < 0.1f;
+        float distanceToNextPointPosition = (transform.position - CurrentPointPosition).magnitude;
+        return distanceToNextPointPosition < 0.1f;
     }
 
     private void UpdateCurrentPointIndex()
@@ -165,16 +161,18 @@ public class Enemy : MonoBehaviour
 
     public void EndPointReached()
     {
-        // Ensure event is triggered before returning to pool
+        // Check if the GameManager is assigned
         if (gameManager != null)
         {
-            Debug.Log("Invoking OnEndReached for " + gameObject.name);
-            OnEndReached?.Invoke(this); // Trigger the event
+            Debug.Log("GameManager found. Proceeding with EndPointReached.");
+
+            // Correctly invoke the static event using the class name (Enemy)
+            Enemy.OnEndReached?.Invoke(this); // Invoke the static event correctly
 
             // Reset health after reaching the endpoint
             enemyHealth.ResetHealth();
 
-            // Optionally, return the enemy to the pool
+            // Optionally, return the enemy to the pool (if ObjectPooler is available)
             ObjectPooler.ReturnToPool(gameObject);
         }
         else
@@ -183,4 +181,3 @@ public class Enemy : MonoBehaviour
         }
     }
 }
-

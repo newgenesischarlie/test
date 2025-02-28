@@ -1248,6 +1248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 514271311}
   - component: {fileID: 514271310}
+  - component: {fileID: 514271312}
   m_Layer: 0
   m_Name: Plot
   m_TagString: Untagged
@@ -1322,6 +1323,20 @@ Transform:
   m_Father: {fileID: 830799066}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &514271312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514271309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sr: {fileID: 514271310}
+  hoverColor: {r: 0.6427109, g: 0.79360205, b: 0.9528302, a: 0.6117647}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2586,10 +2601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab17c740b6dc4ca495c428deeee5adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGameOver: 0
+  allEnemies: []
   objectPooler: {fileID: 1511321342}
-  finalWaypointCoordinates: {x: 7.001664, y: 0.3507665, z: 0.3507665}
-  winScreen: {fileID: 736642117}
-  loseScreen: {fileID: 642786738}
 --- !u!1 &1174767008
 GameObject:
   m_ObjectHideFlags: 0
@@ -3875,7 +3889,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1599082097
 MonoBehaviour:
   m_ObjectHideFlags: 0

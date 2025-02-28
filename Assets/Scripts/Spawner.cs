@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+     public static Action onDestroy;  // Event to be invoked when an enemy is destroyed
     [Header("Settings")]
     [SerializeField] private int enemyCount = 10;
     [SerializeField] private GameObject testGO;
@@ -18,7 +19,7 @@ public class Spawner : MonoBehaviour
     private ObjectPooler _pooler;
 
     // Define the WaveCompleted event
-  //  public static event Action OnWaveCompleted;
+    //  public static event Actioßn OnWaveCompleted;
 
     private void Start()
     {
@@ -50,13 +51,13 @@ public class Spawner : MonoBehaviour
         newInstance.SetActive(true);
     }
 
-  //  private void WaveCompleted()
-  //  {
-   //     // Notify listeners (e.g., LevelManager) that the wave is complete
-  //      Debug.Log("Wave " + (enemyCount / _enemiesSpawned) + " completed!");
-   //     OnWaveCompleted?.Invoke(); // Trigger the WaveCompleted event
+    //  private void WaveCompleted()
+    //  {
+    //     // Notify listeners (e.g., LevelManager) that the wave is complete
+    //      Debug.Log("Wave " + (enemyCount / _enemiesSpawned) + " completed!");
+    //     OnWaveCompleted?.Invoke(); // Trigger the WaveCompleted event
 
-        // Reset the spawn count for the next wave
-  //      _enemiesSpawned = 0;
-  //  }
+    // Reset the spawn count for the next wave
+    //      _enemiesSpawned = 0;
+    //  }
 }
