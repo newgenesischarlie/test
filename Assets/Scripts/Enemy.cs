@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IPooledObject
 {
     #region Events
     public static event Action<Enemy> OnEndReached;
@@ -143,7 +143,7 @@ public class Enemy : MonoBehaviour
 
     private void HandleEnemyDefeated()
     {
-        if (!gameManager.isGameOver)
+        if (!gameManager.IsGameOver)
         {
             OnEnemyDefeated?.Invoke(this);
             ObjectPooler.ReturnToPool(gameObject);
@@ -165,7 +165,7 @@ public class Enemy : MonoBehaviour
 
     private void Move()
     {
-        if (gameManager.isGameOver) return;
+        if (gameManager.IsGameOver) return;
         
         transform.position = Vector3.MoveTowards(
             transform.position, 
@@ -192,7 +192,7 @@ public class Enemy : MonoBehaviour
         
         try
         {
-            if (!gameManager.isGameOver)
+            if (!gameManager.IsGameOver)
             {
                 OnEndReached?.Invoke(this);
             }
@@ -201,6 +201,28 @@ public class Enemy : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"[Enemy] Error during endpoint handling: {e.Message}");
+        }
+    }
+
+    public void OnObjectSpawn()
+    {
+        // Reset enemy state when spawned
+        currentWaypointIndex = 0;
+        // Any other initialization code...
+    }
+
+    public void ResetEnemy()
+    {
+        currentWaypointIndex = 0;
+        if (enemyHealth != null)
+        {
+            enemyHealth.ResetHealth();
+        }
+        
+        // Set initial sprite if needed
+        if (spriteRenderer != null && enemySprites != null && enemySprites.Count > CurrentWaveIndex)
+        {
+            spriteRenderer.sprite = enemySprites[CurrentWaveIndex];
         }
     }
 }

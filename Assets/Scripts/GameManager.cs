@@ -3,17 +3,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public bool isGameOver = false;
-    private bool isGameStarted = false;
+    #region Serialized Fields
+    [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject loseScreen;
+    [SerializeField] private GameObject gameplayContainer; // Parent object containing all gameplay elements
+    [SerializeField] private ObjectPooler objectPooler;
+    
+    // Optional: Specific objects to hide/show if not under gameplayContainer
+    [SerializeField] private GameObject[] gameplayObjects;
+    #endregion
 
-    [SerializeField] private GameObject winScreen; // Reference to the win screen UI panel
-    [SerializeField] private GameObject loseScreen; // Reference to the lose screen UI panel
+    #region Public Properties
+    public bool IsGameOver { get; private set; }  // Changed to property with public getter
+    #endregion
 
-    [SerializeField] private List<GameObject> allEnemies = new List<GameObject>(); // Store all active enemies
+    #region Private Fields
+    private bool isGameStarted;
+    private List<GameObject> allEnemies = new List<GameObject>();
+    #endregion
 
-    public ObjectPooler objectPooler; // Reference to the ObjectPooler
-
-    void Start()
+    private void Start()
     {
         InitializeGame();
         SubscribeToEvents();
@@ -38,6 +47,13 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGame()
     {
+        // Initialize UI - ensure screens start hidden
+        if (winScreen != null) winScreen.SetActive(false);
+        if (loseScreen != null) loseScreen.SetActive(false);
+        
+        // Ensure gameplay elements are visible
+        ShowGameplayElements(true);
+
         // Initialize object pooler
         if (objectPooler == null)
         {
@@ -49,18 +65,35 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Initialize UI - ensure screens start hidden
-        if (winScreen != null) winScreen.SetActive(false);
-        if (loseScreen != null) loseScreen.SetActive(false);
-
-        // Start game
         isGameStarted = true;
-        isGameOver = false;
+        IsGameOver = false;
+        objectPooler.ResumeSpawning(); // Enable spawning when game starts
+    }
+
+    private void ShowGameplayElements(bool show)
+    {
+        // Hide/Show main gameplay container if assigned
+        if (gameplayContainer != null)
+        {
+            gameplayContainer.SetActive(show);
+        }
+
+        // Hide/Show individual gameplay objects if assigned
+        if (gameplayObjects != null)
+        {
+            foreach (GameObject obj in gameplayObjects)
+            {
+                if (obj != null && obj != winScreen && obj != loseScreen)
+                {
+                    obj.SetActive(show);
+                }
+            }
+        }
     }
 
     void Update()
     {
-        if (isGameOver) return; // If the game is over, do nothing
+        if (IsGameOver) return; // If the game is over, do nothing
 
         // Add active enemies to the list
         AddActiveEnemiesToList();
@@ -110,14 +143,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void EndGame()
+    {
+        IsGameOver = true;
+        ShowGameplayElements(false);
+        
+        // Stop the object pooler
+        if (objectPooler != null)
+        {
+            objectPooler.StopSpawning();
+        }
+    }
+
     public void HandleEndReached(Enemy enemy)
     {
-        if (isGameOver) return;
+        if (IsGameOver) return;
         
         Debug.Log("Enemy reached end point - Game Over!");
-        isGameOver = true;
+        EndGame();
         
-        // Show lose screen when enemy reaches final waypoint
+        // Show lose screen
         if (loseScreen != null)
         {
             loseScreen.SetActive(true);
@@ -126,15 +171,37 @@ public class GameManager : MonoBehaviour
 
     public void HandleEnemyDefeated(Enemy enemy)
     {
-        if (isGameOver) return;
+        if (IsGameOver) return;
         
         Debug.Log("Enemy defeated - You Win!");
-        isGameOver = true;
+        EndGame();
         
-        // Show win screen when enemy is defeated
+        // Show win screen
         if (winScreen != null)
         {
             winScreen.SetActive(true);
         }
+    }
+
+    // Optional: Method to restart the game
+    public void RestartGame()
+    {
+        // Hide end screens
+        if (winScreen != null) winScreen.SetActive(false);
+        if (loseScreen != null) loseScreen.SetActive(false);
+
+        // Show gameplay elements
+        ShowGameplayElements(true);
+
+        // Reset game state
+        IsGameOver = false;
+        
+        // Resume object pooling
+        if (objectPooler != null)
+        {
+            objectPooler.ResumeSpawning();
+        }
+
+        // Additional restart logic here
     }
 }
