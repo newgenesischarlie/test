@@ -146,10 +146,10 @@ public class Enemy : MonoBehaviour
             Debug.Log("GameManager found. Proceeding with EndPointReached.");
 
             // Check if the OnEndReached event is subscribed to
-            if (OnEndReached != null)
+            if (Enemy.OnEndReached != null)
             {
                 Debug.Log("Invoking OnEndReached event.");
-                OnEndReached.Invoke(this); // This will call HandleEndReached in GameManager
+                Enemy.OnEndReached.Invoke(this); // This invokes the static event correctly
             }
             else
             {
@@ -166,17 +166,8 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("GameManager is null when reaching endpoint!");
         }
-
-        if (OnEndReached != null)
-        {
-            OnEndReached.Invoke(this);  // 'this' refers to the current instance of the Enemy
-        }
-        else
-        {
-            Debug.LogWarning("OnEndReached event is not subscribed to.");
-        }
-
     }
+
 
 
     // Public method to get the EnemyHealth component

@@ -111,18 +111,13 @@ public class GameManager : MonoBehaviour
 
     void SubscribeToEnemyEndEvent()
     {
-        // Get all active enemies from the object pooler
-        foreach (GameObject enemy in objectPooler.GetAllActiveEnemies())
+        // Subscribe to the OnEndReached event for a specific enemy
+        Enemy enemyScript = enemy.GetComponent<Enemy>();
+        if (enemyScript != null)
         {
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            if (enemyScript != null)
-            {
-                // Subscribe to the static event using the class name
-                Enemy.OnEndReached += HandleEndReached;
-            }
+            enemyScript.OnEndReached += HandleEndReached; // Corrected to subscribe for individual enemies
         }
     }
-
 
     void HandleEndReached(Enemy enemy)
     {
@@ -142,13 +137,14 @@ public class GameManager : MonoBehaviour
 
     void OnDestroy()
     {
+        // Unsubscribe from all enemies in the pool
         foreach (GameObject enemy in objectPooler.GetAllActiveEnemies())
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript != null)
             {
-                // Unsubscribe from the static event using the class name
-                Enemy.OnEndReached -= HandleEndReached;
+                // Unsubscribe from the OnEndReached event
+                enemyScript.OnEndReached -= HandleEndReached;
             }
         }
     }
@@ -167,11 +163,7 @@ public class GameManager : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefab);
 
         // Subscribe to the OnEndReached event after instantiating the enemy
-        Enemy enemyScript = newEnemy.GetComponent<Enemy>();
-        if (enemyScript != null)
-        {
-            enemyScript.OnEndReached += HandleEndReached; // Subscribe to event
-        }
+        SubscribeToEnemyEndEvent(newEnemy); // Ensure the event handler is added here
 
         // Optionally, add the enemy to the list if needed
         allEnemies.Add(newEnemy);
