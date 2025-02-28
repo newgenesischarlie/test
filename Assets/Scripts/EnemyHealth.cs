@@ -14,10 +14,13 @@ public class EnemyHealth : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public event System.Action OnDeath;
 
     private ObjectPooler objectPooler;
 =======
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
     public void TakeDamage(int dmg)
@@ -75,6 +78,9 @@ public class EnemyHealth : MonoBehaviour
             Destroy(gameObject);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of d0bcb54 (fixedgameover)
+=======
 >>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
@@ -197,6 +203,9 @@ public class EnemyHealth : MonoBehaviour
         }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of d0bcb54 (fixedgameover)
+=======
 >>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)

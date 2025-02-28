@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         InitializeGame();
         objectPooler = ObjectPooler.Instance;
         SubscribeToEvents();
@@ -71,6 +72,8 @@ public class GameManager : MonoBehaviour
 >>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
         // Ensure the object pooler is assigned
         if (objectPooler == null)
         {
@@ -100,6 +103,7 @@ public class GameManager : MonoBehaviour
         }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of d0bcb54 (fixedgameover)
     }
 
@@ -120,6 +124,8 @@ public class GameManager : MonoBehaviour
         // Hide screens initially
         if (winScreen != null) winScreen.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(false);
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
 =======
@@ -171,9 +177,12 @@ public class GameManager : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (IsGameOver) return;
         ShowGameOver(false);
 =======
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
 =======
@@ -202,6 +211,7 @@ public class GameManager : MonoBehaviour
         if (winScreen != null)
         {
             winScreen.SetActive(true); // Activate the win screen UI
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         }
@@ -346,6 +356,24 @@ public class GameManager : MonoBehaviour
     }
 
 >>>>>>> parent of d0bcb54 (fixedgameover)
+=======
+        }
+    }
+
+    void LoseGame()
+    {
+        // Game over logic here
+        Debug.Log("Game Over!");
+        isGameOver = true;
+
+        // Show the lose screen (game over screen)
+        if (loseScreen != null)
+        {
+            loseScreen.SetActive(true); // Activate the lose screen UI
+        }
+    }
+
+>>>>>>> parent of d0bcb54 (fixedgameover)
     void StartGame()
     {
         // Game start logic here
@@ -353,6 +381,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Started!");
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of d0bcb54 (fixedgameover)
+=======
 >>>>>>> parent of d0bcb54 (fixedgameover)
 =======
 >>>>>>> parent of d0bcb54 (fixedgameover)
