@@ -15,33 +15,47 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Ensure the object pooler is assigned
+        InitializeGame();
+        SubscribeToEvents();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeFromEvents();
+    }
+
+    private void SubscribeToEvents()
+    {
+        Enemy.OnEndReached += HandleEndReached;
+        Enemy.OnEnemyDefeated += HandleEnemyDefeated;
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        Enemy.OnEndReached -= HandleEndReached;
+        Enemy.OnEnemyDefeated -= HandleEnemyDefeated;
+    }
+
+    private void InitializeGame()
+    {
+        // Initialize object pooler
         if (objectPooler == null)
         {
             objectPooler = ObjectPooler.Instance;
-
+            if (objectPooler == null)
+            {
+                Debug.LogError("ObjectPooler is not assigned or found in the scene.");
+                return;
+            }
         }
 
-        if (objectPooler == null)
-        {
-            Debug.LogError("ObjectPooler is not assigned or found in the scene.");
-        }
+        // Initialize UI - ensure screens start hidden
+        if (winScreen != null) winScreen.SetActive(false);
+        if (loseScreen != null) loseScreen.SetActive(false);
 
-        // Start game simulation if required
-        if (!isGameStarted)
-        {
-            StartGame();
-        }
-
-        // Hide the win and lose screens at the start
-        if (winScreen != null)
-        {
-            winScreen.SetActive(false);
-        }
-        if (loseScreen != null)
-        {
-            loseScreen.SetActive(false);
-        }
+        // Start game
+        isGameStarted = true;
+        isGameOver = false;
     }
 
     void Update()
@@ -98,50 +112,29 @@ public class GameManager : MonoBehaviour
 
     public void HandleEndReached(Enemy enemy)
     {
-        // Check if enemy is null
-        if (enemy == null)
-        {
-            Debug.LogError("Enemy is null in HandleEndReached! Please check the event subscription and enemy state.");
-            return;
-        }
-
-        Debug.Log("Enemy reached the end: " + enemy.gameObject.name);
-
-        // Proceed with the logic (for example, calling LoseGame or WinGame)
-        // Example condition: Lose if an enemy reaches the end
-        LoseGame();
-    }
-
-    void WinGame()
-    {
-        // Game won logic here
-        Debug.Log("You Win!");
+        if (isGameOver) return;
+        
+        Debug.Log("Enemy reached end point - Game Over!");
         isGameOver = true;
-
-        // Show the win screen (game over screen)
-        if (winScreen != null)
-        {
-            winScreen.SetActive(true); // Activate the win screen UI
-        }
-    }
-
-    void LoseGame()
-    {
-        // Game over logic here
-        Debug.Log("Game Over!");
-        isGameOver = true;
-
-        // Show the lose screen (game over screen)
+        
+        // Show lose screen when enemy reaches final waypoint
         if (loseScreen != null)
         {
-            loseScreen.SetActive(true); // Activate the lose screen UI
+            loseScreen.SetActive(true);
         }
     }
 
-    void StartGame()
+    public void HandleEnemyDefeated(Enemy enemy)
     {
-        // Game start logic here
-        isGameStarted = true;
-        Debug.Log("Game Started!");
+        if (isGameOver) return;
+        
+        Debug.Log("Enemy defeated - You Win!");
+        isGameOver = true;
+        
+        // Show win screen when enemy is defeated
+        if (winScreen != null)
+        {
+            winScreen.SetActive(true);
+        }
     }
 }

@@ -10,6 +10,8 @@ public class EnemyHealth : MonoBehaviour
     private bool isDestroyed = false;
     private int hitPoints = 100; // Set initial health points as needed
 
+    public event System.Action OnDeath;
+
     public void TakeDamage(int dmg)
     {
         // Reduce health by damage
@@ -35,6 +37,9 @@ public class EnemyHealth : MonoBehaviour
 
             // Destroy the enemy GameObject
             Destroy(gameObject);
+
+            // Call the Die method when health reaches 0
+            Die();
         }
         else
         {
@@ -42,7 +47,8 @@ public class EnemyHealth : MonoBehaviour
             OnEnemyHit?.Invoke(GetComponent<Enemy>());
         }
     }
-[SerializeField] private GameObject healthBarPrefab; // Health bar prefab
+
+    [SerializeField] private GameObject healthBarPrefab; // Health bar prefab
     [SerializeField] private Transform barPosition; // Position where the health bar should appear
     [SerializeField] private float initialHealth = 10f; // Starting health
     [SerializeField] private float maxHealth = 10f; // Max health
@@ -159,5 +165,11 @@ public class EnemyHealth : MonoBehaviour
         {
             _healthBar.fillAmount = 1f; // Reset health bar fill amount
         }
+    }
+
+    // Call this when health reaches 0
+    private void Die()
+    {
+        OnDeath?.Invoke();
     }
 }

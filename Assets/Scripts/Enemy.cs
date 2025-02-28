@@ -1,185 +1,206 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour
 {
-    // Make this event static so it can be subscribed to without an instance
+    #region Events
     public static event Action<Enemy> OnEndReached;
+    public static event Action<Enemy> OnEnemyDefeated;
+    #endregion
 
-    // Reference to the GameManager
-    public GameManager gameManager;
+    #region Serialized Fields
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private List<Sprite> enemySprites = new List<Sprite>();
+    [SerializeField] private List<Vector3> waypoints = new List<Vector3>();
+    #endregion
 
-    // EnemyHealth script reference
-    public EnemyHealth enemyHealth;
+    #region Component References
+    private GameManager gameManager;
+    private EnemyHealth enemyHealth;
+    private SpriteRenderer spriteRenderer;
+    #endregion
 
-    // Movement speed
-    public float MoveSpeed = 3f;
-
-    // Waypoint system
-    private int _currentWaypointIndex = 0;
-
-    // Sprite handling
-    private SpriteRenderer _spriteRenderer;
-
-    // List of waypoints
-    public List<Vector3> Waypoints;
-
-    // Reference to the different sprites for different enemy waves
-    public List<Sprite> EnemySprites; // List of sprites to be used for different waves
-
-    // Variable to track the current wave
-    public int CurrentWaveIndex = 0;
+    #region State
+    private int currentWaypointIndex;
+    private bool isInitialized;
+    public int CurrentWaveIndex { get; set; }
+    #endregion
 
     private void Start()
     {
-        // Initialize components
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        enemyHealth = GetComponent<EnemyHealth>();
-
-        // Check if the enemyHealth component exists
-        if (enemyHealth == null)
+        isInitialized = InitializeComponents();
+        if (isInitialized)
         {
-            Debug.LogError("EnemyHealth component is missing on this enemy!");
-            return;
-        }
-
-        // Set the sprite based on the wave index
-        if (EnemySprites.Count > 0 && CurrentWaveIndex < EnemySprites.Count)
-        {
-            _spriteRenderer.sprite = EnemySprites[CurrentWaveIndex];
-        }
-
-        // Initialize health and waypoints
-        enemyHealth.ResetHealth();
-
-        // Check if the gameManager is assigned and find it if not
-        if (gameManager == null)
-        {
-            gameManager = FindObjectOfType<GameManager>();
-        }
-
-        if (gameManager == null)
-        {
-            Debug.LogError("GameManager reference is missing! Make sure it is assigned.");
-        }
-
-        // Subscribe to the OnEndReached event
-        SubscribeToEndEvent();
-    }
-
-    private void OnDestroy()
-    {
-        // Unsubscribe from the event when the enemy is destroyed
-        UnsubscribeFromEndEvent();
-    }
-
-    private void SubscribeToEndEvent()
-    {
-        // Subscribe to the static event
-        if (OnEndReached != null)
-        {
-            OnEndReached += gameManager.HandleEndReached;  // Ensure gameManager is listening to this event
+            SetupEnemy();
+            SubscribeToEvents();
         }
     }
 
-    private void UnsubscribeFromEndEvent()
+    private void OnEnable()
     {
-        // Unsubscribe when the enemy is destroyed
-        if (OnEndReached != null)
+        if (gameManager != null)
         {
-            OnEndReached -= gameManager.HandleEndReached;  // Ensure gameManager is no longer listening
+            OnEndReached += gameManager.HandleEndReached;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (gameManager != null)
+        {
+            OnEndReached -= gameManager.HandleEndReached;
+            UnsubscribeFromEvents();
         }
     }
 
     private void Update()
     {
-        if (gameManager == null || enemyHealth == null)
-        {
-            // If gameManager or enemyHealth is null, we should stop updating and return.
-            return;
-        }
+        if (!isInitialized || waypoints.Count == 0) return;
 
         Move();
         Rotate();
-        if (CurrentPointPositionReached())
+        
+        if (Vector3.Distance(transform.position, CurrentWaypoint) < 0.1f)
         {
-            UpdateCurrentPointIndex();
+            UpdateWaypoint();
+        }
+    }
+
+    private bool InitializeComponents()
+    {
+        try
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            enemyHealth = GetComponent<EnemyHealth>();
+            gameManager = FindObjectOfType<GameManager>();
+
+            if (spriteRenderer == null)
+            {
+                throw new MissingComponentException("SpriteRenderer not found on enemy");
+            }
+            if (enemyHealth == null)
+            {
+                throw new MissingComponentException("EnemyHealth not found on enemy");
+            }
+            if (gameManager == null)
+            {
+                throw new MissingComponentException("GameManager not found in scene");
+            }
+            if (waypoints.Count == 0)
+            {
+                throw new InvalidOperationException("No waypoints assigned to enemy");
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Enemy] Initialization failed on {gameObject.name}: {e.Message}");
+            return false;
+        }
+    }
+
+    private void SetupEnemy()
+    {
+        try
+        {
+            if (enemySprites.Count > CurrentWaveIndex)
+            {
+                spriteRenderer.sprite = enemySprites[CurrentWaveIndex];
+            }
+            else
+            {
+                Debug.LogWarning($"[Enemy] No sprite available for wave {CurrentWaveIndex}");
+            }
+            
+            enemyHealth.ResetHealth();
+            currentWaypointIndex = 0;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Enemy] Setup failed on {gameObject.name}: {e.Message}");
+            isInitialized = false;
+        }
+    }
+
+    private void SubscribeToEvents()
+    {
+        if (enemyHealth != null)
+        {
+            // Monitor the enemy's health for changes
+            enemyHealth.OnDeath += HandleEnemyDefeated;
+        }
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        if (enemyHealth != null)
+        {
+            enemyHealth.OnDeath -= HandleEnemyDefeated;
+        }
+    }
+
+    private void HandleEnemyDefeated()
+    {
+        if (!gameManager.isGameOver)
+        {
+            OnEnemyDefeated?.Invoke(this);
+            ObjectPooler.ReturnToPool(gameObject);
+        }
+    }
+
+    private Vector3 CurrentWaypoint
+    {
+        get
+        {
+            if (currentWaypointIndex >= waypoints.Count)
+            {
+                Debug.LogError($"[Enemy] Waypoint index out of range: {currentWaypointIndex}");
+                return transform.position;
+            }
+            return waypoints[currentWaypointIndex];
         }
     }
 
     private void Move()
     {
-        // Move the enemy towards the current waypoint
-        transform.position = Vector3.MoveTowards(transform.position, CurrentPointPosition, MoveSpeed * Time.deltaTime);
+        if (gameManager.isGameOver) return;
+        
+        transform.position = Vector3.MoveTowards(
+            transform.position, 
+            CurrentWaypoint, 
+            moveSpeed * Time.deltaTime
+        );
     }
 
     private void Rotate()
     {
-        // Flip sprite based on movement direction
-        if (transform.position.x < CurrentPointPosition.x)
+        if (spriteRenderer != null)
         {
-            _spriteRenderer.flipX = false;
-        }
-        else
-        {
-            _spriteRenderer.flipX = true;
+            spriteRenderer.flipX = transform.position.x > CurrentWaypoint.x;
         }
     }
 
-    private Vector3 CurrentPointPosition
+    private void UpdateWaypoint()
     {
-        get
+        if (currentWaypointIndex < waypoints.Count - 1)
         {
-            if (Waypoints.Count > 0)
+            currentWaypointIndex++;
+            return;
+        }
+        
+        try
+        {
+            if (!gameManager.isGameOver)
             {
-                return Waypoints[_currentWaypointIndex];
+                OnEndReached?.Invoke(this);
             }
-            return transform.position; // Default to current position if no waypoints
-        }
-    }
-
-    private bool CurrentPointPositionReached()
-    {
-        float distanceToNextPointPosition = (transform.position - CurrentPointPosition).magnitude;
-        return distanceToNextPointPosition < 0.1f;
-    }
-
-    private void UpdateCurrentPointIndex()
-    {
-        int lastWaypointIndex = Waypoints.Count - 1;
-        if (_currentWaypointIndex < lastWaypointIndex)
-        {
-            _currentWaypointIndex++;
-        }
-        else
-        {
-            EndPointReached();
-        }
-    }
-
-    public void EndPointReached()
-    {
-        // Check if the GameManager is assigned
-        if (gameManager != null)
-        {
-            Debug.Log("GameManager found. Proceeding with EndPointReached.");
-            Debug.Log("GameManager found. Proceeding with EndPointReached.");
-
-
-            // Correctly invoke the static event using the class name (Enemy)
-            Enemy.OnEndReached?.Invoke(this); // Invoke the static event correctly
-
-            // Reset health after reaching the endpoint
-            enemyHealth.ResetHealth();
-
-            // Optionally, return the enemy to the pool (if ObjectPooler is available)
             ObjectPooler.ReturnToPool(gameObject);
         }
-        else
+        catch (Exception e)
         {
-            Debug.LogError("GameManager is null when reaching endpoint!");
+            Debug.LogError($"[Enemy] Error during endpoint handling: {e.Message}");
         }
     }
 }
