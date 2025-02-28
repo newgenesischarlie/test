@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         InitializeGame();
         objectPooler = ObjectPooler.Instance;
         SubscribeToEvents();
@@ -65,6 +66,8 @@ public class GameManager : MonoBehaviour
         if (loseScreen != null) loseScreen.SetActive(false);
         if (gameplayContainer != null) gameplayContainer.SetActive(true);
 =======
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
         // Ensure the object pooler is assigned
         if (objectPooler == null)
         {
@@ -92,6 +95,7 @@ public class GameManager : MonoBehaviour
         {
             loseScreen.SetActive(false);
         }
+<<<<<<< HEAD
 >>>>>>> parent of d0bcb54 (fixedgameover)
     }
 
@@ -112,6 +116,8 @@ public class GameManager : MonoBehaviour
         // Hide screens initially
         if (winScreen != null) winScreen.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(false);
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
     }
 
     private void ShowGameplayElements(bool show)
@@ -157,9 +163,12 @@ public class GameManager : MonoBehaviour
     public void HandleEndReached(Enemy enemy)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (IsGameOver) return;
         ShowGameOver(false);
 =======
+=======
+>>>>>>> parent of d0bcb54 (fixedgameover)
         // Check if enemy is null
         if (enemy == null)
         {
@@ -184,6 +193,7 @@ public class GameManager : MonoBehaviour
         if (winScreen != null)
         {
             winScreen.SetActive(true); // Activate the win screen UI
+<<<<<<< HEAD
         }
 >>>>>>> parent of d0bcb54 (fixedgameover)
     }
@@ -290,6 +300,20 @@ public class GameManager : MonoBehaviour
         // Show the lose screen (game over screen)
         if (loseScreen != null)
         {
+=======
+        }
+    }
+
+    void LoseGame()
+    {
+        // Game over logic here
+        Debug.Log("Game Over!");
+        isGameOver = true;
+
+        // Show the lose screen (game over screen)
+        if (loseScreen != null)
+        {
+>>>>>>> parent of d0bcb54 (fixedgameover)
             loseScreen.SetActive(true); // Activate the lose screen UI
         }
     }
@@ -299,6 +323,9 @@ public class GameManager : MonoBehaviour
         // Game start logic here
         isGameStarted = true;
         Debug.Log("Game Started!");
+<<<<<<< HEAD
+>>>>>>> parent of d0bcb54 (fixedgameover)
+=======
 >>>>>>> parent of d0bcb54 (fixedgameover)
     }
 }

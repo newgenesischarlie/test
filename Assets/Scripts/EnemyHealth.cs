@@ -12,9 +12,16 @@ public class EnemyHealth : MonoBehaviour
     private int currentHealth;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public event System.Action OnDeath;
 
     private ObjectPooler objectPooler;
+=======
+    public void TakeDamage(int dmg)
+    {
+        // Reduce health by damage
+        hitPoints -= dmg;
+>>>>>>> parent of d0bcb54 (fixedgameover)
 
     private void Start()
 =======
@@ -63,6 +70,9 @@ public class EnemyHealth : MonoBehaviour
 
             // Destroy the enemy GameObject
             Destroy(gameObject);
+<<<<<<< HEAD
+>>>>>>> parent of d0bcb54 (fixedgameover)
+=======
 >>>>>>> parent of d0bcb54 (fixedgameover)
         }
         else
@@ -179,6 +189,9 @@ public class EnemyHealth : MonoBehaviour
         {
             _healthBar.fillAmount = 1f; // Reset health bar fill amount
         }
+<<<<<<< HEAD
+>>>>>>> parent of d0bcb54 (fixedgameover)
+=======
 >>>>>>> parent of d0bcb54 (fixedgameover)
     }
 }
