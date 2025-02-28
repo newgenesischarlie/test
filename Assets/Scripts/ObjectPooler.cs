@@ -14,6 +14,8 @@ public class ObjectPooler : MonoBehaviour
 
     public static ObjectPooler Instance;
 
+    private bool isPoolingActive = true;
+
     private void Awake()
     {
         // Ensure that there's only one instance of ObjectPooler
@@ -52,6 +54,9 @@ public class ObjectPooler : MonoBehaviour
     // Get an inactive instance from the pool
     public GameObject GetInstanceFromPool()
     {
+        if (!isPoolingActive)
+            return null;
+
         for (int i = 0; i < _pool.Count; i++)
         {
             if (!_pool[i].activeInHierarchy)
@@ -154,5 +159,12 @@ public class ObjectPooler : MonoBehaviour
             enemy.SetActive(true);
             AddToActiveEnemies(enemy);
         }
+    }
+
+    // Stop pooling enemies when the game is over
+    public void StopPooling()
+    {
+        isPoolingActive = false;
+        Debug.Log("Object Pooling has been stopped.");
     }
 }
