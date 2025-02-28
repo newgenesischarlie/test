@@ -165,6 +165,8 @@ public class Enemy : MonoBehaviour
         if (gameManager != null)
         {
             Debug.Log("GameManager found. Proceeding with EndPointReached.");
+            Debug.Log("GameManager found. Proceeding with EndPointReached.");
+
 
             // Correctly invoke the static event using the class name (Enemy)
             Enemy.OnEndReached?.Invoke(this); // Invoke the static event correctly

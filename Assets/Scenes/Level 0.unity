@@ -2601,9 +2601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab17c740b6dc4ca495c428deeee5adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGameOver: 0
-  allEnemies: []
-  objectPooler: {fileID: 1511321342}
+  gameOverScreen: {fileID: 642786738}
+  winScreen: {fileID: 736642117}
+  gameplayUI: {fileID: 0}
 --- !u!1 &1174767008
 GameObject:
   m_ObjectHideFlags: 0
