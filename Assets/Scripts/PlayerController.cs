@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
                 // Play the walking animation if moving
                 if (!playerAnimation.isPlaying) // Ensure it's not already playing
                 {
-                    playerAnimation.Play("WalkingAnimation");  // Name of your legacy walking animation clip
+                    playerAnimation.Play("Walk");  // Name of your legacy walking animation clip
                 }
             }
             else

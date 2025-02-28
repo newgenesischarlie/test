@@ -29,7 +29,11 @@ public class CurrencySystem : MonoBehaviour
         else
         {
             Destroy(gameObject);  // Destroy duplicate instance
+            return;  // Exit here to prevent further code execution
         }
+
+        // Make sure the CurrencySystem GameObject is a root object before calling DontDestroyOnLoad
+        transform.parent = null;  // Ensure this GameObject is not a child of another object
 
         DontDestroyOnLoad(gameObject);  // Keep this object across scenes
     }
@@ -104,7 +108,3 @@ public class CurrencySystem : MonoBehaviour
         }
     }
 }
-
-
-
-
