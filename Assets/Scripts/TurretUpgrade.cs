@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class TurretUpgrade : MonoBehaviour
 {
-    [SerializeField] private int upgradeInitialCost;
-    [SerializeField] private int upgradeCostIncremental;
-    [SerializeField] private float damageIncremental;
-    [SerializeField] private float delayReduce;
+    [SerializeField] private int upgradeCost = 100;
+    [SerializeField] private float damageMultiplier = 1.5f;
+    [SerializeField] private float rangeMultiplier = 1.2f;
+    [SerializeField] private float fireRateMultiplier = 1.3f;
 
     [Header("Sell")]
     [Range(0, 1)]
@@ -19,36 +19,62 @@ public class TurretUpgrade : MonoBehaviour
     public int UpgradeCost { get; private set; }
     public int Level { get; private set; }
 
-    private TurretProjectile _turretProjectile;
+    private Turret turret;
+    private GameManager gameManager;
 
     // Unity Start method (should be capitalized)
     private void Start()
     {
-        _turretProjectile = GetComponent<TurretProjectile>();
+        turret = GetComponent<Turret>();
+        gameManager = FindObjectOfType<GameManager>();
 
         // Initialize upgrade cost, sell percentage, and level
-        UpgradeCost = upgradeInitialCost;
+        UpgradeCost = upgradeCost;
         SellPerc = sellPert;
         Level = 1;
     }
 
     // Method to upgrade the turret if the player has enough coins
-       public void UpgradeTurret()
-     {
-        // Check if the player has enough coins
-       if (CurrencySystem.Instance.TotalCoins >= UpgradeCost)
+    public void UpgradeTurret()
+    {
+        // Check if we have enough currency - implement your own check here
+        // since GameManager doesn't have SpendCurrency
+        if (CanAffordUpgrade())
         {
-            // Upgrade turret attributes
-           _turretProjectile.Damage += damageIncremental;
-            _turretProjectile.DelayPerShot -= delayReduce;
+            // Upgrade turret stats
+            if (turret != null)
+            {
+                UpgradeTurretStats();
+            }
 
-            // Update cost and level after upgrading
-           UpdateUpgrade();
+            // Update visuals or effects
+            // ...
         }
-       else
+    }
+
+    private bool CanAffordUpgrade()
+    {
+        // Implement your own currency check here
+        // For example:
+        if (gameManager != null)
         {
-            // Optionally, you could add some feedback here, e.g., a sound or message to indicate insufficient coins
-           Debug.Log("Not enough coins to upgrade!");
+            // Assuming GameManager has a Currency property
+            return gameManager.Currency >= upgradeCost;
+        }
+        return false;
+    }
+
+    private void UpgradeTurretStats()
+    {
+        // Implement the upgrade logic directly here
+        if (turret != null)
+        {
+            // Update fireRate and range as floats
+            turret.fireRate *= fireRateMultiplier;
+            turret.range *= rangeMultiplier;
+            
+            // For damage, convert float to int using RoundToInt
+            turret.damage = Mathf.RoundToInt(turret.damage * damageMultiplier);
         }
     }
 
@@ -63,10 +89,10 @@ public class TurretUpgrade : MonoBehaviour
     private void UpdateUpgrade()
     {
         // Remove the coins for the upgrade
-       CurrencySystem.Instance.RemoveCoins(UpgradeCost);
+        CurrencySystem.Instance.RemoveCoins(UpgradeCost);
 
         // Increment the upgrade cost for the next upgrade
-        UpgradeCost += upgradeCostIncremental;
+        UpgradeCost += upgradeCost;
 
         // Increase the turret's upgrade level
         Level++;

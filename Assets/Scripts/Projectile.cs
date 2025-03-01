@@ -3,63 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Projectile : MonoBehaviour
+public class BasicProjectile : MonoBehaviour
 {
     public static Action<Enemy, float> OnEnemyHit;
-    [SerializeField] protected float moveSpeed = 10f;
-    [SerializeField] private float minDistanceToDealDamage = 0.1f;
+    [SerializeField] private float speed = 10f;
+    [SerializeField] private int damage = 10;
+    [SerializeField] private float lifetime = 3f;
+    [SerializeField] private string targetTag = "Enemy";
 
-    public TurretProjectile TurretOwner { get; set; }
+    private Vector3 direction;
+    private float timer;
 
-    public float Damage { get; set; }
-
-    protected Enemy _enemyTarget;
-
-    protected virtual void Update()
+    private void OnEnable()
     {
-        if (_enemyTarget != null)
+        timer = 0f;
+        direction = transform.forward;
+    }
+
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer >= lifetime)
         {
-            MoveProjectile();
-            RotateProjectile();
+            ReturnToPool();
+            return;
         }
+
+        // Move in the current direction
+        transform.position += direction * speed * Time.deltaTime;
     }
 
-    public void ResetProjectile()
+    public void SetDirection(Vector3 direction)
     {
-        // Reset any relevant properties of the projectile when it is reused
-        _enemyTarget = null;  // Reset the enemy target
-        // Optionally reset other properties like position, speed, etc.
-        transform.localPosition = Vector3.zero;  // Example reset for position
+        this.direction = direction.normalized;
     }
 
-    protected virtual void MoveProjectile()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        transform.position = Vector2.MoveTowards(transform.position,
-            _enemyTarget.transform.position, moveSpeed * Time.deltaTime);
-        float distanceToTarget = (_enemyTarget.transform.position - transform.position).magnitude;
-
-        if (distanceToTarget < minDistanceToDealDamage)
+        if (other.CompareTag(targetTag))
         {
-            OnEnemyHit?.Invoke(_enemyTarget, Damage);
-      //      if (_enemyTarget != null && _enemyTarget.GetEnemyHealth() != null)
+            EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
             {
-           //     _enemyTarget.GetEnemyHealth().DealDamage(Damage); // Use the GetEnemyHealth() method
+                enemyHealth.TakeDamage(damage);
             }
-
-            TurretOwner.ResetTurretProjectile();
-            ObjectPooler.ReturnToPool(gameObject);
+            ReturnToPool();
         }
     }
 
-    private void RotateProjectile()
+    private void ReturnToPool()
     {
-        Vector3 enemyPos = _enemyTarget.transform.position - transform.position;
-        float angle = Vector3.SignedAngle(transform.up, enemyPos, transform.forward);
-        transform.Rotate(0f, 0f, angle);
-    }
-
-    public void SetEnemy(Enemy enemy)
-    {
-        _enemyTarget = enemy;
+        ObjectPooler.ReturnToPool(gameObject);
     }
 }

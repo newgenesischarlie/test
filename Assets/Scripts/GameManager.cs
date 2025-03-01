@@ -1,140 +1,228 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public bool isGameOver = false;
-    private bool isGameStarted = false;
+    [Header("UI References")]
+    [SerializeField] private Canvas gameOverCanvas;
+    [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject loseScreen;
+    [SerializeField] private GameObject gameplayContainer;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private Text currencyText;
 
-    [SerializeField] private GameObject winScreen; // Reference to the win screen UI panel
-    [SerializeField] private GameObject loseScreen; // Reference to the lose screen UI panel
+    [Header("Game Settings")]
+    [SerializeField] private int startingCurrency = 100;
 
-    [SerializeField] private List<GameObject> allEnemies = new List<GameObject>(); // Store all active enemies
+    private List<Enemy> activeEnemies = new List<Enemy>();
+    public bool IsGameOver { get; private set; }
+    private int score = 0;
+    private int _currency;
 
-    public ObjectPooler objectPooler; // Reference to the ObjectPooler
-
-    void Start()
+    // Property for currency with getter and setter
+    public int Currency
     {
-        InitializeGame();
-        SubscribeToEvents();
+        get { return _currency; }
+        set
+        {
+            _currency = value;
+            UpdateCurrencyUI();
+        }
+    }
+
+    private void Awake()
+    {
+        Enemy.OnEndReached += HandleEndReached;
     }
 
     private void OnDestroy()
     {
-        UnsubscribeFromEvents();
-    }
-
-    private void SubscribeToEvents()
-    {
-        Enemy.OnEndReached += HandleEndReached;
-        Enemy.OnEnemyDefeated += HandleEnemyDefeated;
-    }
-
-    private void UnsubscribeFromEvents()
-    {
         Enemy.OnEndReached -= HandleEndReached;
-        Enemy.OnEnemyDefeated -= HandleEnemyDefeated;
+    }
+
+    private void Start()
+    {
+        InitializeGame();
+        Currency = startingCurrency;
+        UpdateScoreUI();
+    }
+
+    private void Update()
+    {
+        if (!IsGameOver)
+        {
+            UpdateActiveEnemies();
+        }
+    }
+
+    private void UpdateActiveEnemies()
+    {
+        // Clear the list and rebuild it with currently active enemies
+        activeEnemies.Clear();
+        
+        // Find all active enemies in the scene
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        foreach (Enemy enemy in enemies)
+        {
+            if (enemy != null && enemy.gameObject.activeInHierarchy)
+            {
+                activeEnemies.Add(enemy);
+            }
+        }
     }
 
     private void InitializeGame()
     {
-        // Initialize object pooler
-        if (objectPooler == null)
-        {
-            objectPooler = ObjectPooler.Instance;
-            if (objectPooler == null)
-            {
-                Debug.LogError("ObjectPooler is not assigned or found in the scene.");
-                return;
-            }
-        }
+        IsGameOver = false;
+        activeEnemies.Clear();
 
-        // Initialize UI - ensure screens start hidden
+        if (gameOverCanvas != null)
+        {
+            gameOverCanvas.gameObject.SetActive(false);
+        }
         if (winScreen != null) winScreen.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(false);
-
-        // Start game
-        isGameStarted = true;
-        isGameOver = false;
+        if (gameplayContainer != null) gameplayContainer.SetActive(true);
     }
 
-    void Update()
+    private void HandleEndReached(Enemy enemy)
     {
-        if (isGameOver) return; // If the game is over, do nothing
+        if (IsGameOver) return;
+        ShowGameOver(false);
+    }
 
-        // Add active enemies to the list
-        AddActiveEnemiesToList();
+    private void ShowGameOver(bool isWin)
+    {
+        IsGameOver = true;
 
-        // Debugging: Press 'E' to simulate the game over scenario manually
-        if (Input.GetKeyDown(KeyCode.E))
+        // Stop all spawning
+        if (ObjectPooler.Instance != null)
         {
-            Debug.Log("Simulating game over manually via 'E' key");
-
-            if (allEnemies.Count > 0)
+            ObjectPooler.Instance.StopSpawning();
+        }
+        
+        // Disable any spawners
+        var spawners = FindObjectsOfType<MonoBehaviour>();
+        foreach (var spawner in spawners)
+        {
+            if (spawner.GetType().Name.Contains("Spawner"))
             {
-                foreach (var enemy in allEnemies)
-                {
-                    if (enemy != null && enemy.activeInHierarchy)
-                    {
-                        HandleEndReached(enemy.GetComponent<Enemy>());
-                        break; // Only trigger the event for the first active enemy
-                    }
-                }
-            }
-            else
-            {
-                Debug.LogWarning("No enemies available for simulation.");
+                spawner.enabled = false;
             }
         }
-    }
 
-    void AddActiveEnemiesToList()
-    {
-        allEnemies.Clear(); // Clear the list first
-
-        // Assuming ObjectPooler has a method to return all active enemies
-        List<GameObject> activeEnemies = objectPooler.GetAllActiveEnemies();
-
-        if (activeEnemies.Count == 0)
+        // Show UI
+        if (gameOverCanvas != null)
         {
-            Debug.LogWarning("No active enemies found in the pool.");
-        }
-
-        foreach (GameObject enemy in activeEnemies)
-        {
-            if (!allEnemies.Contains(enemy))
+            gameOverCanvas.gameObject.SetActive(true);
+            if (isWin && winScreen != null)
             {
-                allEnemies.Add(enemy);
-                Debug.Log("Added enemy to allEnemies: " + enemy.name); // Debug log to ensure enemies are being added
+                winScreen.SetActive(true);
+            }
+            else if (!isWin && loseScreen != null)
+            {
+                loseScreen.SetActive(true);
             }
         }
+
+        DeactivateAllEnemies();
     }
 
-    public void HandleEndReached(Enemy enemy)
+    private void DeactivateAllEnemies()
     {
-        if (isGameOver) return;
-        
-        Debug.Log("Enemy reached end point - Game Over!");
-        isGameOver = true;
-        
-        // Show lose screen when enemy reaches final waypoint
-        if (loseScreen != null)
+        foreach (Enemy enemy in new List<Enemy>(activeEnemies))
         {
-            loseScreen.SetActive(true);
+            if (enemy != null)
+            {
+                enemy.Die();
+            }
+        }
+        activeEnemies.Clear();
+    }
+
+    public void RestartGame()
+    {
+        // Reset UI
+        if (gameOverCanvas != null)
+        {
+            gameOverCanvas.gameObject.SetActive(false);
+        }
+        if (winScreen != null) winScreen.SetActive(false);
+        if (loseScreen != null) loseScreen.SetActive(false);
+        if (gameplayContainer != null) gameplayContainer.SetActive(true);
+
+        // Reset game state
+        InitializeGame();
+
+        // Resume spawning
+        if (ObjectPooler.Instance != null)
+        {
+            ObjectPooler.Instance.ResumeSpawning();
+        }
+
+        // Re-enable spawners
+        var spawners = FindObjectsOfType<MonoBehaviour>();
+        foreach (var spawner in spawners)
+        {
+            if (spawner.GetType().Name.Contains("Spawner"))
+            {
+                spawner.enabled = true;
+            }
+        }
+
+        // Reset score and currency
+        score = 0;
+        Currency = startingCurrency;
+        UpdateScoreUI();
+    }
+
+    public void AddScore(int points)
+    {
+        score += points;
+        UpdateScoreUI();
+    }
+
+    public void AddCurrency(int amount)
+    {
+        Currency += amount;
+    }
+
+    public bool SpendCurrency(int amount)
+    {
+        if (Currency >= amount)
+        {
+            Currency -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    private void UpdateScoreUI()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
         }
     }
 
-    public void HandleEnemyDefeated(Enemy enemy)
+    private void UpdateCurrencyUI()
     {
-        if (isGameOver) return;
-        
-        Debug.Log("Enemy defeated - You Win!");
-        isGameOver = true;
-        
-        // Show win screen when enemy is defeated
-        if (winScreen != null)
+        if (currencyText != null)
         {
-            winScreen.SetActive(true);
+            currencyText.text = "Currency: " + Currency;
         }
+    }
+
+    public void ShowGameOver()
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+        
+        // Pause the game or stop spawning
+        Time.timeScale = 0f;
     }
 }

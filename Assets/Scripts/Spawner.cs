@@ -47,8 +47,8 @@ public class Spawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        GameObject newInstance = _pooler.GetInstanceFromPool();
-        newInstance.SetActive(true);
+        GameObject enemy = _pooler.GetInstanceFromPool("Enemy");
+        enemy.SetActive(true);
     }
 
     //  private void WaveCompleted()

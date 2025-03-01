@@ -6,79 +6,66 @@ public class Enemy : MonoBehaviour
 {
     #region Events
     public static event Action<Enemy> OnEndReached;
-    public static event Action<Enemy> OnEnemyDefeated;
     #endregion
 
     #region Serialized Fields
-    [SerializeField] private float moveSpeed = 3f;
+    [Header("Setup")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private List<Sprite> enemySprites = new List<Sprite>();
+    [SerializeField] private int maxHealth = 100;
+    
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private List<Vector3> waypoints = new List<Vector3>();
     #endregion
 
     #region Component References
     private GameManager gameManager;
     private EnemyHealth enemyHealth;
-    private SpriteRenderer spriteRenderer;
     #endregion
 
     #region State
+    private int currentHealth;
     private int currentWaypointIndex;
-    private bool isInitialized;
+    private bool isDead = false;
     public int CurrentWaveIndex { get; set; }
     #endregion
 
     private void Start()
     {
-        isInitialized = InitializeComponents();
-        if (isInitialized)
-        {
-            SetupEnemy();
-            SubscribeToEvents();
-        }
+        gameManager = FindObjectOfType<GameManager>();
+        ResetEnemy();
     }
 
     private void OnEnable()
     {
-        if (gameManager != null)
-        {
-            OnEndReached += gameManager.HandleEndReached;
-        }
+        isDead = false;
+        ResetEnemy();
     }
 
     private void OnDisable()
     {
         if (gameManager != null)
         {
-            OnEndReached -= gameManager.HandleEndReached;
             UnsubscribeFromEvents();
         }
     }
 
     private void Update()
     {
-        if (!isInitialized || waypoints.Count == 0) return;
-
-        Move();
-        Rotate();
-        
-        if (Vector3.Distance(transform.position, CurrentWaypoint) < 0.1f)
-        {
-            UpdateWaypoint();
-        }
+        if (isDead || gameManager == null) return;
+        if (gameManager.IsGameOver) return;
+        if (waypoints == null || waypoints.Count == 0) return;
+        MoveAlongPath();
     }
 
     private bool InitializeComponents()
     {
         try
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
             enemyHealth = GetComponent<EnemyHealth>();
             gameManager = FindObjectOfType<GameManager>();
 
-            if (spriteRenderer == null)
-            {
-                throw new MissingComponentException("SpriteRenderer not found on enemy");
-            }
             if (enemyHealth == null)
             {
                 throw new MissingComponentException("EnemyHealth not found on enemy");
@@ -101,26 +88,24 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void SetupEnemy()
+    public void ResetEnemy()
     {
-        try
+        currentWaypointIndex = 0;
+        currentHealth = maxHealth;
+        SetupSprite();
+        
+        if (waypoints != null && waypoints.Count > 0)
         {
-            if (enemySprites.Count > CurrentWaveIndex)
-            {
-                spriteRenderer.sprite = enemySprites[CurrentWaveIndex];
-            }
-            else
-            {
-                Debug.LogWarning($"[Enemy] No sprite available for wave {CurrentWaveIndex}");
-            }
-            
-            enemyHealth.ResetHealth();
-            currentWaypointIndex = 0;
+            transform.position = waypoints[0];
         }
-        catch (Exception e)
+    }
+
+    private void SetupSprite()
+    {
+        if (spriteRenderer != null && enemySprites.Count > 0)
         {
-            Debug.LogError($"[Enemy] Setup failed on {gameObject.name}: {e.Message}");
-            isInitialized = false;
+            int randomIndex = UnityEngine.Random.Range(0, enemySprites.Count);
+            spriteRenderer.sprite = enemySprites[randomIndex];
         }
     }
 
@@ -128,7 +113,6 @@ public class Enemy : MonoBehaviour
     {
         if (enemyHealth != null)
         {
-            // Monitor the enemy's health for changes
             enemyHealth.OnDeath += HandleEnemyDefeated;
         }
     }
@@ -143,65 +127,78 @@ public class Enemy : MonoBehaviour
 
     private void HandleEnemyDefeated()
     {
-        if (!gameManager.isGameOver)
+        if (!gameManager.IsGameOver)
         {
-            // Trigger the win screen if enemy is defeated
-            OnEnemyDefeated?.Invoke(this);
+            isDead = true;
+            OnEndReached?.Invoke(this);
             gameManager.HandleEnemyDefeated(this);
+            ObjectPooler.ReturnToPool(gameObject);
         }
     }
 
-    private Vector3 CurrentWaypoint
+    private void MoveAlongPath()
     {
-        get
-        {
-            if (currentWaypointIndex >= waypoints.Count)
-            {
-                Debug.LogError($"[Enemy] Waypoint index out of range: {currentWaypointIndex}");
-                return transform.position;
-            }
-            return waypoints[currentWaypointIndex];
-        }
-    }
+        if (waypoints == null || waypoints.Count == 0 || currentWaypointIndex >= waypoints.Count)
+            return;
 
-    private void Move()
-    {
-        if (gameManager.isGameOver) return;
-        
-        transform.position = Vector3.MoveTowards(
-            transform.position, 
-            CurrentWaypoint, 
-            moveSpeed * Time.deltaTime
-        );
-    }
+        Vector3 targetPosition = waypoints[currentWaypointIndex];
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
-    private void Rotate()
-    {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.flipX = transform.position.x > CurrentWaypoint.x;
-        }
-    }
-
-    private void UpdateWaypoint()
-    {
-        if (currentWaypointIndex < waypoints.Count - 1)
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             currentWaypointIndex++;
-            return;
-        }
-        
-        try
-        {
-            if (!gameManager.isGameOver)
+            
+            if (currentWaypointIndex >= waypoints.Count)
             {
                 OnEndReached?.Invoke(this);
+                gameObject.SetActive(false);
             }
-            ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the pool once it reaches the end
         }
-        catch (Exception e)
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (isDead) return;
+        
+        currentHealth -= damage;
+        if (currentHealth <= 0)
         {
-            Debug.LogError($"[Enemy] Error during endpoint handling: {e.Message}");
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+        
+        if (OnEndReached != null)
+        {
+            OnEndReached(this);
+        }
+        
+        gameObject.SetActive(false);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+    }
+
+    public void SetWaypoints(List<Vector3> newWaypoints)
+    {
+        waypoints = new List<Vector3>(newWaypoints);
+        currentWaypointIndex = 0;
+        
+        if (waypoints.Count > 0)
+        {
+            transform.position = waypoints[0];
         }
     }
 }
+

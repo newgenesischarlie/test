@@ -7,63 +7,78 @@ public class EnemyHealth : MonoBehaviour
     public static Action<Enemy> OnEnemyKilled;
     public static Action<Enemy> OnEnemyHit;
 
-    private bool isDestroyed = false;
-    private int hitPoints = 100; // Set initial health points as needed
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
+    private bool isDead = false;
+    private ObjectPooler objectPooler;
 
     public event System.Action OnDeath;
 
-    public void TakeDamage(int dmg)
+    private void Awake()
     {
-        // Reduce health by damage
-        hitPoints -= dmg;
+        ResetHealth();
+        objectPooler = FindObjectOfType<ObjectPooler>();
+    }
 
-        // Check if health reaches 0 or below and if not already destroyed
-        if (hitPoints <= 0 && !isDestroyed)
+    private void OnEnable()
+    {
+        isDead = false;
+        ResetHealth();
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (isDead || currentHealth <= 0) return;
+
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
         {
-            // Invoke the Spawner's onDestroy event if it's not null
-            if (Spawner.onDestroy != null)
-            {
-                Spawner.onDestroy.Invoke();
-            }
-
-            // Set the destroyed flag to true
-            isDestroyed = true;
-
-            // Trigger the "OnEnemyKilled" event (can be subscribed to by other systems)
-            OnEnemyKilled?.Invoke(GetComponent<Enemy>());
-
-            // Optionally, trigger the "OnEnemyHit" event when damage is taken (even if the enemy dies)
-            OnEnemyHit?.Invoke(GetComponent<Enemy>());
-
-            // Destroy the enemy GameObject
-            Destroy(gameObject);
-
-            // Call the Die method when health reaches 0
-            Die();
+            HandleDeath();
         }
-        else
+    }
+
+    public void TakeDamageFloat(float damageAmount)
+    {
+        int intDamage = (int)damageAmount;
+        TakeDamage(intDamage);
+    }
+
+    private void HandleDeath()
+    {
+        if (isDead) return;
+        isDead = true;
+        
+        if (gameObject != null)
         {
-            // If the enemy is still alive, invoke the "OnEnemyHit" event
-            OnEnemyHit?.Invoke(GetComponent<Enemy>());
+            gameObject.SetActive(false);
         }
+    }
+
+    public bool IsAlive()
+    {
+        return currentHealth > 0 && !isDead;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 
     [SerializeField] private GameObject healthBarPrefab; // Health bar prefab
     [SerializeField] private Transform barPosition; // Position where the health bar should appear
-    [SerializeField] private float initialHealth = 10f; // Starting health
-    [SerializeField] private float maxHealth = 10f; // Max health
-
-    public float CurrentHealth { get; set; }
+    [SerializeField] private float maxHealthBar = 10f; // Max health
 
     private Image _healthBar; // UI Image component for health bar
     private Enemy _enemy; // Enemy script reference
-    private ObjectPooler _objectPooler; // Reference to the ObjectPooler
 
     private void Start()
     {
-        // Ensure ObjectPooler is assigned
-        _objectPooler = FindObjectOfType<ObjectPooler>();
-
         // Check if necessary components are assigned
         if (healthBarPrefab == null)
         {
@@ -86,7 +101,6 @@ public class EnemyHealth : MonoBehaviour
         }
 
         CreateHealthBar(); // Create health bar in UI
-        CurrentHealth = initialHealth; // Set current health to initial value
     }
 
     private void Update()
@@ -101,11 +115,11 @@ public class EnemyHealth : MonoBehaviour
         if (_healthBar != null)
         {
             _healthBar.fillAmount = Mathf.Lerp(_healthBar.fillAmount,
-                CurrentHealth / maxHealth, Time.deltaTime * 10f);
+                currentHealth / maxHealthBar, Time.deltaTime * 10f);
         }
 
         // Output the current health for debugging purposes
-        Debug.Log("Current Health: " + CurrentHealth);
+        Debug.Log("Current Health: " + currentHealth);
     }
 
     internal void DealDamage(float damage)
@@ -114,13 +128,13 @@ public class EnemyHealth : MonoBehaviour
         if (_enemy == null || _healthBar == null) return;
 
         // Decrease current health by damage amount
-        CurrentHealth -= damage;
+        currentHealth -= damage;
 
         // Clamp the health value to make sure it doesn't go below 0
-        CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealthBar);
 
         // If health reaches 0, invoke the "OnEnemyKilled" event
-        if (CurrentHealth <= 0f)
+        if (currentHealth <= 0f)
         {
             OnEnemyKilled?.Invoke(_enemy);
             KillEnemy(); // Kill the enemy by deactivating it
@@ -145,9 +159,9 @@ public class EnemyHealth : MonoBehaviour
     private void KillEnemy()
     {
         // Notify ObjectPooler to remove from the active pool
-        if (_objectPooler != null)
+        if (objectPooler != null)
         {
-            _objectPooler.RemoveFromActiveEnemies(_enemy.gameObject); // Method to remove it from pooler
+            objectPooler.RemoveFromActiveEnemies(_enemy.gameObject); // Method to remove it from pooler
         }
 
         // Deactivate the enemy rather than destroying it
@@ -157,19 +171,15 @@ public class EnemyHealth : MonoBehaviour
         ResetHealth();
     }
 
-    // Resets the enemy health to initial value (useful for respawn or reset scenarios)
-    internal void ResetHealth()
-    {
-        CurrentHealth = initialHealth;
-        if (_healthBar != null)
-        {
-            _healthBar.fillAmount = 1f; // Reset health bar fill amount
-        }
-    }
-
     // Call this when health reaches 0
     private void Die()
     {
         OnDeath?.Invoke();
+    }
+
+    private void CalculateDamage(float damageAmount)
+    {
+        int intDamage = Mathf.RoundToInt(damageAmount); // Explicit conversion
+        TakeDamage(intDamage);
     }
 }
