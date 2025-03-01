@@ -1,5 +1,5 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour
@@ -145,8 +145,9 @@ public class Enemy : MonoBehaviour
     {
         if (!gameManager.isGameOver)
         {
+            // Trigger the win screen if enemy is defeated
             OnEnemyDefeated?.Invoke(this);
-            ObjectPooler.ReturnToPool(gameObject);
+            gameManager.HandleEnemyDefeated(this);
         }
     }
 
@@ -196,7 +197,7 @@ public class Enemy : MonoBehaviour
             {
                 OnEndReached?.Invoke(this);
             }
-            ObjectPooler.ReturnToPool(gameObject);
+            ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the pool once it reaches the end
         }
         catch (Exception e)
         {
