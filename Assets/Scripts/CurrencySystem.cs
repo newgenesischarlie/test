@@ -16,6 +16,10 @@ public class CurrencySystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinDisplayTextTMP; // For TextMeshPro users
     [SerializeField] private Image uiBackground; // For a background image, if any
 
+    [Header("Coin Generation")]
+    [SerializeField] private int coinsPerInterval = 5; // How many coins to generate each time
+    [SerializeField] private float coinGenerationInterval = 5f; // Interval in seconds
+
     // Declare an event for when the coins change
     public event System.Action OnCoinsChanged;
 
@@ -42,11 +46,20 @@ public class CurrencySystem : MonoBehaviour
         LoadCoins();
         UpdateCoinDisplay();
         UpdateCoinSprite();
+
+        // Start the coin generation
+        InvokeRepeating("GenerateCoins", 0f, coinGenerationInterval); // Start generating coins immediately
     }
 
     private void LoadCoins()
     {
         TotalCoins = PlayerPrefs.GetInt(CURRENCY_SAVE_KEY, coinTest);
+    }
+
+    // Function to generate coins every few seconds
+    private void GenerateCoins()
+    {
+        AddCoins(coinsPerInterval);
     }
 
     public void AddCoins(int amount)
@@ -55,6 +68,7 @@ public class CurrencySystem : MonoBehaviour
         PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
         PlayerPrefs.Save();
         OnCoinsChanged?.Invoke();  // Trigger the event when coins change
+        UpdateCoinDisplay(); // Update the UI display
     }
 
     public void RemoveCoins(int amount)
@@ -65,6 +79,11 @@ public class CurrencySystem : MonoBehaviour
             PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
             PlayerPrefs.Save();
             OnCoinsChanged?.Invoke();  // Trigger the event when coins change
+            UpdateCoinDisplay(); // Update the UI display
+        }
+        else
+        {
+            Debug.Log("Not enough coins to remove.");
         }
     }
 
@@ -88,4 +107,3 @@ public class CurrencySystem : MonoBehaviour
         }
     }
 }
-
