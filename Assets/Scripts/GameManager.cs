@@ -86,6 +86,15 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning("No enemies available for simulation.");
             }
         }
+
+        // Check if the player presses 'P' after all enemies are defeated
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (allEnemies.Count == 0) // All enemies are defeated
+            {
+                ShowWinScreen();
+            }
+        }
     }
 
     void AddActiveEnemiesToList()
@@ -113,10 +122,10 @@ public class GameManager : MonoBehaviour
     public void HandleEndReached(Enemy enemy)
     {
         if (isGameOver) return;
-        
+
         Debug.Log("Enemy reached end point - Game Over!");
         isGameOver = true;
-        
+
         // Show lose screen when enemy reaches final waypoint
         if (loseScreen != null)
         {
@@ -127,14 +136,23 @@ public class GameManager : MonoBehaviour
     public void HandleEnemyDefeated(Enemy enemy)
     {
         if (isGameOver) return;
-        
+
         Debug.Log("Enemy defeated - You Win!");
         isGameOver = true;
-        
+
         // Show win screen when enemy is defeated
         if (winScreen != null)
         {
             winScreen.SetActive(true);
+        }
+    }
+
+    private void ShowWinScreen()
+    {
+        if (winScreen != null)
+        {
+            winScreen.SetActive(true);
+            isGameOver = true; // Ensure the game is over after showing the win screen
         }
     }
 }
