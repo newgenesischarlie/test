@@ -11120,7 +11120,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1733016859}
   poolSize: 10
-  _activeEnemies: []
+  _activeEnemies:
+  - {fileID: 2006923997}
 --- !u!58 &459895214
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -11320,7 +11321,7 @@ GameObject:
   - component: {fileID: 465302861}
   - component: {fileID: 465302862}
   m_Layer: 0
-  m_Name: Dodo_model
+  m_Name: Dodo_model_silver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11658,7 +11659,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1733016859}
   poolSize: 10
-  _activeEnemies: []
+  _activeEnemies:
+  - {fileID: 2006923997}
 --- !u!58 &473780784
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -13359,7 +13361,7 @@ GameObject:
   - component: {fileID: 537872227}
   - component: {fileID: 537872228}
   m_Layer: 0
-  m_Name: Dodo_model
+  m_Name: Dodo_model_gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16164,9 +16166,9 @@ MonoBehaviour:
   - {fileID: 1505595793}
   weaponPrices: 050000000a0000000f000000
   weaponPrefabs:
-  - {fileID: 1760017663}
-  - {fileID: 473780782}
-  - {fileID: 1588278608}
+  - {fileID: 784721568}
+  - {fileID: 537872226}
+  - {fileID: 465302860}
 --- !u!1 &678101023
 GameObject:
   m_ObjectHideFlags: 0
@@ -18632,7 +18634,7 @@ GameObject:
   - component: {fileID: 784721569}
   - component: {fileID: 784721570}
   m_Layer: 0
-  m_Name: Dodo_model
+  m_Name: Dodo_model_bronze
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38152,7 +38154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 2006923997}
   poolSize: 10
-  _activeEnemies: []
+  _activeEnemies:
+  - {fileID: 2006923997}
 --- !u!1 &1511460538
 GameObject:
   m_ObjectHideFlags: 0
@@ -40373,7 +40376,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1733016859}
   poolSize: 10
-  _activeEnemies: []
+  _activeEnemies:
+  - {fileID: 2006923997}
 --- !u!58 &1588278610
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -43617,6 +43621,7 @@ GameObject:
   - component: {fileID: 1733016861}
   - component: {fileID: 1733016860}
   - component: {fileID: 1733016862}
+  - component: {fileID: 1733016863}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -43705,6 +43710,102 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   minDistanceToDealDamage: 1
+--- !u!82 &1733016863
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733016859}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c7bb704b371d94839af8ed1499a9df3d, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1737934488
 GameObject:
   m_ObjectHideFlags: 0
@@ -47309,7 +47410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1733016859}
   poolSize: 10
-  _activeEnemies: []
+  _activeEnemies:
+  - {fileID: 2006923997}
 --- !u!58 &1894361901
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -49672,7 +49774,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1733016859}
   poolSize: 10
-  _activeEnemies: []
+  _activeEnemies:
+  - {fileID: 2006923997}
 --- !u!58 &1981908008
 CircleCollider2D:
   m_ObjectHideFlags: 0
