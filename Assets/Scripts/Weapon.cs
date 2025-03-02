@@ -13,8 +13,16 @@ public class Weapon : MonoBehaviour
     private Transform currentTarget;
     private float nextAttackTime = 0f;
 
+    private void Start()
+    {
+        // Ensure the weapon starts inactive if it's not yet activated
+        gameObject.SetActive(false); // We ensure the weapon is initially inactive
+    }
+
     private void Update()
     {
+        if (!gameObject.activeInHierarchy) return; // Skip update if the weapon is inactive
+
         DetectEnemies();
 
         if (currentTarget != null && Time.time >= nextAttackTime)
@@ -73,4 +81,3 @@ public class Weapon : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }
-

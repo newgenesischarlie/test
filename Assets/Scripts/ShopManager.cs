@@ -8,7 +8,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private int[] weaponPrices; // Prices for the weapons
     [SerializeField] private GameObject[] weaponPrefabs; // Prefabs for the weapons (turrets)
 
-    private Plot currentPlot;
+    private Plot currentPlot; // Reference to the plot where the weapon will be placed
 
     private void Start()
     {
@@ -37,8 +37,17 @@ public class ShopManager : MonoBehaviour
         {
             CurrencySystem.Instance.RemoveCoins(weaponPrices[weaponIndex]);
 
-            // Place the weapon (turret) at the plot's position
-            Instantiate(weaponPrefabs[weaponIndex], currentPlot.transform.position, Quaternion.identity);
+            // Instantiate the weapon prefab at the plot's position
+            GameObject weapon = Instantiate(weaponPrefabs[weaponIndex], currentPlot.transform.position, Quaternion.identity);
+
+            // Deactivate the weapon initially
+            weapon.SetActive(false);
+
+            // After buying, activate the weapon
+            weapon.SetActive(true); 
+
+            // Optionally, if the weapon has specific logic tied to the plot, we can attach it to the plot here.
+            // e.g., currentPlot.SetWeapon(weapon);
 
             // Close the shop UI after purchase
             shopUI.SetActive(false);
