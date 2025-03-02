@@ -1,52 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PlotScript : MonoBehaviour
+public class Plot : MonoBehaviour
 {
-    public int plotCost = 10;  // Cost of the plot
-    private bool isOwned = false;  // Whether the plot is bought or not
+    [Header("References")]
+    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private Color hoverColor;
 
-    // Reference to the weapon selection menu UI
-    [SerializeField] private GameObject weaponMenuUI;  // Reference to the weapon selection menu
-    private GameObject selectedWeapon;  // The selected weapon prefab to be placed on the plot
+    private GameObject tower;
+    private Color startColor;
+
+    private void Start()
+    {
+        startColor = sr.color;
+    }
+
+    private void OnMouseEnter()
+    {
+        sr.color = hoverColor;
+    }
+
+    private void OnMouseExit()
+    {
+        sr.color = startColor;
+    }
 
     private void OnMouseDown()
     {
-        if (isOwned)
-        {
-            return;  // If the plot is already owned, do nothing
-        }
+        if (tower != null) return; // Prevent building multiple towers in the same plot.
 
-        if (CurrencySystem.Instance.TotalCoins >= plotCost)
-        {
-            // Deduct the cost of the plot
-            CurrencySystem.Instance.RemoveCoins(plotCost);
-            isOwned = true;
-            OpenWeaponSelectionMenu();  // Open the weapon selection menu
-        }
-        else
-        {
-            Debug.Log("Not enough coins to buy this plot.");
-        }
-    }
+        Debug.Log("Build tower here:" + name);
 
-    // Open the weapon selection menu
-    private void OpenWeaponSelectionMenu()
-    {
-        weaponMenuUI.SetActive(true);  // Show the weapon selection menu
-        weaponMenuUI.GetComponent<WeaponSelection>().SetCurrentPlot(this);  // Pass the plot reference to the selection menu
-    }
+        // Get the selected tower from the BuildManager
+        GameObject towerToBuild = BuildManager.main.GetSelectedTower();
 
-    // Place the weapon on the plot
-    public void PlaceWeapon(GameObject weaponPrefab)
-    {
-        selectedWeapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
-        weaponMenuUI.SetActive(false);  // Close the weapon selection menu
-    }
-
-    public bool IsOwned()
-    {
-        return isOwned;
+        // Instantiate the selected tower at this plot's position with no rotation
+        tower = Instantiate(towerToBuild, transform.position, Quaternion.identity);
     }
 }
-

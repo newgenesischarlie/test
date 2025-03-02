@@ -1,69 +1,80 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-// Rename to avoid conflict with Projectile class
 public class TurretProjectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 10f;
-    [SerializeField] private int damage = 10;
-    [SerializeField] private float lifetime = 3f;
-    [SerializeField] private string targetTag = "Enemy";
+    [SerializeField] protected Transform projectileSpawnPosition;
+    [SerializeField] protected float delayBtwAttacks = 2f;
+    [SerializeField] protected float damage = 2f;
 
-    private Transform target;
-    private Vector3 direction;
-    private float timer;
+    public float Damage { get; set; }
+    public float DelayPerShot { get; set; }
+    protected float _nextAttackTime;
+    protected ObjectPooler _pooler;
+    protected Turret _turret;
+    protected Projectile _currentProjectileLoaded;
 
-    private void OnEnable()
+    private void Start()
     {
-        timer = 0f;
+        _turret = GetComponent<Turret>();
+        _pooler = GetComponent<ObjectPooler>();
+
+        Damage = damage;
+        DelayPerShot = delayBtwAttacks;
+        LoadProjectile();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= lifetime)
+        // Reload projectile if needed
+        if (IsTurretEmpty())
         {
-            ReturnToPool();
-            return;
+            LoadProjectile();
         }
 
-        if (target != null && target.gameObject.activeInHierarchy)
+        // Check if it's time to shoot
+        if (Time.time > _nextAttackTime)
         {
-            // Update direction to follow the target
-            direction = (target.position - transform.position).normalized;
-        }
-
-        // Move in the current direction
-        transform.position += direction * speed * Time.deltaTime;
-    }
-
-    public void Initialize(Transform target)
-    {
-        this.target = target;
-        if (target != null)
-        {
-            direction = (target.position - transform.position).normalized;
-        }
-        else
-        {
-            direction = transform.forward;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag(targetTag))
-        {
-            EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
-            if (enemyHealth != null)
+            // Ensure there's a valid enemy target and the projectile is ready
+        //    if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null &&
+          //      _turret.CurrentEnemyTarget.GetEnemyHealth().CurrentHealth > 0f)  // Fixed to use GetEnemyHealth()
             {
-                enemyHealth.TakeDamage(damage);
+                // Detach the projectile and set its enemy target
+                _currentProjectileLoaded.transform.parent = null;
+                _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
+
+                // Update the attack time to prevent multiple shots in quick succession
+                _nextAttackTime = Time.time + DelayPerShot;
             }
-            ReturnToPool();
         }
     }
 
-    private void ReturnToPool()
+    internal void ResetTurretProjectile()
     {
-        ObjectPooler.ReturnToPool(gameObject);
+        // Reset the projectile logic (if needed)
+        _currentProjectileLoaded.ResetProjectile();
+    }
+
+    protected virtual void LoadProjectile()
+    {
+        // Get a new projectile instance from the pool
+        GameObject newInstance = _pooler.GetInstanceFromPool();
+        newInstance.transform.localPosition = projectileSpawnPosition.position;
+        newInstance.transform.SetParent(projectileSpawnPosition);
+
+        // Set up the projectile and assign damage
+        _currentProjectileLoaded = newInstance.GetComponent<Projectile>();
+        _currentProjectileLoaded.TurretOwner = this;
+        _currentProjectileLoaded.ResetProjectile();
+        _currentProjectileLoaded.Damage = Damage;
+        newInstance.SetActive(true);
+    }
+
+    private bool IsTurretEmpty()
+    {
+        // Return true if the turret is empty and needs to reload (this is just an example, adjust as needed)
+        return false;  // Replace with actual condition for turret reloading
     }
 }

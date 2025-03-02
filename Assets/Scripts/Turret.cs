@@ -20,33 +20,9 @@ public class Turret : MonoBehaviour
     // The speed at which the turret rotates
     [SerializeField] private float rotationSpeed = 5f;
 
-    [SerializeField] private float _fireRate = 1f;
-    [SerializeField] private float _range = 5f;
-    [SerializeField] private int _damage = 10;
-
-    public float fireRate { 
-        get { return _fireRate; } 
-        set { _fireRate = value; } 
-    }
-    
-    public float range { 
-        get { return _range; } 
-        set { _range = value; } 
-    }
-    
-    public int damage { 
-        get { return _damage; } 
-        set { _damage = value; } 
-    }
-
     public float AttackRange => attackRange;  // To allow other scripts to access the range
 
-    public Enemy CurrentEnemyTarget { get; private set; }
-
-    private void Start()
-    {
-        // No need to initialize properties as they're already connected to the fields
-    }
+       public Enemy CurrentEnemyTarget { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D other)
     {

@@ -1,130 +1,158 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    // Simple serializable class for pool configuration
-    [System.Serializable]
-    public class Pool
-    {
-        public string tag;
-        public GameObject prefab;
-        public int size;
-    }
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private int poolSize = 10;
+    private List<GameObject> _pool;
+    private GameObject _poolContainer;
 
-    // Pool configuration
-    [SerializeField] private List<Pool> pools = new List<Pool>();
-    
-    // Internal collections
-    private Dictionary<string, Queue<GameObject>> poolDictionary;
-    private HashSet<GameObject> activeObjects;
-    private bool isSpawningEnabled = true;
+    // List to keep track of active enemies
+    public List<GameObject> _activeEnemies = new List<GameObject>();
 
-    // Singleton instance
-    public static ObjectPooler Instance { get; private set; }
+    public static ObjectPooler Instance;
 
     private void Awake()
     {
-        Instance = this;
-        Initialize();
+        // Ensure that there's only one instance of ObjectPooler
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy the duplicate ObjectPooler
+        }
+
+        _pool = new List<GameObject>();
+        CreatePooler();
     }
 
-    private void Initialize()
+    // Method to create an instance of the prefab
+    public GameObject CreateInstance()
     {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
-        activeObjects = new HashSet<GameObject>();
-        
-        foreach (Pool pool in pools)
+        GameObject newInstance = Instantiate(prefab);
+        newInstance.transform.SetParent(_poolContainer.transform);
+        newInstance.SetActive(false);
+        return newInstance;
+    }
+
+    // Method to create the object pool
+    private void CreatePooler()
+    {
+        _poolContainer = new GameObject($"_pool_{prefab.name}");
+        for (int i = 0; i < poolSize; i++)
         {
-            CreatePool(pool);
+            _pool.Add(CreateInstance());
         }
     }
 
-    private void CreatePool(Pool pool)
+    // Get an inactive instance from the pool
+    public GameObject GetInstanceFromPool()
     {
-        Queue<GameObject> objectPool = new Queue<GameObject>();
-
-        for (int i = 0; i < pool.size; i++)
+        for (int i = 0; i < _pool.Count; i++)
         {
-            GameObject obj = Instantiate(pool.prefab);
-            obj.SetActive(false);
-            objectPool.Enqueue(obj);
-        }
-
-        poolDictionary.Add(pool.tag, objectPool);
-    }
-
-    public GameObject GetInstanceFromPool(string tag)
-    {
-        if (!isSpawningEnabled) return null;
-
-        if (!poolDictionary.ContainsKey(tag))
-        {
-            Debug.LogWarning($"Pool with tag {tag} doesn't exist.");
-            return null;
-        }
-
-        Queue<GameObject> pool = poolDictionary[tag];
-        
-        GameObject objectToSpawn = null;
-        foreach (GameObject obj in pool)
-        {
-            if (!obj.activeInHierarchy && !activeObjects.Contains(obj))
+            if (!_pool[i].activeInHierarchy)
             {
-                objectToSpawn = obj;
-                break;
+                _pool[i].SetActive(true);  // Ensure the instance is activated before returning
+                _activeEnemies.Add(_pool[i]); // Add it to the active enemies list
+                return _pool[i];
             }
         }
+        return null; // Return null if no inactive object is found
+    }
 
-        if (objectToSpawn != null)
+    // Return an instance to the pool
+    public static void ReturnToPool(GameObject instance)
+    {
+        if (instance == null)
         {
-            activeObjects.Add(objectToSpawn);
-            objectToSpawn.SetActive(true);
-            return objectToSpawn;
+            Debug.LogError("Attempted to return a null instance to the pool!");
+            return;
         }
 
-        Debug.LogWarning($"No available objects in pool with tag {tag}");
-        return null;
-    }
+        // Deactivate the object and remove from active enemies list
+        instance.SetActive(false);
 
-    public static void ReturnToPool(GameObject obj)
-    {
-        if (Instance != null && obj != null)
+        // Get the ObjectPooler instance and remove from active enemies
+        if (Instance != null)
         {
-            Instance.activeObjects.Remove(obj);
-            obj.SetActive(false);
+            Instance.RemoveFromActiveEnemies(instance);
+        }
+        else
+        {
+            Debug.LogError("ObjectPooler instance is missing! Could not remove enemy from the list.");
         }
     }
 
-    public void StopSpawning()
+    // Coroutine to return the object to the pool with a delay
+    public static IEnumerator ReturnToPoolWithDelay(GameObject instance, float delay)
     {
-        isSpawningEnabled = false;
-        DeactivateAllObjects();
-    }
-
-    public void ResumeSpawning()
-    {
-        isSpawningEnabled = true;
-    }
-
-    private void DeactivateAllObjects()
-    {
-        List<GameObject> objectsToDeactivate = new List<GameObject>(activeObjects);
-        foreach (var obj in objectsToDeactivate)
+        yield return new WaitForSeconds(delay);
+        instance.SetActive(false);
+        if (Instance != null)
         {
-            if (obj != null)
+            Instance.RemoveFromActiveEnemies(instance);
+        }
+        else
+        {
+            Debug.LogError("ObjectPooler instance is missing! Could not remove enemy from the list.");
+        }
+    }
+
+    // Helper method to retrieve active enemies
+    public List<GameObject> GetActiveEnemies()
+    {
+        return _activeEnemies; // Return the list of currently active enemies
+    }
+
+    // Optional: Reset the pool and active enemies list (useful for wave resets or scene changes)
+    public void ResetPool()
+    {
+        _activeEnemies.Clear();
+    }
+
+    // Get all active enemies in the pool
+    public List<GameObject> GetAllActiveEnemies()
+    {
+        List<GameObject> activeEnemies = new List<GameObject>();
+        foreach (GameObject enemy in _activeEnemies)
+        {
+            if (enemy.activeInHierarchy)
             {
-                ReturnToPool(obj);
+                activeEnemies.Add(enemy);
             }
         }
-        activeObjects.Clear();
+        return activeEnemies;
     }
 
-    private void OnDestroy()
+    // Remove an enemy from the list of active enemies
+    public void RemoveFromActiveEnemies(GameObject enemy)
     {
-        if (Instance == this)
+        if (_activeEnemies.Contains(enemy))
         {
-            Instance = null;
+            _activeEnemies.Remove(enemy);
+        }
+    }
+
+    // Add an enemy to the list of active enemies
+    public void AddToActiveEnemies(GameObject enemy)
+    {
+        if (!_activeEnemies.Contains(enemy))
+        {
+            _activeEnemies.Add(enemy);
+        }
+    }
+
+    // You can also implement this method to handle reactivation of enemies
+    public void ActivateEnemy(GameObject enemy)
+    {
+        if (enemy != null)
+        {
+            enemy.SetActive(true);
+            AddToActiveEnemies(enemy);
         }
     }
 }

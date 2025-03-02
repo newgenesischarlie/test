@@ -100,19 +100,20 @@ public class LevelManager : Singleton<LevelManager>
         // Optionally, you can spawn more enemies or adjust difficulty, etc.
    // }
 
-    private void Awake()
+    private void OnEnable()
     {
-        Enemy.OnEndReached += HandleEnemyReachedEnd;
+        // Subscribe to the static event from the Enemy class
+        Enemy.OnEndReached += ReduceLives;
+
+        // Subscribe to the static event from the Spawner class
+      //  Spawner.OnWaveCompleted += WaveCompleted;
     }
-    
-    private void OnDestroy()
+
+    private void OnDisable()
     {
-        Enemy.OnEndReached -= HandleEnemyReachedEnd;
-    }
-    
-    private void HandleEnemyReachedEnd(Enemy enemy)
-    {
-        // Your level manager specific handling
+        // Unsubscribe to avoid memory leaks
+        Enemy.OnEndReached -= ReduceLives;
+      //  Spawner.OnWaveCompleted -= WaveCompleted;
     }
 
     public string sceneName;
