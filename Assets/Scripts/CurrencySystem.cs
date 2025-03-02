@@ -1,49 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;  // Import for Unity's built-in Text component
-using TMPro;  // Import for TextMeshPro if needed
+using UnityEngine.UI; // Import for Unity's built-in UI components like Image and Text
+using TMPro; // Import for TextMeshPro if you're using that for text display
 
 public class CurrencySystem : MonoBehaviour
 {
-    [SerializeField] private int coinTest;  // Default coins if PlayerPrefs is not set
+    [SerializeField] private int coinTest;
     private string CURRENCY_SAVE_KEY = "MYGAME_CURRENCY";
     public int TotalCoins { get; private set; }
-    public static CurrencySystem Instance { get; private set; }  // Singleton reference
+    public static CurrencySystem Instance { get; private set; }
 
-    // Expose the coin sprite, text, and background in the Inspector
     [Header("UI Elements")]
-    [SerializeField] private Sprite coinSprite;  // Coin sprite (e.g., a coin image)
-    [SerializeField] private Image coinImage;    // UI Image to display the coin sprite
-    [SerializeField] private Text coinDisplayText;  // Reference to the Unity Text component (or TextMeshPro)
-    [SerializeField] private TextMeshProUGUI coinDisplayTextTMP; // Reference to TextMeshProUGUI, for TextMeshPro users
-    [SerializeField] private Image uiBackground;  // Reference to the UI background panel or container
+    [SerializeField] private Sprite coinSprite;
+    [SerializeField] private Image coinImage; // This is the Image component for the coin UI
+    [SerializeField] private Text coinDisplayText; // For Unity's built-in Text component
+    [SerializeField] private TextMeshProUGUI coinDisplayTextTMP; // For TextMeshPro users
+    [SerializeField] private Image uiBackground; // For a background image, if any
+
+    // Declare an event for when the coins change
+    public event System.Action OnCoinsChanged;
 
     private void Awake()
     {
-        // Ensure that only one instance of CurrencySystem exists
+        // Singleton pattern
         if (Instance == null)
         {
             Instance = this;
         }
         else
         {
-            Destroy(gameObject);  // Destroy duplicate instance
-            return;  // Exit here to prevent further code execution
+            Destroy(gameObject);
+            return;
         }
 
-        // Make sure the CurrencySystem GameObject is a root object before calling DontDestroyOnLoad
-        transform.parent = null;  // Ensure this GameObject is not a child of another object
-
-        DontDestroyOnLoad(gameObject);  // Keep this object across scenes
+        transform.parent = null;  // Ensure the CurrencySystem is not a child of another object
+        DontDestroyOnLoad(gameObject);  // Keep it alive across scenes
     }
 
     private void Start()
     {
-        PlayerPrefs.DeleteKey(CURRENCY_SAVE_KEY);
+        PlayerPrefs.DeleteKey(CURRENCY_SAVE_KEY); // Optional: Remove saved coin value
         LoadCoins();
-        UpdateCoinDisplay();  // Ensure the coin display is updated at the start
-        UpdateCoinSprite();  // Set the coin sprite in the UI
+        UpdateCoinDisplay();
+        UpdateCoinSprite();
     }
 
     private void LoadCoins()
@@ -56,7 +54,7 @@ public class CurrencySystem : MonoBehaviour
         TotalCoins += amount;
         PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
         PlayerPrefs.Save();
-        UpdateCoinDisplay();  // Update the coin display after adding coins
+        OnCoinsChanged?.Invoke();  // Trigger the event when coins change
     }
 
     public void RemoveCoins(int amount)
@@ -66,45 +64,28 @@ public class CurrencySystem : MonoBehaviour
             TotalCoins -= amount;
             PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
             PlayerPrefs.Save();
-            UpdateCoinDisplay();  // Update the coin display after removing coins
+            OnCoinsChanged?.Invoke();  // Trigger the event when coins change
         }
     }
 
-    private void AddCoins(Enemy enemy)
-    {
-        // Add coins when an enemy is killed
-        // AddCoins(enemy.DeathCoinReward);
-    }
-
-    private void OnEnable()
-    {
-        EnemyHealth.OnEnemyKilled += AddCoins;
-    }
-
-    private void OnDisable()
-    {
-        EnemyHealth.OnEnemyKilled -= AddCoins;
-    }
-
-    // Method to update the UI Text element with the current coin amount
     private void UpdateCoinDisplay()
     {
         if (coinDisplayText != null)
         {
-            coinDisplayText.text = "Coins: " + TotalCoins.ToString();  // Update the text
+            coinDisplayText.text = "Coins: " + TotalCoins.ToString();
         }
         else if (coinDisplayTextTMP != null)
         {
-            coinDisplayTextTMP.text = "Coins: " + TotalCoins.ToString();  // For TextMeshPro
+            coinDisplayTextTMP.text = "Coins: " + TotalCoins.ToString();
         }
     }
 
-    // Method to update the coin sprite (if assigned)
     private void UpdateCoinSprite()
     {
         if (coinImage != null && coinSprite != null)
         {
-            coinImage.sprite = coinSprite;  // Update the sprite of the coin image
+            coinImage.sprite = coinSprite;
         }
     }
 }
+

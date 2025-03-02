@@ -9,8 +9,6 @@ public class Projectile : MonoBehaviour
     [SerializeField] protected float moveSpeed = 10f;
     [SerializeField] private float minDistanceToDealDamage = 0.1f;
 
-    public TurretProjectile TurretOwner { get; set; }
-
     public float Damage { get; set; }
 
     protected Enemy _enemyTarget;
@@ -46,7 +44,7 @@ public class Projectile : MonoBehaviour
            //     _enemyTarget.GetEnemyHealth().DealDamage(Damage); // Use the GetEnemyHealth() method
             }
 
-            TurretOwner.ResetTurretProjectile();
+           // TurretOwner.ResetTurretProjectile();
             ObjectPooler.ReturnToPool(gameObject);
         }
     }
