@@ -843,7 +843,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1960667943}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -399.96, y: -190.9, z: 0}
+  m_LocalPosition: {x: -399.96, y: -261.2, z: 0}
   m_LocalScale: {x: 0.78769976, y: 0.5973213, z: 0.26917735}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -890,7 +890,7 @@ MonoBehaviour:
   - "Sheriff: Well can you help me find a way of the island as I seem to be stranded
     here.\u200B"
   - "Dodo: I will help if you prove yourself.\u200B"
-  - 'Dodo: And you can do that by protecting us Dodos for 5 days.'
+  - ' do that by protecting the Dodo Queen for 5 days.Dodos for 5 days.'
   - "Dodo: You see us Dodos face threats to make us extinct every day.\u200B"
   - "Dodo: Do you accept this challenge?\u200B"
   - "Sheriff: I mean I don't have anything to loose so why not I mean I am a Sheriff

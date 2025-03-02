@@ -12,14 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: b07dda36081ef412d81451324e82a80c
   - enabled: 1
+    path: Assets/Scenes/Cutscene 1.unity
+    guid: 5a766f9945b3b496abc0f55618acad4c
+  - enabled: 1
     path: Assets/Scenes/Level 0.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Cutscene 0.unity
+    guid: 6366b80fe6973488f85c7918377de98f
+  - enabled: 1
     path: Assets/Scenes/Map.unity
     guid: c1d5060412a3d455198f43a2a52611e7
-  - enabled: 1
-    path: Assets/Scenes/Cutscene 1.unity
-    guid: 5a766f9945b3b496abc0f55618acad4c
   - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: 3b39905c809f1411889853285fe52052
@@ -28,5 +31,5 @@ EditorBuildSettings:
     guid: a7cde93d1669e42d2ad862cc064ecb9d
   - enabled: 1
     path: Assets/Scenes/Credits.unity
-    guid: f3180e663a3874c088c143722f0bd0b4
+    guid: a21bd4000a83d44399606dbbcf9e16f9
   m_configObjects: {}
