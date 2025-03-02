@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,28 +8,19 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Button[] weaponButtons; // Buttons for buying weapons
     [SerializeField] private int[] weaponPrices; // Prices for the weapons
     [SerializeField] private GameObject[] weaponPrefabs; // Prefabs for the weapons (turrets)
+    [SerializeField] private GameObject weaponContainer; // Container to hold all weapons
     private Plot currentPlot; // Reference to the plot where the weapon will be placed
 
     private void Start()
     {
-        // Initially hide the shop UI and ensure all weapons are inactive
+        // Initially hide the shop UI
         shopUI.SetActive(false);
-        DeactivateAllWeapons();
 
         // Set up weapon button listeners
         for (int i = 0; i < weaponButtons.Length; i++)
         {
             int index = i;
             weaponButtons[i].onClick.AddListener(() => BuyWeapon(index));
-        }
-    }
-
-    // Method to deactivate all weapons at the start
-    private void DeactivateAllWeapons()
-    {
-        foreach (GameObject weapon in weaponPrefabs)
-        {
-            weapon.SetActive(false); // Ensure all weapons are deactivated
         }
     }
 
@@ -40,41 +32,38 @@ public class ShopManager : MonoBehaviour
     }
 
     // Method to buy a weapon
-   private void BuyWeapon(int weaponIndex)
-{
-    if (CurrencySystem.Instance.TotalCoins >= weaponPrices[weaponIndex])
+    private void BuyWeapon(int weaponIndex)
     {
-        CurrencySystem.Instance.RemoveCoins(weaponPrices[weaponIndex]);
-
-        // Check if the weapon prefab is valid
-        if (weaponPrefabs[weaponIndex] != null)
+        // Check if the weapon index is valid
+        if (weaponIndex < 0 || weaponIndex >= weaponPrefabs.Length)
         {
-            // Instantiate the weapon prefab at the plot's position
-            GameObject weapon = Instantiate(weaponPrefabs[weaponIndex], currentPlot.transform.position, Quaternion.identity);
+            Debug.LogError("Weapon index is out of range.");
+            return; // Exit if index is invalid
+        }
 
-            // Deactivate the weapon initially
-            weapon.SetActive(false);
+        if (CurrencySystem.Instance.TotalCoins >= weaponPrices[weaponIndex])
+        {
+            CurrencySystem.Instance.RemoveCoins(weaponPrices[weaponIndex]);
 
-            // After buying, activate the weapon
-            weapon.SetActive(true);
+            // Place the weapon (turret) at the plot's position
+            GameObject weaponInstance = Instantiate(weaponPrefabs[weaponIndex], currentPlot.transform.position, Quaternion.identity);
 
-            // Optionally, if the weapon has specific logic tied to the plot, we can attach it to the plot here.
-            // e.g., currentPlot.SetWeapon(weapon);
+            // Set the parent of the weapon to the WeaponContainer (not the plot)
+            weaponInstance.transform.SetParent(weaponContainer.transform); 
+
+            // Ensure the weapon is visible and active
+            weaponInstance.SetActive(true); // Make sure the weapon is active after instantiation
 
             // Close the shop UI after purchase
             shopUI.SetActive(false);
+
+            Debug.Log("Weapon bought and placed at plot!");
         }
         else
         {
-            Debug.LogError("Weapon prefab is missing or invalid for weapon index " + weaponIndex);
+            Debug.Log("Not enough coins to buy this weapon.");
         }
     }
-    else
-    {
-        Debug.Log("Not enough coins to buy this weapon.");
-    }
-}
-
 
     // Close the shop UI manually if needed
     public void CloseShop()
