@@ -177,8 +177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a7932fc4ca74ce18c4763d81165d93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretImage: {fileID: 1026981292}
-  turretCost: {fileID: 1174767010}
 --- !u!114 &66784536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,8 +481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a7932fc4ca74ce18c4763d81165d93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretImage: {fileID: 554953759}
-  turretCost: {fileID: 571156596}
 --- !u!114 &165446428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,8 +1454,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sr: {fileID: 514271310}
-  hoverColor: {r: 0.6427109, g: 0.79360205, b: 0.9528302, a: 0.6117647}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2440,6 +2434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00d107613d4f4d28b532b1aa3484f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinDisplayText: {fileID: 0}
+  coinDisplayTextTMP: {fileID: 0}
 --- !u!1 &939510698
 GameObject:
   m_ObjectHideFlags: 0
@@ -2652,8 +2648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a7932fc4ca74ce18c4763d81165d93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretImage: {fileID: 580926584}
-  turretCost: {fileID: 1807058084}
 --- !u!1 &1026981290
 GameObject:
   m_ObjectHideFlags: 0
@@ -3152,7 +3146,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1374369754}
-  - component: {fileID: 1374369755}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -3175,20 +3168,6 @@ Transform:
   m_Father: {fileID: 1699342737}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1374369755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1374369752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc8ecfebac0524e17b004d3071545c05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  towerPrefabs:
-  - {fileID: 1760017663}
 --- !u!1 &1432365521
 GameObject:
   m_ObjectHideFlags: 0
@@ -4705,10 +4684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dad2780996379448d82ace5d0c5fbe16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 3
-  enemyTags:
-  - Enemy
-  rotationSpeed: 5
 --- !u!114 &1760017668
 MonoBehaviour:
   m_ObjectHideFlags: 0
