@@ -50,17 +50,17 @@ public class Enemy : MonoBehaviour
         if (gameManager != null)
         {
             OnEndReached -= gameManager.HandleEndReached;
-            UnsubscribeFromEvents();
         }
+        UnsubscribeFromEvents();
     }
 
     private void Update()
     {
-        if (!isInitialized || waypoints.Count == 0) return;
+        if (!isInitialized || waypoints.Count == 0 || gameManager.isGameOver) return;
 
         Move();
         Rotate();
-        
+
         if (Vector3.Distance(transform.position, CurrentWaypoint) < 0.1f)
         {
             UpdateWaypoint();
@@ -113,7 +113,7 @@ public class Enemy : MonoBehaviour
             {
                 Debug.LogWarning($"[Enemy] No sprite available for wave {CurrentWaveIndex}");
             }
-            
+
             enemyHealth.ResetHealth();
             currentWaypointIndex = 0;
         }
@@ -128,7 +128,6 @@ public class Enemy : MonoBehaviour
     {
         if (enemyHealth != null)
         {
-            // Monitor the enemy's health for changes
             enemyHealth.OnDeath += HandleEnemyDefeated;
         }
     }
@@ -143,12 +142,11 @@ public class Enemy : MonoBehaviour
 
     private void HandleEnemyDefeated()
     {
-        if (!gameManager.isGameOver)
-        {
-            // Trigger the win screen if enemy is defeated
-            OnEnemyDefeated?.Invoke(this);
-            gameManager.HandleEnemyDefeated(this);
-        }
+        if (gameManager.isGameOver) return;
+
+        // Trigger the win screen if enemy is defeated
+        OnEnemyDefeated?.Invoke(this);
+        gameManager.HandleEnemyDefeated(this);
     }
 
     private Vector3 CurrentWaypoint
@@ -166,11 +164,9 @@ public class Enemy : MonoBehaviour
 
     private void Move()
     {
-        if (gameManager.isGameOver) return;
-        
         transform.position = Vector3.MoveTowards(
-            transform.position, 
-            CurrentWaypoint, 
+            transform.position,
+            CurrentWaypoint,
             moveSpeed * Time.deltaTime
         );
     }
@@ -190,7 +186,7 @@ public class Enemy : MonoBehaviour
             currentWaypointIndex++;
             return;
         }
-        
+
         try
         {
             if (!gameManager.isGameOver)

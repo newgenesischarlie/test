@@ -7,15 +7,15 @@ public class Plot : MonoBehaviour
     private void OnMouseDown()
     {
         // Ensure the shopManager is assigned
-        if (shopManager != null)
-        {
-            Debug.Log("Plot clicked! Opening the shop...");
-            shopManager.OpenShop(this); // Open the shop when the plot is clicked
-        }
-        else
-        {
-            Debug.LogError("ShopManager is not assigned!");
-        }
+     //   if (shopManager != null)
+      //  {
+      //      Debug.Log("Plot clicked! Opening the shop...");
+      //      shopManager.OpenShop(this); // Open the shop when the plot is clicked
+       // }
+      //  else
+      //  {
+      //      Debug.LogError("ShopManager is not assigned!");
+      //  }
     }
 
     // Optional: To visualize the clickable area in the editor, make sure the plot has a collider

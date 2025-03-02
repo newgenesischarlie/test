@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         // Ensure the weapon starts inactive and does not update while inactive
-        gameObject.SetActive(false); // We ensure the weapon is initially inactive
+      //  gameObject.SetActive(false); // We ensure the weapon is initially inactive
     }
 
     private void Update()
