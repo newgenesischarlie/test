@@ -43,13 +43,6 @@ public class Projectile : MonoBehaviour
     {
         if (hasHitTarget) return;
         
-        // Update lifetime
-        lifetimeTimer += Time.deltaTime;
-        if (lifetimeTimer >= maxLifetime)
-        {
-            DestroyProjectile();
-            return;
-        }
 
         // If target is gone, keep moving in last direction
         if (target != null && target.gameObject.activeInHierarchy)
