@@ -1,83 +1,174 @@
-using System.Collections;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 5f; // Speed at which turret rotates
-    [SerializeField] private float attackRange = 5f; // Detection range for enemies
-    [SerializeField] private Transform rotationPoint; // The point from which the turret rotates
-    [SerializeField] private float attackRate = 1f; // How fast the turret shoots (attacks per second)
-    [SerializeField] private GameObject projectilePrefab; // The projectile the turret fires
-    [SerializeField] private Transform projectileSpawnPoint; // Where the projectile is spawned
+    [Header("Weapon Settings")]
+    [SerializeField] private float _range = 5f;
+    [SerializeField] private float _rotationSpeed = 5f;
+    [SerializeField] private float _fireRate = 1f;
+    [SerializeField] private int _damage = 10;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject projectilePrefab;
+    
+    [Header("Rotation Constraints")]
+    [SerializeField] private float minRotationAngle = -45f;
+    [SerializeField] private float maxRotationAngle = 45f;
+    [SerializeField] private Transform pivotPoint; // Optional pivot point for rotation
 
+    // Public properties
+    public float range { get { return _range; } set { _range = value; } }
+    public float rotationSpeed { get { return _rotationSpeed; } set { _rotationSpeed = value; } }
+    public float fireRate { get { return _fireRate; } set { _fireRate = value; } }
+    public int damage { get { return _damage; } set { _damage = value; } }
+
+    private float nextFireTime;
     private Transform currentTarget;
-    private float nextAttackTime = 0f;
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
+    
+    private void Awake()
+    {
+        // Start inactive
+        gameObject.SetActive(false);
+        
+        if (pivotPoint == null)
+            pivotPoint = transform;
+    }
 
     private void Start()
     {
-        // Ensure the weapon starts inactive and does not update while inactive
-      //  gameObject.SetActive(false); // We ensure the weapon is initially inactive
+        nextFireTime = Time.time;
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
 
     private void Update()
     {
-        if (!gameObject.activeInHierarchy) return; // Skip update if the weapon is inactive
-
-        DetectEnemies();
-
-        if (currentTarget != null && Time.time >= nextAttackTime)
+        FindAndTargetEnemy();
+        
+        if (currentTarget != null)
         {
-            ShootProjectile();
-            nextAttackTime = Time.time + attackRate;
+            RotateTowardsTargetConstrained();
+            TryShoot();
         }
-
-        RotateTowardsTarget();
+        
+        // Keep weapon at its initial position
+        if (transform.position != initialPosition)
+        {
+            transform.position = initialPosition;
+        }
     }
 
-    // Detect enemies within range
-    private void DetectEnemies()
+    private void FindAndTargetEnemy()
     {
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, attackRange);
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        float closestDistance = range;
+        Transform closestEnemy = null;
 
-        foreach (var enemy in enemiesInRange)
+        foreach (Enemy enemy in enemies)
         {
-            if (enemy.CompareTag("Enemy"))
+            if (enemy != null && enemy.gameObject.activeInHierarchy)
             {
-                currentTarget = enemy.transform;
-                return;
+                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distance <= range && distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = enemy.transform;
+                }
             }
         }
 
-        currentTarget = null; // No enemies in range
+        currentTarget = closestEnemy;
     }
 
-    // Rotate the turret to face the enemy
-    private void RotateTowardsTarget()
+    private void RotateTowardsTargetConstrained()
     {
-        if (currentTarget != null)
+        if (currentTarget == null) return;
+
+        // Calculate direction to target
+        Vector3 direction = currentTarget.position - transform.position;
+        
+        // Calculate rotation angle
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        
+        // Apply constraints - convert to local space if needed
+        float baseAngle = initialRotation.eulerAngles.z;
+        float relativeTurretAngle = Mathf.DeltaAngle(baseAngle, targetAngle);
+        
+        // Clamp to min/max range
+        float clampedAngle = Mathf.Clamp(relativeTurretAngle, minRotationAngle, maxRotationAngle);
+        float finalAngle = baseAngle + clampedAngle;
+        
+        // Create target rotation (only rotate around Z axis)
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, finalAngle);
+        
+        // Rotate smoothly towards target
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation, 
+            targetRotation, 
+            rotationSpeed * Time.deltaTime
+        );
+    }
+
+    private void TryShoot()
+    {
+        if (Time.time >= nextFireTime)
         {
-            Vector3 direction = currentTarget.position - rotationPoint.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, Quaternion.Euler(0, 0, angle), rotationSpeed * Time.deltaTime);
+            Shoot();
+            nextFireTime = Time.time + 1f / fireRate;
         }
     }
 
-    // Shoot a projectile at the target
-    private void ShootProjectile()
+    private void Shoot()
     {
-        if (currentTarget != null)
+        if (firePoint == null || currentTarget == null || projectilePrefab == null)
+            return;
+
+        // Create a projectile
+        GameObject projectileObj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        
+        if (projectileObj != null)
         {
-            GameObject projectile = ObjectPooler.Instance.GetInstanceFromPool();
-            projectile.transform.position = projectileSpawnPoint.position;
-            projectile.GetComponent<Projectile>().SetEnemy(currentTarget.GetComponent<Enemy>());
-            projectile.SetActive(true);
+            // Initialize the projectile
+            Projectile projectile = projectileObj.GetComponent<Projectile>();
+            if (projectile != null)
+            {
+                projectile.Initialize(damage, currentTarget);
+            }
         }
     }
 
-    // Draw a circle in the editor to visualize attack range (for debugging)
+    // Upgrade methods
+    public void UpgradeDamage(float multiplier = 1.2f)
+    {
+        damage = Mathf.RoundToInt(damage * multiplier);
+    }
+
+    public void UpgradeRange(float multiplier = 1.15f)
+    {
+        range *= multiplier;
+    }
+
+    public void UpgradeFireRate(float multiplier = 1.1f)
+    {
+        fireRate *= multiplier;
+    }
+
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, range);
+        
+        // Draw rotation constraints
+        if (Application.isPlaying) return;
+        
+        Vector3 center = pivotPoint != null ? pivotPoint.position : transform.position;
+        float radius = 1f; // Visual radius for gizmo
+        
+        Gizmos.color = Color.yellow;
+        Vector3 minDir = Quaternion.Euler(0, 0, minRotationAngle) * Vector3.right;
+        Vector3 maxDir = Quaternion.Euler(0, 0, maxRotationAngle) * Vector3.right;
+        Gizmos.DrawRay(center, minDir * radius);
+        Gizmos.DrawRay(center, maxDir * radius);
     }
 }

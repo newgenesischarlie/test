@@ -1,80 +1,119 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] private GameObject shopUI; // The UI for the shop panel
-  //  [SerializeField] private Button[] weaponButtons; // Buttons for buying weapons
-    [SerializeField] private int[] weaponPrices; // Prices for the weapons
-    [SerializeField] private GameObject[] weaponPrefabs; // Prefabs for the weapons (turrets)
-    [SerializeField] private GameObject weaponContainer; // Container to hold all weapons
-    private Plot currentPlot; // Reference to the plot where the weapon will be placed
+    [System.Serializable]
+    public class WeaponData
+    {
+        public string name;
+        public GameObject weaponPrefab;
+        public int cost;
+        public Sprite icon;
+    }
 
+    [Header("Shop Settings")]
+    [SerializeField] private WeaponData[] availableWeapons;
+    [SerializeField] private GameObject shopUI;
+    [SerializeField] private Transform weaponButtonsContainer;
+    [SerializeField] private Button weaponButtonPrefab;
+
+    private Plot selectedPlot;
+    private CurrencySystem currencySystem;
 
     private void Start()
     {
-        // Initially hide the shop UI
-       // shopUI.SetActive(false);
-
-        // Set up weapon button listeners
-      //  for (int i = 0; i < weaponButtons.Length; i++)
-      //  {
-      //      int index = i;
-      //      weaponButtons[i].onClick.AddListener(() => BuyWeapon(index));
-      //  }
+        currencySystem = FindObjectOfType<CurrencySystem>();
+        InitializeShop();
+        
+        // Hide shop UI at start
+        if (shopUI != null)
+        {
+            shopUI.SetActive(false);
+        }
     }
 
-    // Call this method when a plot is clicked
- //   public void OpenShop(Plot plot)
- //   {
- //       currentPlot = plot;
- //       shopUI.SetActive(true);
- //   }
-
-    // Method to buy a weapon
-   private void BuyWeapon(int weaponIndex)
-{
-    if (weaponIndex < 0 || weaponIndex >= weaponPrefabs.Length)
+    private void InitializeShop()
     {
-        Debug.LogError("Weapon index is out of range.");
-        return; // Exit if index is invalid
+        // Clear existing buttons
+        foreach (Transform child in weaponButtonsContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Create buttons for each weapon
+        foreach (WeaponData weapon in availableWeapons)
+        {
+            CreateWeaponButton(weapon);
+        }
     }
 
-    if (weaponPrefabs[weaponIndex] == null)
+    private void CreateWeaponButton(WeaponData weapon)
     {
-        Debug.LogError("Weapon prefab is missing or invalid for weapon index " + weaponIndex);
-        return; // Exit if the weapon prefab is not assigned or invalid
+        Button newButton = Instantiate(weaponButtonPrefab, weaponButtonsContainer);
+        
+        // Set button icon
+        Image buttonImage = newButton.GetComponent<Image>();
+        if (buttonImage != null && weapon.icon != null)
+        {
+            buttonImage.sprite = weapon.icon;
+        }
+
+        // Set cost text
+        Text buttonText = newButton.GetComponentInChildren<Text>();
+        if (buttonText != null)
+        {
+            buttonText.text = weapon.cost.ToString();
+        }
+
+        // Add weapon name as tooltip or label if you have a Text component for it
+        Text nameText = newButton.transform.Find("NameText")?.GetComponent<Text>();
+        if (nameText != null)
+        {
+            nameText.text = weapon.name;
+        }
+
+        // Add click listener
+        newButton.onClick.AddListener(() => TryPurchaseWeapon(weapon));
     }
 
-    if (CurrencySystem.Instance.TotalCoins >= weaponPrices[weaponIndex])
+    public void SelectPlot(Plot plot)
     {
-        CurrencySystem.Instance.RemoveCoins(weaponPrices[weaponIndex]);
-
-        // Place the weapon (turret) at the plot's position
-        GameObject weaponInstance = Instantiate(weaponPrefabs[weaponIndex], currentPlot.transform.position, Quaternion.identity);
-
-        // Set the parent of the weapon to the WeaponContainer (not the plot)
-        weaponInstance.transform.SetParent(weaponContainer.transform); 
-
-        // Ensure the weapon is visible and active
-        weaponInstance.SetActive(true); // Make sure the weapon is active after instantiation
-
-        // Close the shop UI after purchase
-        shopUI.SetActive(false);
-
-        Debug.Log("Weapon bought and placed at plot!");
+        selectedPlot = plot;
+        if (shopUI != null)
+        {
+            shopUI.SetActive(true);
+        }
     }
-    else
+
+    private void TryPurchaseWeapon(WeaponData weapon)
     {
-        Debug.Log("Not enough coins to buy this weapon.");
-    }
-}
+        if (selectedPlot == null || selectedPlot.IsOccupied())
+        {
+            Debug.LogWarning("No plot selected or plot is occupied");
+            return;
+        }
 
-    // Close the shop UI manually if needed
+        if (currencySystem != null && currencySystem.TotalCoins >= weapon.cost)
+        {
+            // Purchase successful
+            currencySystem.RemoveCoins(weapon.cost);
+            selectedPlot.PlaceWeapon(weapon.weaponPrefab);
+            CloseShop();
+        }
+        else
+        {
+            Debug.Log("Not enough coins to purchase " + weapon.name);
+            // Optionally show a message to the player
+        }
+    }
+
     public void CloseShop()
     {
-        shopUI.SetActive(false);
+        if (shopUI != null)
+        {
+            shopUI.SetActive(false);
+        }
+        selectedPlot = null;
     }
-
 }

@@ -1,63 +1,101 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class Projectile : MonoBehaviour
 {
-    public static Action<Enemy, float> OnEnemyHit;
-    [SerializeField] protected float moveSpeed = 10f;
-    [SerializeField] private float minDistanceToDealDamage = 0.1f;
+    [SerializeField] private float speed = 10f;
+    [SerializeField] private float maxLifetime = 5f;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    
+    private int damage;
+    private Transform target;
+    private Vector3 direction;
+    private float lifetimeTimer;
+    private bool hasHitTarget = false;
 
-    public float Damage { get; set; }
-
-    protected Enemy _enemyTarget;
-
-    protected virtual void Update()
+    private void Awake()
     {
-        if (_enemyTarget != null)
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void Initialize(int damageAmount, Transform enemyTarget)
+    {
+        damage = damageAmount;
+        target = enemyTarget;
+        lifetimeTimer = 0f;
+        hasHitTarget = false;
+        
+        if (target != null)
         {
-            MoveProjectile();
-            RotateProjectile();
+            direction = (target.position - transform.position).normalized;
+        }
+        else
+        {
+            direction = transform.right;
+        }
+        
+        // Show projectile
+        if (spriteRenderer != null)
+            spriteRenderer.enabled = true;
+    }
+
+    private void Update()
+    {
+        if (hasHitTarget) return;
+        
+        // Update lifetime
+        lifetimeTimer += Time.deltaTime;
+        if (lifetimeTimer >= maxLifetime)
+        {
+            DestroyProjectile();
+            return;
+        }
+
+        // If target is gone, keep moving in last direction
+        if (target != null && target.gameObject.activeInHierarchy)
+        {
+            direction = (target.position - transform.position).normalized;
+        }
+
+        // Move projectile
+        transform.Translate(direction * speed * Time.deltaTime);
+        
+        // Rotate to face direction
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        
+        // Check if projectile is out of screen bounds
+        if (IsOutOfBounds())
+        {
+            DestroyProjectile();
         }
     }
 
-    public void ResetProjectile()
+    private bool IsOutOfBounds()
     {
-        // Reset any relevant properties of the projectile when it is reused
-        _enemyTarget = null;  // Reset the enemy target
-        // Optionally reset other properties like position, speed, etc.
-        transform.localPosition = Vector3.zero;  // Example reset for position
+        Vector3 screenPos = Camera.main.WorldToViewportPoint(transform.position);
+        return screenPos.x < -0.1f || screenPos.x > 1.1f || screenPos.y < -0.1f || screenPos.y > 1.1f;
     }
 
-    protected virtual void MoveProjectile()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        transform.position = Vector2.MoveTowards(transform.position,
-            _enemyTarget.transform.position, moveSpeed * Time.deltaTime);
-        float distanceToTarget = (_enemyTarget.transform.position - transform.position).magnitude;
-
-        if (distanceToTarget < minDistanceToDealDamage)
+        if (hasHitTarget) return;
+        
+        if (other.CompareTag("Enemy"))
         {
-            OnEnemyHit?.Invoke(_enemyTarget, Damage);
-      //      if (_enemyTarget != null && _enemyTarget.GetEnemyHealth() != null)
+            EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
             {
-           //     _enemyTarget.GetEnemyHealth().DealDamage(Damage); // Use the GetEnemyHealth() method
+                enemyHealth.TakeDamage(damage);
             }
-
-           // TurretOwner.ResetTurretProjectile();
-            ObjectPooler.ReturnToPool(gameObject);
+            
+            hasHitTarget = true;
+            DestroyProjectile();
         }
     }
 
-    private void RotateProjectile()
+    private void DestroyProjectile()
     {
-        Vector3 enemyPos = _enemyTarget.transform.position - transform.position;
-        float angle = Vector3.SignedAngle(transform.up, enemyPos, transform.forward);
-        transform.Rotate(0f, 0f, angle);
-    }
-
-    public void SetEnemy(Enemy enemy)
-    {
-        _enemyTarget = enemy;
+        Destroy(gameObject);
     }
 }

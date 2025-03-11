@@ -1,21 +1,69 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Plot : MonoBehaviour
 {
-    [SerializeField] private ShopManager shopManager; // Reference to the ShopManager
+    [SerializeField] private Transform weaponPosition;
+    
+    private GameObject currentWeaponObj;
+    private Weapon currentWeapon;
+    private bool isOccupied = false;
+    
+    [Header("Optional")]
+    [SerializeField] private int plotIndex; // For identifying specific plots
+
+    private void Start()
+    {
+        // Initialize plot
+    }
 
     private void OnMouseDown()
     {
-        // Ensure the shopManager is assigned
-     //   if (shopManager != null)
-      //  {
-      //      Debug.Log("Plot clicked! Opening the shop...");
-      //      shopManager.OpenShop(this); // Open the shop when the plot is clicked
-       // }
-      //  else
-      //  {
-      //      Debug.LogError("ShopManager is not assigned!");
-      //  }
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        WeaponShop shop = FindObjectOfType<WeaponShop>();
+        if (shop != null)
+        {
+            shop.SelectPlot(this);
+        }
+    }
+
+    public GameObject PlaceWeapon(GameObject weaponPrefab)
+    {
+        if (isOccupied || weaponPrefab == null)
+            return null;
+
+        Vector3 position = weaponPosition != null ? 
+            weaponPosition.position : transform.position;
+        
+        currentWeaponObj = Instantiate(weaponPrefab, position, Quaternion.identity);
+        currentWeapon = currentWeaponObj.GetComponent<Weapon>();
+        isOccupied = true;
+        
+        return currentWeaponObj;
+    }
+
+    public bool IsOccupied()
+    {
+        return isOccupied;
+    }
+
+    public void RemoveWeapon()
+    {
+        if (currentWeaponObj != null)
+        {
+            Destroy(currentWeaponObj);
+            currentWeaponObj = null;
+            currentWeapon = null;
+        }
+        isOccupied = false;
+    }
+
+    // For identifying this plot
+    public int GetPlotIndex()
+    {
+        return plotIndex;
     }
 
     // Optional: To visualize the clickable area in the editor, make sure the plot has a collider

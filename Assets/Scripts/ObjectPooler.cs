@@ -155,4 +155,32 @@ public class ObjectPooler : MonoBehaviour
             AddToActiveEnemies(enemy);
         }
     }
+
+    // Helper method to check if a pool exists
+    private bool DoesPoolExist(string tag)
+    {
+        // Implement based on your existing object pooler structure
+        // For example, try to get an instance with default parameters
+        GameObject testObj = GetInstanceFromPool();
+        return testObj != null;
+    }
+
+    // Helper method to create a new pool - implement based on your existing structure
+    private void CreateNewPool(string tag, GameObject prefab, int size)
+    {
+        // Create a new pool container
+        GameObject poolContainer = new GameObject(tag + "Pool");
+        poolContainer.transform.SetParent(transform);
+        
+        // Initialize objects based on your existing pooling system
+        for (int i = 0; i < size; i++)
+        {
+            GameObject obj = Instantiate(prefab);
+            obj.SetActive(false);
+            obj.transform.SetParent(poolContainer.transform);
+            
+            // Add to your pool - adapt this to your system
+            // This part depends on how your pooling system works
+        }
+    }
 }

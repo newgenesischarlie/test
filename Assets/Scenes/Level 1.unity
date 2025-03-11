@@ -2882,7 +2882,7 @@ GameObject:
   - component: {fileID: 169515619}
   - component: {fileID: 169515618}
   - component: {fileID: 169515617}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Health Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5750,7 +5750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 675787190}
+  shopManager: {fileID: 0}
 --- !u!212 &296537742
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8536,7 +8536,7 @@ GameObject:
   - component: {fileID: 403400972}
   - component: {fileID: 403400974}
   - component: {fileID: 403400975}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10817,7 +10817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 675787190}
+  shopManager: {fileID: 0}
 --- !u!61 &514271313
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13764,63 +13764,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 675787185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b807f78df1b3641c5ba6e588202b95dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 587e96df5d04b45939b1f91280ee3795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopUI: {fileID: 939510698}
-  weaponPrices: 050000000a0000000f000000
-  weaponPrefabs:
-  - {fileID: 67912548}
-  - {fileID: 71016062}
-  - {fileID: 67912548}
-  - {fileID: 1240939001}
-  - {fileID: 116197929}
-  - {fileID: 777046003}
-  - {fileID: 985378258}
-  - {fileID: 968935461}
-  - {fileID: 787820977}
-  - {fileID: 1345633938}
-  - {fileID: 592985788}
-  - {fileID: 1467765377}
-  - {fileID: 976238942}
-  - {fileID: 202303172}
-  - {fileID: 1545920524}
-  - {fileID: 1063965247}
-  - {fileID: 150963872}
-  - {fileID: 1367922226}
-  - {fileID: 954264524}
-  - {fileID: 1139556295}
-  - {fileID: 427706733}
-  - {fileID: 1711744116}
-  - {fileID: 1899710898}
-  - {fileID: 2055875869}
-  - {fileID: 986821095}
-  - {fileID: 341630875}
-  - {fileID: 427706733}
-  - {fileID: 1711744116}
-  - {fileID: 1750092140}
-  - {fileID: 1684258240}
-  - {fileID: 864474752}
-  - {fileID: 848257936}
-  - {fileID: 243946631}
-  - {fileID: 2050757778}
-  - {fileID: 853981545}
-  - {fileID: 848257936}
-  - {fileID: 1345633938}
-  - {fileID: 2120718525}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  - {fileID: 1345633938}
-  weaponContainer: {fileID: 527483675}
+  turretRotationPoint: {fileID: 2109624230}
+  targetingRange: 5
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 8
+  rotationSpeed: 5
 --- !u!1 &678471362
 GameObject:
   m_ObjectHideFlags: 0
@@ -15006,7 +14958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 675787190}
+  shopManager: {fileID: 0}
 --- !u!212 &754013182
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22183,7 +22135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 675787190}
+  shopManager: {fileID: 0}
 --- !u!212 &1064802872
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -28610,7 +28562,7 @@ GameObject:
   - component: {fileID: 1335269160}
   - component: {fileID: 1335269162}
   - component: {fileID: 1335269161}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31740,7 +31692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 675787190}
+  shopManager: {fileID: 0}
 --- !u!212 &1461992777
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34095,7 +34047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1540340398}
   - component: {fileID: 1540340399}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarPosition
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -34244,7 +34196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 675787190}
+  shopManager: {fileID: 0}
 --- !u!212 &1541279860
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -43816,9 +43768,9 @@ GameObject:
   - component: {fileID: 2006923998}
   - component: {fileID: 2006924004}
   - component: {fileID: 2006924005}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44219,7 +44171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 675787190}
+  shopManager: {fileID: 0}
 --- !u!212 &2015953524
 SpriteRenderer:
   m_ObjectHideFlags: 0
