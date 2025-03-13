@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turretRotationPoint: {fileID: 1931672423}
-  targetingRange: 7
+  targetingRange: 3
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
@@ -36442,7 +36442,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 25
   m_AngularDrag: 25
   m_GravityScale: 1

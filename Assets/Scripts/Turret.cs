@@ -55,20 +55,6 @@ public class Turret : MonoBehaviour
             // Process each collider as before...
         }
 
-        Debug.Log("Checking enemies in scene:");
-        Enemy[] allEnemies = FindObjectsOfType<Enemy>();
-        foreach (var enemy in allEnemies)
-        {
-            float distance = Vector2.Distance(
-                new Vector2(transform.position.x, transform.position.y), 
-                new Vector2(enemy.transform.position.x, enemy.transform.position.y)
-            );
-            Debug.Log("Enemy: " + enemy.name + 
-                      " Position: " + enemy.transform.position + 
-                      " Distance (2D): " + distance +
-                      " Layer: " + LayerMask.LayerToName(enemy.gameObject.layer));
-        }
-
         CheckEnemyColliders();
     }
 
