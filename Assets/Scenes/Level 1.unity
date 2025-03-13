@@ -172,12 +172,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1931672423}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1419515543}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &7460900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &11725877
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -729,7 +733,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &48958856
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1008,12 +1013,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 2109624230}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 285829872}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &67912551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,12 +1103,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 846971928}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2063461206}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &71016065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,12 +1504,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 569717926}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1018568354}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &84114203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1849,12 +1863,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 58291956}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1929510333}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &116197932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1935,12 +1952,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 442765157}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 345984642}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &121235761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,7 +2340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &141484052
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2484,12 +2505,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 546551474}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2144482208}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &150963875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2601,12 +2625,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 193776249}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1285629651}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &154457551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2718,12 +2745,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1621687266}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1934978825}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &159530148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3044,7 +3074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &180847507
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3438,12 +3469,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 143235921}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1375824996}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &195844202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3800,12 +3834,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1943934522}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 467940149}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &202303175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4077,7 +4114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &216616703
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4448,7 +4486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &227224809
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4612,12 +4651,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1391418752}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1306599123}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &241688048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4698,12 +4740,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 2141937356}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1399899650}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &243946634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4868,12 +4913,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 779219101}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1995195720}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &248031433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5038,12 +5086,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 303523569}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 408389815}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &249465617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5124,12 +5175,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 723768428}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1539016535}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &251503933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5210,12 +5264,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 95547260}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1206522061}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &254576114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5296,12 +5353,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 966867798}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 153426867}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &256908233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5750,7 +5810,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &296537742
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5852,12 +5913,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1662417016}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 423414800}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &297348672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5969,12 +6033,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1033505089}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2017673233}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &301555978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6370,7 +6437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &315678988
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6495,7 +6563,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &322303680
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6681,12 +6750,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1711114189}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1376360844}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &324536747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6882,12 +6954,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 2135119684}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 646703005}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &341630878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6968,12 +7043,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1016570375}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1339915844}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &343664947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7054,12 +7132,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 109251649}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 806692630}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &344296396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7286,12 +7367,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 794860589}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2063683130}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &355513578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7709,7 +7793,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &368615099
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7811,12 +7896,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1546715294}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1911811098}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &368901054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8035,7 +8123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &388396749
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8472,7 +8561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &403330554
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8712,12 +8802,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 310977781}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1356099805}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &413562763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8829,12 +8922,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1495106972}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1299080414}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &418914671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8977,12 +9073,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1599280930}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 465159783}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &427706736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9063,12 +9162,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1080718932}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1452571121}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &429551000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9172,7 +9274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &435597579
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9777,12 +9880,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1425689518}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 365522460}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &464434351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9894,12 +10000,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 190576284}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1231348732}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &467137351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10179,12 +10288,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 143574566}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1829928332}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &489527738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10487,7 +10599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &509654034
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10682,12 +10795,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1434011076}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1003181427}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &513665645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10817,7 +10933,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!61 &514271313
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11008,12 +11125,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1532495760}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 649914780}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &525367101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11570,12 +11690,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 2110897717}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 238861406}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &551103768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11878,7 +12001,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &562633349
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12432,7 +12556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &587122635
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12534,12 +12659,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1020137309}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 167445125}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &591003614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12620,12 +12748,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 299606522}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 719041382}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &592985791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13029,12 +13160,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1335570857}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1680949503}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &634466494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13292,12 +13426,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 405299021}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1833122223}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &654032734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13493,12 +13630,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 18113440}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 155991568}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &659081794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13610,12 +13750,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 821203409}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1804052177}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &675047587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13773,6 +13916,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   rotationSpeed: 5
+  debugMode: 1
 --- !u!1 &678471362
 GameObject:
   m_ObjectHideFlags: 0
@@ -13822,12 +13966,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1982308747}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1366769591}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &678471365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13908,12 +14055,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 995030251}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 437912102}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &683603091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14286,12 +14436,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 917323361}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1929056484}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &729612064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14718,7 +14871,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &739875577
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14958,7 +15112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &754013182
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -15122,12 +15277,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1646870071}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2074931188}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &777046006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15271,12 +15429,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 89687387}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1021371285}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &781108256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15357,12 +15518,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1102001954}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1567545028}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &785459675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15443,12 +15607,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1463690357}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1116025896}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &787820980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15614,12 +15781,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1130902612}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1162455157}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &790682265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15877,12 +16047,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 56714001}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 719892572}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &800085558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16330,12 +16503,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1349542464}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 879580704}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &812383233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16585,7 +16761,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &825881472
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16687,12 +16864,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1436334656}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1297591816}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &830688122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16962,7 +17142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &834938665
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17211,7 +17392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &847114457
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17313,12 +17495,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1662647762}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1270175102}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &848257939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17399,12 +17584,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1137417051}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1924249903}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &853981548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17485,12 +17673,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 891662045}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 919149027}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &858761100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17678,7 +17869,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &861857410
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17803,7 +17995,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &862775708
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17905,12 +18098,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1797114792}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 655094097}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &864474755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18106,12 +18302,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1377534729}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 397962556}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &881091651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18223,12 +18422,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 744221763}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 613143205}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &892966069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18847,12 +19049,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 73785587}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1779457571}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &920428446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19017,12 +19222,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 895527006}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1389440916}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &936859497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19493,12 +19701,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 202156932}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 225861768}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &954264527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19913,12 +20124,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1185974702}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 967386681}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &965515799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19999,12 +20213,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 302115826}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 314768891}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &966658376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20147,12 +20364,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1661050132}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1161432133}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &968935464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20234,12 +20454,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 139871352}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 916313287}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &976238945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20382,12 +20605,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1973174133}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1591031341}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &981287403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20468,12 +20694,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1133200099}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 739093366}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &985378261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20555,12 +20784,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 567556465}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1281815951}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &986821098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20765,12 +20997,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 600627731}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1992711367}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1009195841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20851,12 +21086,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 332322602}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 221330372}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1009909695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21261,7 +21499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1031244755
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -21478,12 +21717,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1726577524}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 361570341}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1036630528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21741,12 +21983,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 377494797}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1377263366}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1049880147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22026,12 +22271,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1539573424}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1717502700}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1063965250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22135,7 +22383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1064802872
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22237,12 +22486,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1588330227}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 27954842}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1072870939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22416,12 +22668,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 418858533}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1425010986}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1081275425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22648,12 +22903,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1037727803}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1860738627}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1084281597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23545,12 +23803,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 265425673}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 349892872}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1119081583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23892,12 +24153,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 976714124}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 30008239}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1139556298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23978,12 +24242,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 533850621}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1498837982}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1141207972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24087,7 +24354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1144194488
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24481,12 +24749,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1332842439}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 511986785}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1173057912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25124,12 +25395,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1107248964}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1105263031}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1193451448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25432,7 +25706,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1203572011
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -25534,12 +25809,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1873348110}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 956648282}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1204867769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25881,12 +26159,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 114045792}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2073834655}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1215552202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26312,12 +26593,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1838245277}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1079589904}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1233786557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26513,12 +26797,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1483017651}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 549671419}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1240939004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26622,7 +26909,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1252251800
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26724,12 +27012,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 509945803}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1935208681}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1257298010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27248,12 +27539,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1846336134}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1619068511}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1288740505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27357,7 +27651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1289549460
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -27459,12 +27754,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 777687450}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1660928137}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1294794799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27660,12 +27958,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 66712691}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1099260375}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1298838269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27800,7 +28101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1301819461
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -27902,12 +28204,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1872045547}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 111990288}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1303606405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27988,12 +28293,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1616136548}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2140949519}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1303755099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28181,12 +28489,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1232571712}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2124131922}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1309273883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28290,7 +28601,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1311306957
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -28769,12 +29081,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 80296451}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 218304394}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1341996942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28855,12 +29170,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1239125670}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1799304065}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1345633941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29025,12 +29343,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1898572674}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1096088791}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1346969688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29257,12 +29578,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1212470020}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1077232119}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1360757849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29374,12 +29698,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1002214465}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1265410824}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1367922229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29514,7 +29841,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1371934932
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29855,12 +30183,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1024201654}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 86129168}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1377814285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30066,12 +30397,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 450770637}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 262479360}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1391097298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30237,7 +30571,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1396839222
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -30653,12 +30988,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1430592792}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1371527314}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1414006233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31282,7 +31620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1447422668
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31415,12 +31754,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 620603484}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1018428870}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1453552879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31692,7 +32034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1461992777
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31848,7 +32191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1466776128
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31950,12 +32294,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1486648556}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1658052923}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1467765380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32059,7 +32406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1479562177
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -32161,12 +32509,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1042917975}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 774318184}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1480139365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32278,12 +32629,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1832304249}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1327248544}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1484405278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32530,12 +32884,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 2139092869}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1823792304}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1490617325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32762,12 +33119,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 2040893276}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1893458058}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1505112276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32956,12 +33316,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 981233084}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2033242853}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1507047859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33230,12 +33593,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1159640391}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1583461755}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1513930733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33316,12 +33682,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1380444322}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1406721969}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1515910234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33402,12 +33771,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 37780442}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1115258552}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1516080781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34196,7 +34568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1541279860
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34298,12 +34671,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1521896598}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 557631332}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1545920527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34812,12 +35188,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1845838575}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 731946057}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1570145736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34898,12 +35277,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1806898596}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 760209302}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1574724359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35059,7 +35441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1581678715
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35223,12 +35606,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1505611714}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 798254320}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1588997553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35488,12 +35874,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 728168313}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1372222082}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1597176289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35927,12 +36316,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 847024325}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 401488018}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1607060100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36106,12 +36498,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 189060141}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1083967764}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1621980571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36192,12 +36587,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1048540138}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1913071131}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1625051586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36522,12 +36920,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 611110565}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1418609080}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1640986302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36847,12 +37248,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1797523195}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1794718010}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1661977789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37102,7 +37506,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1663507997
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -37350,12 +37755,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1145986523}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1119018314}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1679418957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37467,12 +37875,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 2120715048}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1537199002}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1684258243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37553,12 +37964,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 838250753}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 812688027}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1684984567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37757,12 +38171,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 627748614}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 664984847}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1702210237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37874,12 +38291,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 71830749}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 535578096}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1711744119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38190,12 +38610,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1385545327}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1659339321}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1728159397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38276,12 +38699,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1394178419}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1773945871}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1732749161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38411,8 +38837,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16758d7eb7b5d4c0da94f0aee71bed4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  minDistanceToDealDamage: 1
+  speed: 10
+  maxLifetime: 5
+  spriteRenderer: {fileID: 0}
 --- !u!82 &1733016863
 AudioSource:
   m_ObjectHideFlags: 0
@@ -38581,7 +39008,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1741370904
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -38767,12 +39195,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1384150163}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1224198829}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1750092143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39036,7 +39467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1758381297
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39161,7 +39593,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1761845090
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39263,12 +39696,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1194491581}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1869428270}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1771047870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39349,12 +39785,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 426518087}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 840922814}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1772120304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39467,12 +39906,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 192050333}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1083356918}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1774443289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39815,7 +40257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1801871015
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39917,12 +40360,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 579169888}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1332381172}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1803924762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40233,12 +40679,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1019356584}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1338658067}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1816956514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40589,12 +41038,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 795598971}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1959286120}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1835963636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41341,12 +41793,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 519523980}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 19027957}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1892643786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41573,12 +42028,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 240299452}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1931715410}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1899710901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41963,7 +42421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1922329653
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42684,7 +43143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &1942007445
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42963,12 +43423,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1569311992}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1258926672}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1967661095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43310,12 +43773,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 398665425}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1511460539}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &1990192185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43937,12 +44403,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 512024739}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1971835017}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2007527036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44046,7 +44515,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &2009435148
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44171,7 +44641,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &2015953524
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44388,12 +44859,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 652329679}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1085993665}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2027353864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44474,12 +44948,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1518569564}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 2119957074}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2029946852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44560,12 +45037,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1004130354}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1867154683}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2031262104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44792,12 +45272,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1320852203}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1266622674}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2050757781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44878,12 +45361,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1050660038}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1847252146}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2055115288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44964,12 +45450,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 502008851}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1663910333}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2055875872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45073,7 +45562,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &2061723564
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -45383,12 +45873,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1956259238}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1817183157}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2077215234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45553,12 +46046,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1822878680}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1094263393}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2095727291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45723,12 +46219,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1565051752}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 945431771}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2102355587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46410,12 +46909,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1206292009}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1665206238}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2115612632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46558,12 +47060,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 938059577}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1111797530}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2120718528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46667,7 +47172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfbad99d43cc441d9b3a6c0469c3125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManager: {fileID: 0}
+  weaponPosition: {fileID: 0}
+  plotIndex: 0
 --- !u!212 &2121254100
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -46769,12 +47275,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 1177582287}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 908853229}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2122660251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46970,12 +47479,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  attackRange: 5
-  rotationPoint: {fileID: 456482774}
-  attackRate: 1
+  _range: 5
+  _rotationSpeed: 5
+  _fireRate: 1
+  _damage: 10
+  firePoint: {fileID: 0}
   projectilePrefab: {fileID: 1733016859}
-  projectileSpawnPoint: {fileID: 1190755589}
+  minRotationAngle: -45
+  maxRotationAngle: 45
+  pivotPoint: {fileID: 0}
 --- !u!114 &2133719701
 MonoBehaviour:
   m_ObjectHideFlags: 0
