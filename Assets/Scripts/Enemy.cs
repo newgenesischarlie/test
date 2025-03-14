@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private List<Sprite> enemySprites = new List<Sprite>();
     [SerializeField] private List<Vector3> waypoints = new List<Vector3>();
+    [SerializeField] private EnemyFX enemyFX;  // Reference to the EnemyFX component
     #endregion
 
     #region Component References
@@ -36,6 +37,28 @@ public class Enemy : MonoBehaviour
             SubscribeToEvents();
         }
     }
+
+    // TakeDamage function
+  public void TakeDamage(int damageAmount)
+{
+    if (enemyHealth != null)
+    {
+        // Call ReduceHealth instead of TakeDamage
+        enemyHealth.ReduceHealth(damageAmount);  // Calls the ReduceHealth method
+
+        // Notify the EnemyFX component to show the damage effect when the enemy is hit
+        if (enemyFX != null)
+        {
+            enemyFX.OnEnemyHit(damageAmount);
+        }
+
+        // Check if the enemy's health has dropped to 0 or below
+        if (enemyHealth.CurrentHealth <= 0)
+        {
+            enemyHealth.Die();  // Call Die when health reaches 0
+        }
+    }
+}
 
     private void OnEnable()
     {
@@ -74,6 +97,12 @@ public class Enemy : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
             enemyHealth = GetComponent<EnemyHealth>();
             gameManager = FindObjectOfType<GameManager>();
+
+            // Initialize the enemyFX component, make sure it's assigned in the Inspector
+            if (enemyFX == null)
+            {
+                enemyFX = GetComponent<EnemyFX>();
+            }
 
             if (spriteRenderer == null)
             {

@@ -12,7 +12,8 @@ public class EnemyHealth : MonoBehaviour
 
     public event System.Action OnDeath;
 
-    public void TakeDamage(int dmg)
+    // Public method to reduce health (called from Enemy script)
+    public void ReduceHealth(int dmg)
     {
         // Reduce health by damage
         hitPoints -= dmg;
@@ -48,6 +49,13 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+    // Method to handle enemy death (public access)
+    public void Die()
+    {
+        OnDeath?.Invoke(); // Trigger death event
+    }
+
+    // Health bar and related code (same as before)
     [SerializeField] private GameObject healthBarPrefab; // Health bar prefab
     [SerializeField] private Transform barPosition; // Position where the health bar should appear
     [SerializeField] private float initialHealth = 10f; // Starting health
@@ -165,11 +173,5 @@ public class EnemyHealth : MonoBehaviour
         {
             _healthBar.fillAmount = 1f; // Reset health bar fill amount
         }
-    }
-
-    // Call this when health reaches 0
-    private void Die()
-    {
-        OnDeath?.Invoke();
     }
 }
