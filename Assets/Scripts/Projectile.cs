@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour
     private Transform target;
     private Vector3 direction;
     private float lifetimeTimer;
-    private bool hasHitTarget = false;
+    public bool hasHitTarget = false;
 
     private void Awake()
     {

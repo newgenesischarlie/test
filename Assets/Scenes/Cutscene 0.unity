@@ -843,7 +843,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1960667943}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -399.96, y: -244.2, z: -2.8}
+  m_LocalPosition: {x: -399.96, y: -231, z: -2.8}
   m_LocalScale: {x: 0.78769976, y: 0.5973213, z: 0.26917735}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -886,7 +886,7 @@ MonoBehaviour:
   - 'Sheriff: I''m glad I could help you avoid extinction this time.'
   - 'Dodo: What do you mean?'
   - 'Sheriff: Nothing'
-  - 'Dodo: Well get ready for the next wave I say tomorrow will be even more perilous!'
+  - ve I say tomorrow will be even more perilous!tomorrow will be even more perilous!
   soundEffects:
   - {fileID: 8300000, guid: 2b13846e759e447adb757e05b7a6d6cc, type: 3}
   - {fileID: 8300000, guid: 25bec0f2b891e4d88a407122f29b308f, type: 3}
