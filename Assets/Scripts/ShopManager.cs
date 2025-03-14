@@ -13,10 +13,9 @@ public class ShopManager : MonoBehaviour
     }
 
     [Header("Shop Settings")]
-    [SerializeField] private WeaponData[] availableWeapons;
+    [SerializeField] private WeaponData weapon; // Only one weapon now
     [SerializeField] private GameObject shopUI;
-    [SerializeField] private Transform weaponButtonsContainer;
-    [SerializeField] private Button weaponButtonPrefab;
+    [SerializeField] private Button weaponButton; // Only one button now
 
     private Plot selectedPlot;
     private CurrencySystem currencySystem;
@@ -25,7 +24,7 @@ public class ShopManager : MonoBehaviour
     {
         currencySystem = FindObjectOfType<CurrencySystem>();
         InitializeShop();
-        
+
         // Hide shop UI at start
         if (shopUI != null)
         {
@@ -35,46 +34,26 @@ public class ShopManager : MonoBehaviour
 
     private void InitializeShop()
     {
-        // Clear existing buttons
-        foreach (Transform child in weaponButtonsContainer)
+        // Set up the weapon button
+        if (weaponButton != null)
         {
-            Destroy(child.gameObject);
-        }
+            // Set button icon
+            Image buttonImage = weaponButton.GetComponent<Image>();
+            if (buttonImage != null && weapon.icon != null)
+            {
+                buttonImage.sprite = weapon.icon;
+            }
 
-        // Create buttons for each weapon
-        foreach (WeaponData weapon in availableWeapons)
-        {
-            CreateWeaponButton(weapon);
-        }
-    }
+            // Set cost text
+            Text buttonText = weaponButton.GetComponentInChildren<Text>();
+            if (buttonText != null)
+            {
+                buttonText.text = weapon.cost.ToString();
+            }
 
-    private void CreateWeaponButton(WeaponData weapon)
-    {
-        Button newButton = Instantiate(weaponButtonPrefab, weaponButtonsContainer);
-        
-        // Set button icon
-        Image buttonImage = newButton.GetComponent<Image>();
-        if (buttonImage != null && weapon.icon != null)
-        {
-            buttonImage.sprite = weapon.icon;
+            // Add click listener
+            weaponButton.onClick.AddListener(() => TryPurchaseWeapon(weapon));
         }
-
-        // Set cost text
-        Text buttonText = newButton.GetComponentInChildren<Text>();
-        if (buttonText != null)
-        {
-            buttonText.text = weapon.cost.ToString();
-        }
-
-        // Add weapon name as tooltip or label if you have a Text component for it
-        Text nameText = newButton.transform.Find("NameText")?.GetComponent<Text>();
-        if (nameText != null)
-        {
-            nameText.text = weapon.name;
-        }
-
-        // Add click listener
-        newButton.onClick.AddListener(() => TryPurchaseWeapon(weapon));
     }
 
     public void SelectPlot(Plot plot)
