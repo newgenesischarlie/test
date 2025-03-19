@@ -15,6 +15,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float maxRotationAngle = 45f;
     [SerializeField] private Transform pivotPoint; // Optional pivot point for rotation
 
+    [Header("Targeting Waypoints")]
+    [SerializeField] private Transform targetWaypoint; // Waypoint to rotate towards
+
     // Public properties
     public float range { get { return _range; } set { _range = value; } }
     public float rotationSpeed { get { return _rotationSpeed; } set { _rotationSpeed = value; } }
@@ -29,10 +32,13 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         // Start inactive
-        gameObject.SetActive(false);
-        
+        gameObject.SetActive(false);  // Start weapon inactive
+
         if (pivotPoint == null)
             pivotPoint = transform;
+
+        if (targetWaypoint == null)
+            Debug.LogWarning("No target waypoint assigned to the weapon!");
     }
 
     private void Start()
@@ -43,21 +49,30 @@ public class Weapon : MonoBehaviour
     }
 
     private void Update()
+{
+    if (!gameObject.activeInHierarchy) return; // Skip if inactive
+
+    // Rotate towards waypoint once the weapon is placed
+    if (targetWaypoint != null)
     {
-        FindAndTargetEnemy();
-        
-        if (currentTarget != null)
-        {
-            RotateTowardsTargetConstrained();
-            TryShoot();
-        }
-        
-        // Keep weapon at its initial position
-        if (transform.position != initialPosition)
-        {
-            transform.position = initialPosition;
-        }
+        RotateTowardsWaypoint();  // Rotate toward the waypoint
     }
+
+    // Find and target enemies
+    FindAndTargetEnemy();
+
+    if (currentTarget != null)
+    {
+        TryShoot();  // Try shooting if the target exists
+    }
+
+    // Keep weapon at its initial position
+    if (transform.position != initialPosition)
+    {
+        transform.position = initialPosition;
+    }
+}
+
 
     private void FindAndTargetEnemy()
     {
@@ -81,27 +96,27 @@ public class Weapon : MonoBehaviour
         currentTarget = closestEnemy;
     }
 
-    private void RotateTowardsTargetConstrained()
+    private void RotateTowardsWaypoint()
     {
-        if (currentTarget == null) return;
+        if (targetWaypoint == null) return;
 
-        // Calculate direction to target
-        Vector3 direction = currentTarget.position - transform.position;
-        
+        // Calculate direction to waypoint
+        Vector3 direction = targetWaypoint.position - transform.position;
+
         // Calculate rotation angle
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
+
         // Apply constraints - convert to local space if needed
         float baseAngle = initialRotation.eulerAngles.z;
         float relativeTurretAngle = Mathf.DeltaAngle(baseAngle, targetAngle);
-        
+
         // Clamp to min/max range
         float clampedAngle = Mathf.Clamp(relativeTurretAngle, minRotationAngle, maxRotationAngle);
         float finalAngle = baseAngle + clampedAngle;
-        
+
         // Create target rotation (only rotate around Z axis)
         Quaternion targetRotation = Quaternion.Euler(0f, 0f, finalAngle);
-        
+
         // Rotate smoothly towards target
         transform.rotation = Quaternion.Lerp(
             transform.rotation, 

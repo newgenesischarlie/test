@@ -29,20 +29,23 @@ public class Plot : MonoBehaviour
         }
     }
 
-    public GameObject PlaceWeapon(GameObject weaponPrefab)
-    {
-        if (isOccupied || weaponPrefab == null)
-            return null;
+  public GameObject PlaceWeapon(GameObject weaponPrefab)
+{
+    if (isOccupied || weaponPrefab == null)
+        return null;
 
-        Vector3 position = weaponPosition != null ? 
-            weaponPosition.position : transform.position;
-        
-        currentWeaponObj = Instantiate(weaponPrefab, position, Quaternion.identity);
-        currentWeapon = currentWeaponObj.GetComponent<Weapon>();
-        isOccupied = true;
-        
-        return currentWeaponObj;
-    }
+    Vector3 position = weaponPosition != null ? 
+        weaponPosition.position : transform.position;
+    
+    currentWeaponObj = Instantiate(weaponPrefab, position, Quaternion.identity);
+    currentWeapon = currentWeaponObj.GetComponent<Weapon>();
+    isOccupied = true;
+
+    // Set weapon to active when placed
+    currentWeaponObj.SetActive(true);  // Activate the weapon
+
+    return currentWeaponObj;
+}
 
     public bool IsOccupied()
     {

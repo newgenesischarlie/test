@@ -29,9 +29,11 @@ public class CurrencySystem : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            Debug.Log("CurrencySystem instance set.");
         }
         else
         {
+            Debug.LogWarning("Multiple CurrencySystem instances detected!");
             Destroy(gameObject);
             return;
         }
@@ -49,11 +51,21 @@ public class CurrencySystem : MonoBehaviour
 
         // Start the coin generation
         InvokeRepeating("GenerateCoins", 0f, coinGenerationInterval); // Start generating coins immediately
+
+        // Add listener for coin change
+        OnCoinsChanged += UpdateCoinDisplay;
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from the event to prevent memory leaks
+        OnCoinsChanged -= UpdateCoinDisplay;
     }
 
     private void LoadCoins()
     {
         TotalCoins = PlayerPrefs.GetInt(CURRENCY_SAVE_KEY, coinTest);
+        Debug.Log("Loaded Coins: " + TotalCoins); // Debugging coin loading
     }
 
     // Function to generate coins every few seconds
@@ -67,6 +79,7 @@ public class CurrencySystem : MonoBehaviour
         TotalCoins += amount;
         PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
         PlayerPrefs.Save();
+        Debug.Log("Added " + amount + " coins. Total Coins: " + TotalCoins); // Debug message for adding coins
         OnCoinsChanged?.Invoke();  // Trigger the event when coins change
         UpdateCoinDisplay(); // Update the UI display
     }
@@ -78,17 +91,19 @@ public class CurrencySystem : MonoBehaviour
             TotalCoins -= amount;
             PlayerPrefs.SetInt(CURRENCY_SAVE_KEY, TotalCoins);
             PlayerPrefs.Save();
+            Debug.Log("Removed " + amount + " coins. Total Coins: " + TotalCoins); // Debug message for removing coins
             OnCoinsChanged?.Invoke();  // Trigger the event when coins change
             UpdateCoinDisplay(); // Update the UI display
         }
         else
         {
-            Debug.Log("Not enough coins to remove.");
+            Debug.Log("Not enough coins to remove. Current Coins: " + TotalCoins);
         }
     }
 
     private void UpdateCoinDisplay()
     {
+        // Update the UI display for coins
         if (coinDisplayText != null)
         {
             coinDisplayText.text = "Coins: " + TotalCoins.ToString();
