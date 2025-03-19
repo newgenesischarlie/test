@@ -19,16 +19,16 @@ public class Plot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Check if the UI is being interacted with, and ignore clicks on the UI
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
 
-        Debug.Log("Plot clicked! Plot Index: " + plotIndex); // Debug message to confirm plot selection
+        Debug.Log("Plot clicked! Plot Index: " + plotIndex); // Debug message to confirm the plot was clicked
 
-        // Ensure ShopManager is correctly referenced
-        ShopManager shop = FindObjectOfType<ShopManager>(); // Correct the reference
+        ShopManager shop = FindObjectOfType<ShopManager>();  // Correctly reference ShopManager
         if (shop != null)
         {
-            shop.SelectPlot(this); // Pass the current plot to the shop
+            // Pass the plot and weapon name (plotIndex as a string) to SelectPlot
+            shop.SelectPlot(this, plotIndex.ToString());  // This passes the plot and the weapon name as string
         }
     }
 
@@ -65,6 +65,7 @@ public class Plot : MonoBehaviour
         isOccupied = false;
     }
 
+    // For identifying this plot
     public int GetPlotIndex()
     {
         return plotIndex;
