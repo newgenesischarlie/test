@@ -19,36 +19,35 @@ public class Plot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        // Check if the UI is being interacted with, and ignore clicks on the UI
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        Debug.Log("Plot clicked! Plot Index: " + plotIndex); // Debug message to confirm the plot was clicked
+        Debug.Log("Plot clicked! Plot Index: " + plotIndex); // Debug message to confirm plot selection
 
-        WeaponShop shop = FindObjectOfType<WeaponShop>();
+        // Ensure ShopManager is correctly referenced
+        ShopManager shop = FindObjectOfType<ShopManager>(); // Correct the reference
         if (shop != null)
         {
-            shop.SelectPlot(this);
+            shop.SelectPlot(this); // Pass the current plot to the shop
         }
     }
 
-public GameObject PlaceWeapon(GameObject weaponPrefab)
-{
-    if (isOccupied || weaponPrefab == null)
+    public GameObject PlaceWeapon(GameObject weaponPrefab)
     {
-        Debug.LogWarning("Plot is already occupied or weaponPrefab is null");
-        return null;
+        if (isOccupied || weaponPrefab == null)
+        {
+            Debug.LogWarning("Plot is already occupied or weaponPrefab is null");
+            return null;
+        }
+
+        Vector3 position = weaponPosition != null ? weaponPosition.position : transform.position;
+        currentWeaponObj = Instantiate(weaponPrefab, position, Quaternion.identity);
+        currentWeapon = currentWeaponObj.GetComponent<Weapon>();
+        isOccupied = true;
+
+        Debug.Log("Weapon placed at position: " + position); // Debug message to confirm weapon placement
+        return currentWeaponObj;
     }
-
-    Vector3 position = weaponPosition != null ? weaponPosition.position : transform.position;
-    currentWeaponObj = Instantiate(weaponPrefab, position, Quaternion.identity);
-    currentWeapon = currentWeaponObj.GetComponent<Weapon>();
-    isOccupied = true;
-
-    Debug.Log("Weapon placed at position: " + position); // Debug message to confirm weapon placement
-    return currentWeaponObj;
-}
-
-
 
     public bool IsOccupied()
     {
@@ -66,7 +65,6 @@ public GameObject PlaceWeapon(GameObject weaponPrefab)
         isOccupied = false;
     }
 
-    // For identifying this plot
     public int GetPlotIndex()
     {
         return plotIndex;
