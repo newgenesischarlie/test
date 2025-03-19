@@ -56,36 +56,43 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    public void SelectPlot(Plot plot)
+public void SelectPlot(Plot plot)
+{
+    selectedPlot = plot;
+    Debug.Log("Plot selected: " + selectedPlot.GetPlotIndex()); // Debug message to confirm plot selection
+    if (shopUI != null)
     {
-        selectedPlot = plot;
-        if (shopUI != null)
-        {
-            shopUI.SetActive(true);
-        }
+        shopUI.SetActive(true);
+    }
+}
+
+private void TryPurchaseWeapon(WeaponData weapon)
+{
+    if (selectedPlot == null || selectedPlot.IsOccupied())
+    {
+        Debug.LogWarning("No plot selected or plot is occupied");
+        return;
     }
 
-    private void TryPurchaseWeapon(WeaponData weapon)
+    if (currencySystem != null)
     {
-        if (selectedPlot == null || selectedPlot.IsOccupied())
+        Debug.Log("Current Coins: " + currencySystem.TotalCoins);
+        if (currencySystem.TotalCoins >= weapon.cost)
         {
-            Debug.LogWarning("No plot selected or plot is occupied");
-            return;
-        }
-
-        if (currencySystem != null && currencySystem.TotalCoins >= weapon.cost)
-        {
-            // Purchase successful
             currencySystem.RemoveCoins(weapon.cost);
-            selectedPlot.PlaceWeapon(weapon.weaponPrefab);
+            Debug.Log("Coins removed, placing weapon...");
+            selectedPlot.PlaceWeapon(weapon.weaponPrefab); // Place the weapon on the plot
+            Debug.Log("Weapon placed: " + weapon.name);
             CloseShop();
         }
         else
         {
-            Debug.Log("Not enough coins to purchase " + weapon.name);
-            // Optionally show a message to the player
+            Debug.LogWarning("Not enough coins to purchase " + weapon.name);
         }
     }
+}
+
+
 
     public void CloseShop()
     {

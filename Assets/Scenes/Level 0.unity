@@ -136,7 +136,6 @@ GameObject:
   - component: {fileID: 7460903}
   - component: {fileID: 7460902}
   - component: {fileID: 7460904}
-  - component: {fileID: 7460905}
   m_Layer: 0
   m_Name: Bronze
   m_TagString: Untagged
@@ -195,6 +194,7 @@ MonoBehaviour:
     m_Bits: 8
   rotationSpeed: 20
   debugMode: 1
+  weaponObject: {fileID: 7460897}
 --- !u!212 &7460903
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -262,28 +262,6 @@ MonoBehaviour:
   waypoint1Z: 28.499
   waypoint2Z: 22.481
   rotationSpeed: 8
---- !u!114 &7460905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7460897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caf074aa835e74c7397c0fd158350491, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _range: 5
-  _rotationSpeed: 5
-  _fireRate: 1
-  _damage: 10
-  firePoint: {fileID: 0}
-  projectilePrefab: {fileID: 0}
-  minRotationAngle: -45
-  maxRotationAngle: 45
-  pivotPoint: {fileID: 0}
-  targetWaypoint: {fileID: 0}
 --- !u!1 &11725873
 GameObject:
   m_ObjectHideFlags: 0
@@ -6949,7 +6927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon:
     name: 
-    weaponPrefab: {fileID: 1309099504}
+    weaponPrefab: {fileID: 7460897}
     cost: 5
     icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   shopUI: {fileID: 939510698}

@@ -22,6 +22,8 @@ public class Plot : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
+        Debug.Log("Plot clicked! Plot Index: " + plotIndex); // Debug message to confirm the plot was clicked
+
         WeaponShop shop = FindObjectOfType<WeaponShop>();
         if (shop != null)
         {
@@ -29,23 +31,24 @@ public class Plot : MonoBehaviour
         }
     }
 
-  public GameObject PlaceWeapon(GameObject weaponPrefab)
+public GameObject PlaceWeapon(GameObject weaponPrefab)
 {
     if (isOccupied || weaponPrefab == null)
+    {
+        Debug.LogWarning("Plot is already occupied or weaponPrefab is null");
         return null;
+    }
 
-    Vector3 position = weaponPosition != null ? 
-        weaponPosition.position : transform.position;
-    
+    Vector3 position = weaponPosition != null ? weaponPosition.position : transform.position;
     currentWeaponObj = Instantiate(weaponPrefab, position, Quaternion.identity);
     currentWeapon = currentWeaponObj.GetComponent<Weapon>();
     isOccupied = true;
 
-    // Set weapon to active when placed
-    currentWeaponObj.SetActive(true);  // Activate the weapon
-
+    Debug.Log("Weapon placed at position: " + position); // Debug message to confirm weapon placement
     return currentWeaponObj;
 }
+
+
 
     public bool IsOccupied()
     {

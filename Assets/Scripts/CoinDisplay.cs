@@ -17,13 +17,19 @@ public class CoinDisplay : MonoBehaviour
     private void OnEnable()
     {
         // Subscribe to the event when coins are updated
-        CurrencySystem.Instance.OnCoinsChanged += UpdateCoinDisplay;
+        if (CurrencySystem.Instance != null)
+        {
+            CurrencySystem.Instance.OnCoinsChanged += UpdateCoinDisplay;
+        }
     }
 
     private void OnDisable()
     {
         // Unsubscribe when the object is disabled or destroyed
-        CurrencySystem.Instance.OnCoinsChanged -= UpdateCoinDisplay;
+        if (CurrencySystem.Instance != null)
+        {
+            CurrencySystem.Instance.OnCoinsChanged -= UpdateCoinDisplay;
+        }
     }
 
     // Update the coin display UI
@@ -39,4 +45,3 @@ public class CoinDisplay : MonoBehaviour
         }
     }
 }
-

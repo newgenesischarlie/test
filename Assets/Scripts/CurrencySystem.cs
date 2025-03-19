@@ -121,4 +121,5 @@ public class CurrencySystem : MonoBehaviour
             coinImage.sprite = coinSprite;
         }
     }
+
 }

@@ -11,7 +11,18 @@ public class Turret : MonoBehaviour
     [SerializeField] private float rotationSpeed = 5f;       // This will show in the Inspector
     [SerializeField] private bool debugMode = true;
 
+    [Header("Weapon Settings")]
+    [SerializeField] private GameObject weaponObject;  // Reference to the weapon GameObject (hidden initially)
+    
     private Transform target;
+
+    private void Start()
+    {
+        if (weaponObject != null)
+        {
+            weaponObject.SetActive(false); // Hide weapon at the start
+        }
+    }
 
     private void Update()
     {
@@ -25,11 +36,12 @@ public class Turret : MonoBehaviour
         Debug.Log("Target acquired: " + target.name);
         RotateTowardsTarget();
 
-        // If the target is out of range, set it to null
+        // If the target is out of range, set it to null and hide the weapon
         if (!CheckTargetIsInRange())
         {
             Debug.Log("Target out of range, searching for new target.");
             target = null;
+            HideWeapon();  // Hide weapon if target is lost
         }
     }
 
@@ -55,6 +67,7 @@ public class Turret : MonoBehaviour
             // Process each collider as before...
         }
 
+        // Check all enemy colliders in the scene
         CheckEnemyColliders();
     }
 
@@ -108,6 +121,26 @@ public class Turret : MonoBehaviour
                           ", IsTrigger: " + collider.isTrigger +
                           ", Enabled: " + collider.enabled);
             }
+        }
+    }
+
+    // Method to show the weapon when a target is found
+    private void ShowWeapon()
+    {
+        if (weaponObject != null)
+        {
+            weaponObject.SetActive(true);  // Show the weapon when target is acquired
+            Debug.Log("Weapon is now visible.");
+        }
+    }
+
+    // Method to hide the weapon when target is lost
+    private void HideWeapon()
+    {
+        if (weaponObject != null)
+        {
+            weaponObject.SetActive(false);  // Hide the weapon when target is lost
+            Debug.Log("Weapon is now hidden.");
         }
     }
 }
