@@ -21,6 +21,7 @@ public class Turret : MonoBehaviour
         if (weaponObject != null)
         {
             weaponObject.SetActive(false); // Hide weapon at the start
+            DebugWeaponVisibility(weaponObject);
         }
     }
 
@@ -36,7 +37,6 @@ public class Turret : MonoBehaviour
         Debug.Log("Target acquired: " + target.name);
         RotateTowardsTarget();
 
-        // If the target is out of range, set it to null and hide the weapon
         if (!CheckTargetIsInRange())
         {
             Debug.Log("Target out of range, searching for new target.");
@@ -48,32 +48,23 @@ public class Turret : MonoBehaviour
     private void FindTarget()
     {
         float debugRange = debugMode ? targetingRange * 2 : targetingRange;
-        // Debug layer mask
-        Debug.Log("Enemy Layer Mask: " + enemyMask.value);
         
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(enemyMask);
-        filter.useTriggers = true; // This is important if enemy colliders are triggers
+        filter.useTriggers = true;
 
-        Collider2D[] colliders = new Collider2D[20]; // Adjust array size as needed
+        Collider2D[] colliders = new Collider2D[20]; 
         int count = Physics2D.OverlapCircle(transform.position, debugRange, filter, colliders);
 
-        // Only process valid colliders
-        Debug.Log("Valid enemies detected: " + count);
         for (int i = 0; i < count; i++)
         {
-            Debug.Log("Detected enemy at position: " + colliders[i].transform.position + 
-                      " with layer: " + LayerMask.LayerToName(colliders[i].gameObject.layer));
-            // Process each collider as before...
+            // Additional debug to check if enemies are being detected
+            Debug.Log("Detected enemy: " + colliders[i].transform.name);
         }
-
-        // Check all enemy colliders in the scene
-        CheckEnemyColliders();
     }
 
     private bool CheckTargetIsInRange()
     {
-        // Check if the target is within the targeting range
         return target != null && Vector2.Distance(target.position, transform.position) <= targetingRange;
     }
 
@@ -82,65 +73,49 @@ public class Turret : MonoBehaviour
         if (target == null)
             return;
 
-        // Calculate the direction to the target
         Vector2 direction = target.position - transform.position;
-
-        // Calculate the angle from the direction
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-
-        // Create a quaternion for the desired rotation
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
 
-        // Smoothly rotate the turret towards the target
         turretRotationPoint.rotation = Quaternion.RotateTowards(turretRotationPoint.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-        Debug.Log("Rotating towards target: " + target.name);
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Draw the targeting range for visualization in the Scene view
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, targetingRange);
     }
 
-    private void CheckEnemyColliders()
+    private void DebugWeaponVisibility(GameObject weapon)
     {
-        Enemy[] allEnemies = FindObjectsOfType<Enemy>();
-        foreach (var enemy in allEnemies)
+        SpriteRenderer spriteRenderer = weapon.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
         {
-            Collider2D collider = enemy.GetComponent<Collider2D>();
-            if (collider == null)
-            {
-                Debug.LogError("Enemy " + enemy.name + " has NO Collider2D component!");
-            }
-            else
-            {
-                Debug.Log("Enemy " + enemy.name + " has Collider2D: " + 
-                          collider.GetType().Name + 
-                          ", IsTrigger: " + collider.isTrigger +
-                          ", Enabled: " + collider.enabled);
-            }
+            Debug.Log("SpriteRenderer enabled: " + spriteRenderer.enabled);
+            spriteRenderer.enabled = true;  // Ensure it is enabled
         }
+        else
+        {
+            Debug.LogError("Weapon has no SpriteRenderer attached!");
+        }
+
+        Debug.Log("Weapon Layer: " + LayerMask.LayerToName(weapon.layer)); // Check weapon's layer
     }
 
-    // Method to show the weapon when a target is found
     private void ShowWeapon()
     {
         if (weaponObject != null)
         {
-            weaponObject.SetActive(true);  // Show the weapon when target is acquired
-            Debug.Log("Weapon is now visible.");
+            weaponObject.SetActive(true);  
+            DebugWeaponVisibility(weaponObject);  // Ensure it's visible
         }
     }
 
-    // Method to hide the weapon when target is lost
     private void HideWeapon()
     {
         if (weaponObject != null)
         {
-            weaponObject.SetActive(false);  // Hide the weapon when target is lost
-            Debug.Log("Weapon is now hidden.");
+            weaponObject.SetActive(false);  
         }
     }
 }

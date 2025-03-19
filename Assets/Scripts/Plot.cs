@@ -45,7 +45,10 @@ public class Plot : MonoBehaviour
         currentWeapon = currentWeaponObj.GetComponent<Weapon>();
         isOccupied = true;
 
-        Debug.Log("Weapon placed at position: " + position); // Debug message to confirm weapon placement
+        // Debugging the weapon placement
+        Debug.Log("Weapon placed at position: " + position); // Confirm weapon placement
+        DebugWeaponVisibility(currentWeaponObj);
+
         return currentWeaponObj;
     }
 
@@ -76,5 +79,22 @@ public class Plot : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.5f); // Adjust radius to fit your plot size
+    }
+
+    // Debugging visibility of the weapon
+    private void DebugWeaponVisibility(GameObject weapon)
+    {
+        SpriteRenderer spriteRenderer = weapon.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            Debug.Log("SpriteRenderer enabled: " + spriteRenderer.enabled);
+            spriteRenderer.enabled = true;  // Ensure it is enabled
+        }
+        else
+        {
+            Debug.LogError("Weapon has no SpriteRenderer attached!");
+        }
+
+        Debug.Log("Weapon Layer: " + LayerMask.LayerToName(weapon.layer)); // Check weapon's layer
     }
 }
