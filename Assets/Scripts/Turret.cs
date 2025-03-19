@@ -15,12 +15,16 @@ public class Turret : MonoBehaviour
     [SerializeField] private GameObject weaponObject;  // Reference to the weapon GameObject (hidden initially)
     
     private Transform target;
+    private bool isWeaponVisible = false;  // Track weapon visibility status
+    private float hideWeaponDelay = 1f;  // Delay time before hiding the weapon
+    private float hideWeaponTimer = 0f;  // Timer for weapon hiding
 
     private void Start()
     {
+        // Ensure weapon is hidden at the start
         if (weaponObject != null)
         {
-            weaponObject.SetActive(false); // Hide weapon at the start
+            weaponObject.SetActive(false);
             DebugWeaponVisibility(weaponObject);
         }
     }
@@ -37,11 +41,35 @@ public class Turret : MonoBehaviour
         Debug.Log("Target acquired: " + target.name);
         RotateTowardsTarget();
 
+        // Check if the target is out of range, but don’t hide the weapon immediately
         if (!CheckTargetIsInRange())
         {
             Debug.Log("Target out of range, searching for new target.");
             target = null;
-            HideWeapon();  // Hide weapon if target is lost
+
+            // Start the coroutine to hide weapon if the GameObject is active
+            if (gameObject.activeInHierarchy)
+            {
+                StartCoroutine(HideWeaponAfterDelay());  // Start coroutine if active
+            }
+            else
+            {
+                // If GameObject is inactive, use a timer approach
+                if (hideWeaponTimer <= 0f)
+                {
+                    hideWeaponTimer = hideWeaponDelay;  // Reset timer to delay
+                }
+                else
+                {
+                    hideWeaponTimer -= Time.deltaTime;  // Decrease the timer
+                }
+
+                // Hide weapon after delay
+                if (hideWeaponTimer <= 0f)
+                {
+                    HideWeapon();
+                }
+            }
         }
     }
 
@@ -60,6 +88,11 @@ public class Turret : MonoBehaviour
         {
             // Additional debug to check if enemies are being detected
             Debug.Log("Detected enemy: " + colliders[i].transform.name);
+            if (target == null) // Assign the first found enemy as the target
+            {
+                target = colliders[i].transform;
+                ShowWeapon(); // Show weapon once a target is acquired
+            }
         }
     }
 
@@ -104,18 +137,27 @@ public class Turret : MonoBehaviour
 
     private void ShowWeapon()
     {
-        if (weaponObject != null)
+        if (weaponObject != null && !isWeaponVisible)
         {
-            weaponObject.SetActive(true);  
+            weaponObject.SetActive(true);  // Show the weapon
+            isWeaponVisible = true;  // Mark the weapon as visible
             DebugWeaponVisibility(weaponObject);  // Ensure it's visible
         }
     }
 
     private void HideWeapon()
     {
-        if (weaponObject != null)
+        if (weaponObject != null && isWeaponVisible)
         {
-            weaponObject.SetActive(false);  
+            weaponObject.SetActive(false);  // Hide the weapon
+            isWeaponVisible = false;  // Mark the weapon as hidden
+            Debug.Log("Weapon is now hidden: " + weaponObject.activeSelf);
         }
+    }
+
+    private IEnumerator HideWeaponAfterDelay()
+    {
+        yield return new WaitForSeconds(1f);  // Wait for 1 second before hiding the weapon
+        HideWeapon();
     }
 }
