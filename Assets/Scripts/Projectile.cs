@@ -1,4 +1,4 @@
-using System.Collections; // <-- Add this for IEnumerator
+using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float maxLifetime = 5f;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Vector3 respawnPosition = Vector3.zero; // Optional: Set this as the respawn point
 
     private int damage;
     private Transform target;
@@ -60,7 +61,7 @@ public class Projectile : MonoBehaviour
         // Check if projectile is out of screen bounds
         if (IsOutOfBounds())
         {
-            DestroyProjectile();
+            RespawnProjectile(); // Respawn the projectile
         }
     }
 
@@ -70,34 +71,45 @@ public class Projectile : MonoBehaviour
         return screenPos.x < -0.1f || screenPos.x > 1.1f || screenPos.y < -0.1f || screenPos.y > 1.1f;
     }
 
- private void OnTriggerEnter2D(Collider2D other)
-{
-    if (hasHitTarget) return;
-
-    if (other.CompareTag("Enemy"))
+    private void RespawnProjectile()
     {
-        EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
-        if (enemyHealth != null)
-        {
-            // Call DealDamage instead of TakeDamage
-            enemyHealth.DealDamage(damage); 
+        // Reset position to the spawn point
+        transform.position = respawnPosition;
 
-            // Optionally, trigger the effect if necessary
-            EnemyFX enemyFX = other.GetComponent<EnemyFX>(); // Ensure EnemyFX is on the enemy
-            if (enemyFX != null)
-            {
-                enemyFX.OnEnemyHit(damage);
-            }
-        }
-
-        hasHitTarget = true;
-        DestroyProjectile();
+        // Optionally, you could add a delay before respawning the projectile
+        hasHitTarget = false; // Reset hit target flag
+        lifetimeTimer = 0f; // Reset lifetime timer
     }
-}
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (hasHitTarget) return;
+
+        if (other.CompareTag("Enemy"))
+        {
+            // Get the Enemy component from the collider
+            Enemy enemy = other.GetComponent<Enemy>();
+
+            if (enemy != null)
+            {
+                // Call the TakeDamage method from the Enemy class to deal damage
+                enemy.TakeDamage(damage);
+
+                // Optionally trigger the enemy's FX (like damage effects)
+                EnemyFX enemyFX = other.GetComponent<EnemyFX>();
+                if (enemyFX != null)
+                {
+                    enemyFX.OnEnemyHit(damage);
+                }
+            }
+
+            hasHitTarget = true;
+            DestroyProjectile();
+        }
+    }
 
     private void DestroyProjectile()
     {
-        Destroy(gameObject);
+        Destroy(gameObject); // Destroy the projectile
     }
 }
